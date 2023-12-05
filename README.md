@@ -1,6 +1,8 @@
-# Getting Started with Create React App
+# APP DESIGN
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+This site was made by dark-5 figma design
+
+https://www.figma.com/file/BuU51GMcGhhzetFCMt2jit/%D0%BC%D0%B0%D0%BA%D0%B5%D1%82?type=design&node-id=1-11614&mode=dev
 
 ## Available Scripts
 

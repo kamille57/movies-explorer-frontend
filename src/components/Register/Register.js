@@ -50,7 +50,7 @@ function Register() {
           button={isLoading ? "Идет регистрация..." : "Зарегистрироваться"}
           text="Уже зарегистрированы?"
           span={
-            <Link className="auth__confirm-link"to="/sign-in">Войти</Link>
+            <Link className="auth__confirm-link"to="/signin">Войти</Link>
           }
           onSubmit={handleRegister}
         >

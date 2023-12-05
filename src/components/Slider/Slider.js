@@ -34,7 +34,7 @@ function Slider() {
                         <img
                             className="slider__img"
                             src={profileDark}
-                            onClick={() => navigate("/sign-in")}
+                            onClick={() => navigate("/signin")}
                             alt="Иконка входа"
                         />
                 </section>

@@ -30,7 +30,7 @@ function Header({ backgroundColor, profileSrc }) {
                                 <img 
                                     className="header__img header__img_full" 
                                     src={profileSrc} 
-                                    onClick={() => navigate("/sign-in")} 
+                                    onClick={() => navigate("/signin")} 
                                     alt="Иконка входа" 
                                 /> 
                                 <img 
