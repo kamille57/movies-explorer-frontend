@@ -1,0 +1,111 @@
+.card {
+    margin: 0;
+    border-radius: 10px;
+    background-color: #222;
+    overflow: hidden;
+    position: relative;
+    font-family: 'Inter', 'Helvetica Neue', 'Arial', sans-serif;
+    font-style: normal;
+    box-shadow: 0px 16px 24px rgba(0, 0, 0, 0.05);
+}
+
+.card__figure {
+    margin: 0 auto;
+    display: grid;
+    grid-template-areas:
+        "pic pic"
+        "title box";
+}
+
+.card__pic {
+    margin: 0 0 14px;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    object-fit: cover;
+    width: 100%;
+    cursor: pointer;
+    height: 151px;
+    background-color: yellow;
+    grid-area: pic;
+}
+
+.card__caption {
+    margin: 0;
+    padding-left: 12px;
+    color: #FFF;
+    font-size: 13px;
+    font-weight: 500;
+    line-height: normal;
+    grid-area: title;
+}
+
+.card-checkbox {
+    grid-area: box;
+}
+
+.card__duration {
+    margin: 0;
+    padding: 10px 0 14px 12px;
+    color: #8B8B8B;
+    font-size: 11px;
+    font-weight: 400;
+    line-height: normal;
+}
+
+.card-checkbox__input {
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
+    appearance: none;
+}
+
+.card-checkbox__inner {
+    display: inline-block;
+    position: relative;
+    margin: 0;
+}
+
+.card-checkbox__inner::before {
+    display: block;
+    border-radius: 10px;
+    content: "";
+    position: absolute;
+    left: 35px;
+    bottom: -3px;
+    width: 16px;
+    height: 16px;
+    background-color: #313131;
+    outline: 3px solid white;
+}
+
+.card-checkbox__inner::after {
+    display: block;
+    content: "";
+    position: absolute;
+    border-radius: 9px;
+    background-color: #3DDC84;
+    transition: background-color .3s, left .3s;
+}
+
+.card-checkbox__input:checked+.card-checkbox__inner::before {
+    background-color: #3DDC84;
+}
+
+.card-checkbox__input:checked+.card-checkbox__inner::after {
+    background-color: white;
+}
+
+@media screen and (min-width: 621px) and (max-width: 920px) {
+    .card-checkbox {
+        display: flex;
+        justify-content: center;
+        padding-right: 12px;
+    }
+
+    .card__pic {
+        height: 190px;
+    }
+}

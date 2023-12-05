@@ -1,0 +1,109 @@
+.filter {
+    margin: 0 auto;
+    padding: 31px 0 0;
+    background-color: #202020;
+    font-family: 'Inter', 'Helvetica Neue', 'Arial', sans-serif;
+    font-style: normal;
+    display: flex;
+    align-items: center;
+}
+
+.filter-checkbox {
+    display: flex;
+    justify-content: space-between;
+    gap: 48px;
+}
+
+.filter-checkbox__input {
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
+    appearance: none;
+    cursor: pointer;
+}
+
+.filter-checkbox__inner {
+    display: inline-block;
+    position: relative;
+    margin: 0;
+
+}
+
+.filter-checkbox__text {
+    margin: 0;
+    color: #FFF;
+    font-size: 13px;
+    font-weight: 400;
+    line-height: 20px;
+}
+
+.filter-checkbox__inner::before {
+    display: block;
+    border-radius: 10px;
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 36px;
+    height: 20px;
+    background-color: white;
+    transition: background-color .3s;
+}
+
+.filter-checkbox__inner::after {
+    display: block;
+    content: "";
+    position: absolute;
+    width: 18px;
+    height: 18px;
+    left: 1px;
+    top: 1px;
+    border-radius: 9px;
+    background-color: #3DDC84;
+    transition: background-color .3s, left .3s;
+}
+
+.filter-checkbox__input:checked+.filter-checkbox__inner::before {
+    background-color: #3DDC84;
+}
+
+.filter-checkbox__input:checked+.filter-checkbox__inner::after {
+    left: 17px;
+    background-color: white;
+}
+
+.filter-checkbox__input:focus+.filter-checkbox__inner::before {
+    outline: 1px solid gray;
+    outline-offset: 2px;
+}
+
+@media screen and (min-width: 621px) and (max-width: 920px) {
+    .filter {
+        padding: 29px 37px 60px;
+        justify-content: end;
+    }
+
+    .filter-checkbox {
+        flex-direction: row-reverse;
+        gap: 16px;
+    }
+}
+
+@media screen and (min-width: 320px) and (max-width: 621px) {
+    .filter {
+        padding: 41px 86px 51px;
+        justify-content: center;
+    }
+
+    .filter-checkbox {
+        flex-direction: row-reverse;
+        gap: 13px;
+    }
+
+    .filter-checkbox__text {
+        font-size: 11px;
+        font-weight: 400;
+        line-height: 18px;
+    }
+}

@@ -1,0 +1,136 @@
+.techs {
+    box-sizing: border-box;
+    padding: 100px 70px;
+    background-color: #272727;
+    font-family: 'Inter', 'Helvetica Neue', 'Arial', sans-serif;
+    font-style: normal;
+    color: #FFF;
+
+}
+
+.techs__title {
+    margin: 0 0 23px 0;
+    font-size: 22px;
+    font-weight: 400;
+    letter-spacing: -0.88px;
+}
+
+.techs__container {
+    margin: 0 auto;
+    border-top: 1px solid #DADADA;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.techs__container-title {
+    margin: 90px 0 26px;
+    font-size: 50px;
+    font-weight: 400;
+    line-height: 58px;
+    letter-spacing: -2px;
+}
+
+.techs__container-text {
+    margin: 0 0 100px;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 20px;
+    letter-spacing: -0.56px;
+    width: 460px;
+    text-align: center;
+}
+
+.techs__stacks {
+    gap: 10px;
+    display: grid;
+    justify-content: center;
+    grid-template-columns: repeat( auto-fit, 90px);
+    width: 100%;
+}
+
+.techs__stack {
+    width: 90px;
+    height: 60px;
+    border-radius: 10px;
+    background-color: #303030;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 14px;
+    font-weight: 400;
+    letter-spacing: -0.56px;
+}
+
+@media screen and (min-width: 320px) and (max-width: 620px) {
+    .techs {
+        padding: 70px 18px;
+        background-color: #202020;
+    }
+
+    .techs__title {
+        margin-bottom: 28px;
+        font-size: 18px;
+        letter-spacing: -0.72px;
+        font-weight: 400;
+    }
+
+    .techs__container {
+        border-top: 1px solid #000;
+    }
+
+    .techs__container-title {
+        margin: 60px 0 24px;
+        font-size: 30px;
+        font-weight: 400;
+        letter-spacing: -1.2px;
+    }
+
+    .techs__container-text {
+        margin-bottom: 50px;
+        width: 100%;
+        font-size: 11px;
+        font-weight: 400;
+        font-style: normal;
+        line-height: 16px;
+        letter-spacing: -0.44px;
+    }
+
+    .techs__stack {
+        height: 57px;
+    }
+
+    .techs__stacks {
+        display: grid;
+        grid-template-columns: repeat( 2, 84px);
+    }
+}
+
+
+@media screen and (min-width: 621px) and (max-width: 920px) {
+    .techs {
+        padding: 90px 50px;
+    }
+
+    .techs__container-title {
+        margin: 80px auto 22px;
+    }
+
+    .techs__container-text {
+        margin: 0 auto 83px;
+        width: 450px;
+        font-size: 12px;
+        font-weight: 400;
+        line-height: 18px;
+    }
+
+    .techs__stacks {
+        display: grid;
+        grid-template-columns: repeat( auto-fit, 84px);
+    }
+
+    .techs__stack {
+        height: 57px;
+    }
+}

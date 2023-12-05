@@ -1,0 +1,92 @@
+.profile {
+    margin: 0 auto;
+    width: 100%;
+    background-color: #202020;
+    font-family: 'Inter', 'Helvetica Neue', 'Arial', sans-serif;
+    font-style: normal;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.profile__title {
+    margin: 74px auto 107px;
+    color: #FFF;
+    text-align: center;
+    font-size: 24px;
+    font-weight: 500;
+    line-height: normal;
+}
+
+.profile__input-text {
+    display: flex;
+    justify-content: space-between;
+    width: 410px;
+    padding: 16px 0;
+    color: #FFF;
+    font-size: 11px;
+    font-weight: 500;
+    text-align: left;
+}
+
+.profile__inputs {
+    margin: 0 auto 204px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+}
+
+.profile__input {
+    color: #FFF;
+    text-align: right;
+    font-size: 11px;
+    font-weight: 400;
+    background-color: transparent;
+    border: none;
+    outline: none;
+}
+
+.profile__input-text:first-child {
+    border-bottom: 1px solid #424242;
+}
+
+.profile__confirm {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.profile__confirm-btn {
+    margin: 0 auto 16px;
+    background-color: transparent;
+    border: none;
+    color: #FFF;
+    text-align: center;
+    font-size: 13px;
+    font-weight: 400;
+    cursor: pointer;
+}
+
+.profile__confirm-link {
+    color: #EE3465;
+    text-align: center;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+@media screen and (min-width: 320px) and (max-width: 620px) {
+    .profile__input-text {
+        width: 260px;
+    }
+
+    .profile__confirm-btn {
+        font-size: 12px;
+    }
+
+    .profile__confirm-link {
+        font-size: 12px;
+    }
+}
