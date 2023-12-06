@@ -9,9 +9,9 @@
 }
 
 .filter-checkbox {
-    display: flex;
-    justify-content: space-between;
-    gap: 48px;
+    color: white;
+    font-size: 13px;
+    font-weight: 400;
 }
 
 .filter-checkbox__input {
@@ -26,8 +26,11 @@
 .filter-checkbox__inner {
     display: inline-block;
     position: relative;
-    margin: 0;
+    margin: 0 14px 0 0;
+    width: 36px;
+    height: 15px;
 }
+
 
 .filter-checkbox__text {
     margin: 0;

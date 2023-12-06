@@ -1,24 +1,18 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 import profileDark from "../../images/profileDark.svg"
 
-function Slider() {
+function Slider({ clickHandler }) {
     const navigate = useNavigate();
-    const [isVisible, setIsVisible] = useState(true);
-
-    const handleButtonClick = () => {
-        setIsVisible(false);
-    };
 
     return (
         <main className="slider-page">
-            {isVisible && (<>
-                <div className='slider-overlay'></div>
-                <section className="slider">
+            <div className='slider-overlay'>
+            <section className="slider">
                     <button
                         type="button"
                         className="slider__btn"
-                        onClick={handleButtonClick}
+                        onClick={ clickHandler }
                     ></button>
                     <div className="slider__links">
                         <NavLink to="/" className="slider__link">
@@ -38,9 +32,8 @@ function Slider() {
                             alt="Иконка входа"
                         />
                 </section>
-            </>
-            )}
-
+            </div>
+              
         </main>
     );
 }

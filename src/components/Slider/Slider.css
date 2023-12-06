@@ -1,12 +1,16 @@
 .slider-overlay {
-    position: absolute;
+    position: fixed;
     top: 0;
     left: 0;
     right: 0;
     bottom: 0;
-    opacity: 0.3;
-    background: #000;
+    background: rgb(0 0 0 / 30%);
+    z-index: 2;
 }
+
+/* .slider-page {
+    position: relative;
+} */
 
 .slider {
     width: 520px;

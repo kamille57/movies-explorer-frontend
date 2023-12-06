@@ -2,9 +2,6 @@ import { useState, useEffect } from 'react';
 import MoviesCard from '../MoviesCard/MoviesCard.js';
 
 function MoviesCardList() {
-  const cardsSmallScreen = new Array(5).fill(null);
-  const cardsMediumScreen = new Array(8).fill(null);
-  const cardsLargeScreen = new Array(16).fill(null);
 
   const [cards, setCards] = useState([]);
 
@@ -12,11 +9,11 @@ function MoviesCardList() {
     function handleResize() {
       const windowWidth = window.innerWidth;
       if (windowWidth >= 320 && windowWidth <= 620) {
-        setCards(cardsSmallScreen);
+        setCards(new Array(5).fill(null));
       } else if (windowWidth >= 621 && windowWidth <= 920) {
-        setCards(cardsMediumScreen);
+        setCards(new Array(8).fill(null));
       } else {
-        setCards(cardsLargeScreen);
+        setCards(new Array(16).fill(null));
       }
     }
 
@@ -26,13 +23,13 @@ function MoviesCardList() {
     return () => {
       window.removeEventListener("resize", handleResize);
     };
-  }, [cardsSmallScreen, cardsMediumScreen, cardsLargeScreen]);
+  }, []);
 
   return (
     <section className="cards">
       <article className="cards__container">
-        {cards.map((_card, index) => (
-          <MoviesCard card={_card} key={index} />
+        {cards.map((_card, index) =>(
+          <MoviesCard card={_card} index={index} key={index} />
         ))}
       </article>
       <button

@@ -1,15 +1,16 @@
 import React from "react"; 
 import pic from '../../images/pic.jpg' 
  
-function MoviesCard({ card }) { 
+function MoviesCard({ card, index }) { 
+    const uniqId = "cardCheckbox-" + index;
  
     return ( 
         <article className="card"> 
             <figure className="card__figure"> 
                 <img className="card__pic" src={pic} alt="картинка" /> 
                 <figcaption className="card__caption">33 слова о дизайне</figcaption> 
-                <label className="card-checkbox" htmlFor="cardCheckbox"> 
-                    <input className="card-checkbox__input" type="checkbox" id="cardCheckbox"></input> 
+                <label className="card-checkbox" htmlFor={uniqId}> 
+                    <input className="card-checkbox__input" type="checkbox" id={uniqId}></input> 
                     <span className="card-checkbox__inner"></span> 
                 </label> 
             </figure> 
