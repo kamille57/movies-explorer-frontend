@@ -78,8 +78,10 @@
     }
 
     .promo__text {
-        margin: 0 auto 92px;
+        margin: 2px auto 93px;
+        width: 260px;
     }
+
 }
 
 @media screen and (min-width: 320px) and (max-width: 620px) {

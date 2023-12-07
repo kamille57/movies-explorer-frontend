@@ -76,11 +76,12 @@
 
 @media screen and (min-width: 621px) and (max-width: 920px) {
     .about {
-        padding: 90px 50px;
+        padding: 90px 50px 87px;
     }
 
     .about-columns-description {
-        padding-bottom: 90px;
+        padding-bottom: 92px;
+        gap: 30px;
     }
 
     .about-column-description {
@@ -90,6 +91,11 @@
     .about-column-description__text {
         font-size: 12px;
         line-height: 18px;
+        width: 319px;
+    }
+
+    .about-columns-duration {
+        grid-template-columns: minmax(140px, 1fr) minmax(528px, 4fr);
     }
 }
 

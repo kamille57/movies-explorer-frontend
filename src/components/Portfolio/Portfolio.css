@@ -40,6 +40,10 @@
     text-align: center;
 }
 
+.portfolio__link:last-child {
+    border-bottom: none;
+}
+
 .portfolio__img {
     margin-right: 4px;
     border-bottom: 1px solid #424242;
@@ -47,11 +51,20 @@
 }
 
 @media screen and (min-width: 621px) and (max-width: 920px) {
+    .portfolio {
+        padding: 0 50px 72px;
+    }
+
     .portfolio__link {
         font-size: 28px;
         line-height: 50px;
         line-height: 50px;
         letter-spacing: -1.12px;
+    }
+
+    .portfolio__img {
+        margin-right: 6px;
+        margin-top: 6px;
     }
 }
 
