@@ -1,12 +1,11 @@
 .portfolio {
     box-sizing: border-box;
-    padding: 0 70px;
+    padding: 0 70px 106px;
     margin: 0 auto;
     background-color: #202020;
     font-family: 'Inter', 'Helvetica Neue', 'Arial', sans-serif;
     font-style: normal;
     color: #FFF;
-
 }
 
 .portfolio__container {
@@ -17,7 +16,7 @@
 }
 
 .portfolio__title {
-    margin: 0 0 50px;
+    margin: 0 0 30px;
     color: #8B8B8B;
     font-size: 18px;
     font-weight: 400;
@@ -25,7 +24,9 @@
 }
 
 .portfolio__link {
-    margin: 0 0 19px;
+    margin: 0 0;
+    padding-top: 20px;
+    padding-bottom: 19px;
     text-decoration: none;
     color: white;
     font-size: 30px;
@@ -36,13 +37,11 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-
+    text-align: center;
 }
 
 .portfolio__img {
-    justify-self: flex-end;
-    width: 29px;
-    height: 29px;
+    margin-right: 4px;
     border-bottom: 1px solid #424242;
     border: none;
 }

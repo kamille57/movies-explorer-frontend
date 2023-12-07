@@ -9,7 +9,7 @@ function Movies() {
         <>
             <Header
                 backgroundColor="#202020"
-                iconColor="#0F4157" />
+                iconColor="#313131" />
             <main className="movies">
                 <section className="movies-page">
                     <SearchForm />
