@@ -14,7 +14,7 @@ function MoviesCard({ card, index }) {
                     <span className="card-checkbox__inner"></span> 
                 </label> 
             </figure> 
-            <div className="card__duration">1ч42мин</div> 
+            <div className="card__duration">1ч42м</div> 
         </article> 
     ); 
 } 

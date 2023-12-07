@@ -73,10 +73,10 @@
     border-radius: 10px;
     content: "";
     position: absolute;
-    left: 35px;
-    bottom: -3px;
-    width: 16px;
-    height: 16px;
+    left: 40px;
+    bottom: 2px;
+    width: 10px;
+    height: 10px;
     background-color: #313131;
     outline: 3px solid white;
 }
