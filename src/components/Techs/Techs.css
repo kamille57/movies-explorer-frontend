@@ -1,6 +1,7 @@
 .techs {
+    margin: 0 auto;
     box-sizing: border-box;
-    padding: 100px 70px;
+    padding: 100px 70px 88px;
     background-color: #272727;
     font-family: 'Inter', 'Helvetica Neue', 'Arial', sans-serif;
     font-style: normal;
@@ -13,6 +14,7 @@
     font-size: 22px;
     font-weight: 400;
     letter-spacing: -0.88px;
+    line-height: 27px;
 }
 
 .techs__container {
@@ -33,7 +35,7 @@
 }
 
 .techs__container-text {
-    margin: 0 0 100px;
+    margin: 0 0 80px;
     font-size: 14px;
     font-weight: 400;
     line-height: 20px;
@@ -43,10 +45,11 @@
 }
 
 .techs__stacks {
+    padding: 0;
     gap: 10px;
     display: grid;
     justify-content: center;
-    grid-template-columns: repeat( auto-fit, 90px);
+    grid-template-columns: repeat(auto-fit, 90px);
     width: 100%;
 }
 
@@ -65,12 +68,12 @@
 
 @media screen and (min-width: 320px) and (max-width: 620px) {
     .techs {
-        padding: 70px 18px;
+        padding: 55px 18px;
         background-color: #202020;
     }
 
     .techs__title {
-        margin-bottom: 28px;
+        margin-bottom: 25px;
         font-size: 18px;
         letter-spacing: -0.72px;
         font-weight: 400;
@@ -81,14 +84,14 @@
     }
 
     .techs__container-title {
-        margin: 60px 0 24px;
+        margin: 49px 0 12px;
         font-size: 30px;
         font-weight: 400;
         letter-spacing: -1.2px;
     }
 
     .techs__container-text {
-        margin-bottom: 50px;
+        margin-bottom: 35px;
         width: 100%;
         font-size: 11px;
         font-weight: 400;
@@ -98,19 +101,20 @@
     }
 
     .techs__stack {
+        width: 84px;
         height: 57px;
     }
 
     .techs__stacks {
         display: grid;
-        grid-template-columns: repeat( 2, 84px);
+        grid-template-columns: repeat(2, 84px);
     }
 }
 
 
 @media screen and (min-width: 621px) and (max-width: 920px) {
     .techs {
-        padding: 90px 50px;
+        padding: 89px 50px 75px;
     }
 
     .techs__container-title {
@@ -118,7 +122,7 @@
     }
 
     .techs__container-text {
-        margin: 0 auto 83px;
+        margin: 0 auto 66px;
         width: 450px;
         font-size: 12px;
         font-weight: 400;
@@ -127,10 +131,14 @@
 
     .techs__stacks {
         display: grid;
-        grid-template-columns: repeat( auto-fit, 84px);
+        grid-template-columns: repeat(auto-fit, 84px);
+        justify-content: space-evenly;
+        gap: 4px;
     }
 
     .techs__stack {
+        width: 84px;
         height: 57px;
+        text-align: center;
     }
 }

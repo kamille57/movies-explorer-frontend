@@ -1,6 +1,6 @@
 .me {
     box-sizing: border-box;
-    padding: 100px 70px;
+    padding: 110px 70px 100px;
     width: 100%;
     margin: 0 auto;
     background-color: #202020;
@@ -36,7 +36,7 @@
     grid-area: title;
 }
 
-.me__subtitle {
+.me__container-subtitle {
     margin: 0 0 26px;
     font-size: 18px;
     font-weight: 500;
@@ -57,6 +57,7 @@
     color: white;
     font-size: 14px;
     font-weight: 500;
+    align-self: center;
     grid-area: git;
 }
 
@@ -77,8 +78,21 @@
         column-gap: 49px;
     }
 
+    .me__container-title {
+        margin-bottom: 12px;
+        font-size: 40px;
+        line-height: 40px;
+        letter-spacing: -1.6px;
+    }
+
+    .me__container-subtitle {
+        margin-bottom: 15px;
+        font-size: 12px;
+        line-height: 18px;
+    }
+
     .me__text {
-        margin-bottom: 87px;
+        margin-bottom: 95px;
         font-size: 12px;
         line-height: 18px;
     }
@@ -88,36 +102,27 @@
         height: 307px;
     }
 
-    .me__container-title {
-        margin-bottom: 16px;
-        font-size: 40px;
-        line-height: 40px;
-        letter-spacing: -1.6px;
-    }
-
-    .me__container-subtitle {
-        margin-bottom: 20px;
-        font-size: 12px;
-        line-height: 18px;
-    }
 }
 
 @media screen and (min-width: 320px) and (max-width: 620px) {
     .me {
-        padding: 70px 14px;
+        padding: 70px 14px 70px;
     }
 
     .me__title {
         margin: 0 0 28px;
+        font-size: 18px;
+        letter-spacing: -0.72px;
     }
 
     .me__container {
         display: flex;
         flex-direction: column;
+        justify-content: flex-start;
     }
 
     .me__container-title {
-        margin: 40px 0 20px;
+        margin: 30px 0 9px;
         font-size: 30px;
         font-weight: 400;
         letter-spacing: -1.2px;
@@ -134,12 +139,18 @@
         margin: 60px 0 0;
         width: 292px;
         height: 352px;
+        display: block;
+        align-self: center;
     }
 
     .me__text {
-        margin: 0 0 40px;
+        margin: 0 0 56px;
         font-size: 11px;
         font-weight: 400;
         line-height: 16px;
+    }
+
+    .me__link {
+        align-self: flex-start;
     }
 }

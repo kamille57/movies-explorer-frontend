@@ -1,7 +1,7 @@
 .about {
     box-sizing: border-box;
     margin: 0 auto;
-    padding: 110px 70px;
+    padding: 110px 70px 106px;
     background-color: #202020;
     font-family: 'Inter', 'Helvetica Neue', 'Arial', sans-serif;
     font-style: normal;
@@ -19,8 +19,8 @@
     padding: 70px 0 110px;
     border-top: 1px solid #DADADA;
     display: flex;
-    justify-content: space-between;
-    gap: 40px;
+    justify-content: stretch;
+    gap: 52px;
     color: #FFF;
 }
 
@@ -71,16 +71,18 @@
     text-align: center;
     font-size: 14px;
     font-weight: 500;
-    line-height: 36px;
+    line-height: 46px;
 }
 
 @media screen and (min-width: 621px) and (max-width: 920px) {
     .about {
-        padding: 90px 50px;
+        padding: 90px 50px 87px;
     }
 
     .about-columns-description {
-        padding-bottom: 90px;
+        grid-template-columns: minmax(319px) minmax(319px);
+        padding-bottom: 92px;
+        gap: 36px;
     }
 
     .about-column-description {
@@ -91,6 +93,10 @@
         font-size: 12px;
         line-height: 18px;
     }
+
+    .about-columns-duration {
+        grid-template-columns: minmax(100px, 1fr) minmax(184px, 4fr);
+    }
 }
 
 @media screen and (min-width: 320px) and (max-width: 620px) {
@@ -99,7 +105,7 @@
     }
 
     .about__title {
-        margin: 0 0 28px;
+        margin: 0 0 30px;
         font-size: 18px;
         font-weight: 400;
         letter-spacing: -0.72px;
@@ -108,7 +114,7 @@
     .about-columns-description {
         flex-direction: column;
         padding: 60px 0 60px;
-        gap: 56px;
+        gap: 57px;
     }
 
     .about-column-description {
@@ -139,5 +145,6 @@
     .about-columns-duration__realm {
         font-size: 11px;
         font-weight: 400;
+        line-height: 33px;
     }
 }

@@ -18,7 +18,7 @@ function Login() {
         button={isLoading ? "Идет авторизация..." : "Войти"}
         text="Ещё не зарегистрированы?"
         span={
-          <Link className="auth__confirm-link"to="/sign-up">Регистрация</Link>
+          <Link className="auth__confirm-link"to="/signup">Регистрация</Link>
         }
         onSubmit={handleLogin}
       >
