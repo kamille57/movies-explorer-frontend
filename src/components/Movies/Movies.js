@@ -9,7 +9,9 @@ function Movies() {
         <>
             <Header
                 backgroundColor="#202020"
-                iconColor="#313131" />
+                iconColor="#313131"
+                isLogged={ true }
+            />
             <main className="movies">
                 <section className="movies-page">
                     <SearchForm />

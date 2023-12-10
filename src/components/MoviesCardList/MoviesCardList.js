@@ -27,11 +27,13 @@ function MoviesCardList() {
 
   return (
     <section className="cards">
-      <article className="cards__container">
+      <ul className="cards__container">
         {cards.map((_card, index) =>(
-          <MoviesCard card={_card} index={index} key={index} />
+          <li key={index}>
+            <MoviesCard card={_card} index={index} />
+          </li>
         ))}
-      </article>
+      </ul>
       <button
         type="button"
         aria-label="кнопка для показа большего количества фильмов"

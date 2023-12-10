@@ -42,37 +42,38 @@ function Register() {
     setName(value);
   };
 
-  return (
-      <main className="register">
-        <Auth
-          title="Добро пожаловать!"
-          name="registrationForm"
-          button={isLoading ? "Идет регистрация..." : "Зарегистрироваться"}
-          text="Уже зарегистрированы?"
-          span={
-            <Link className="auth__confirm-link"to="/signin">Войти</Link>
-          }
-          onSubmit={handleRegister}
-        >
-          <label className="auth__label" htmlFor="name">
-            Имя
-          </label>
-          <input
-            type="text"
-            className="auth__input"
-            name="name"
-            id="name"
-            minLength="2"
-            maxLength="40"
-            required
-            value={name}
-            onChange={handleNameChange}
-            {...getInputProps('name')}
-          />
-          <span className="auth__error" id="name-error">{errors.name}</span>
-        </Auth>
-      </main>
-  );
-}
+  return ( 
+    <main className="register"> 
+      <Auth 
+        title="Добро пожаловать!" 
+        name="registrationForm" 
+        button={isLoading ? "Идет регистрация..." : "Зарегистрироваться"} 
+        text="Уже зарегистрированы?" 
+        span={ 
+          <Link className="auth__confirm-link"to="/signin">Войти</Link> 
+        } 
+        onSubmit={handleRegister} 
+      > 
+        <label className="auth__label" htmlFor="name"> 
+          Имя 
+        </label> 
+        <input 
+          type="text" 
+          className="auth__input" 
+          name="name" 
+          id="name" 
+          minLength="2" 
+          maxLength="40" 
+          required 
+          placeholder="Введите ваше имя" 
+          value={name} 
+          onChange={handleNameChange} 
+          {...getInputProps('name')} 
+        /> 
+        <span className="auth__error" id="name-error">{errors.name}</span> 
+      </Auth> 
+    </main> 
+); 
+} 
 
 export default Register;

@@ -19,7 +19,7 @@
     padding: 70px 0 110px;
     border-top: 1px solid #DADADA;
     display: flex;
-    justify-content: space-between;
+    justify-content: stretch;
     gap: 52px;
     color: #FFF;
 }
@@ -80,6 +80,7 @@
     }
 
     .about-columns-description {
+        grid-template-columns: minmax(319px) minmax(319px);
         padding-bottom: 92px;
         gap: 30px;
     }
@@ -91,11 +92,10 @@
     .about-column-description__text {
         font-size: 12px;
         line-height: 18px;
-        width: 319px;
     }
 
     .about-columns-duration {
-        grid-template-columns: minmax(140px, 1fr) minmax(528px, 4fr);
+        grid-template-columns: minmax(140px) minmax(528px);
     }
 }
 
@@ -105,7 +105,7 @@
     }
 
     .about__title {
-        margin: 0 0 28px;
+        margin: 0 0 30px;
         font-size: 18px;
         font-weight: 400;
         letter-spacing: -0.72px;
@@ -114,7 +114,7 @@
     .about-columns-description {
         flex-direction: column;
         padding: 60px 0 60px;
-        gap: 56px;
+        gap: 57px;
     }
 
     .about-column-description {
@@ -145,5 +145,6 @@
     .about-columns-duration__realm {
         font-size: 11px;
         font-weight: 400;
+        line-height: 33px;
     }
 }

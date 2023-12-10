@@ -1,21 +1,31 @@
 import React from 'react';
 
 function Techs() {
+    const techsList = [
+        'HTML',
+        'CSS',
+        'JS',
+        'React',
+        'Git',
+        'Express.js',
+        'mongoDB'
+    ];
+
     return (
         <section className="techs">
             <h2 className="techs__title">Технологии</h2>
             <div className="techs__container">
                 <h3 className="techs__container-title">7 технологий</h3>
-                <p className="techs__container-text">На курсе веб-разработки мы освоили технологии, которые применили в дипломном проекте.</p>
-                <div className="techs__stacks">
-                    <div className="techs__stack">HTML</div>
-                    <div className="techs__stack">CSS</div>
-                    <div className="techs__stack">JS</div>
-                    <div className="techs__stack">React</div>
-                    <div className="techs__stack">Git</div>
-                    <div className="techs__stack">Express.js</div>
-                    <div className="techs__stack">mongoDB</div>
-                </div>
+                <p className="techs__container-text">
+                    На курсе веб-разработки мы освоили технологии, которые применили в дипломном проекте.
+                </p>
+                <ul className="techs__stacks">
+                    {techsList.map((tech, index) => (
+                        <li key={index} className="techs__stack">
+                            {tech}
+                        </li>
+                    ))}
+                </ul>
             </div>
         </section>
     );

@@ -14,13 +14,16 @@
 }
 
 .cards__container {
+    padding: 0;
     margin: 0 auto;
+    list-style: none;
     width: 100%;
     display: grid;
-    justify-content: center;
     grid-template-columns: repeat(auto-fill, 270px);
     column-gap: 20px;
     row-gap: 30px;
+    justify-content: space-between;
+    text-wrap: nowrap;
 }
 
 .cards__btn {
@@ -41,13 +44,15 @@
 @media screen and (min-width: 621px) and (max-width: 920px) {
     .cards {
         padding: 70px 30px 80px;
+        row-gap: 81px;
     }
 
     .cards__container {
-        grid-template-columns: repeat(2, 339px);
         grid-template-rows: repeat(4, 1fr);
+        grid-template-columns: repeat(auto-fill, 339px);
         column-gap: 30px;
         row-gap: 36px;
+        justify-content: center;
     }
 }
 
@@ -57,9 +62,10 @@
     }
 
     .cards__container {
-        grid-template-columns: 300px;
+        grid-template-columns: repeat(auto-fill, 330px);
         grid-template-rows: repeat(5, 235px);
-        gap: 20px;
+        gap: 21px;
+        justify-content: center;
     }
 
     .cards__btn {

@@ -44,11 +44,19 @@
     .search {
         padding: 80px 30px 0;
     }
+
+    .search__container {
+        padding-bottom: 7px;
+    }
+
+    .search__btn {
+        margin-top: 0;
+    }
 }
 
 @media screen and (min-width: 320px) and (max-width: 620px) {
     .search {
-        padding: 90px 14px 0;
+        padding: 83px 12px 0;
     }
 
     .search-input {
@@ -57,6 +65,7 @@
     }
 
     .search__btn {
+        margin: 2px 3px 0 0;
         object-fit: cover;
         width: 36px;
         height: 36px;

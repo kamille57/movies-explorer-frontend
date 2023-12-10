@@ -31,6 +31,7 @@
 
 .profile__inputs {
     margin: 0 auto 204px;
+    padding: 0;
     display: flex;
     flex-direction: column;
     justify-content: flex-end;
@@ -78,6 +79,10 @@
 }
 
 @media screen and (min-width: 320px) and (max-width: 620px) {
+    .profile__title {
+        margin: 70px auto 65px;
+    }
+
     .profile__input-text {
         width: 260px;
     }
@@ -88,5 +93,19 @@
 
     .profile__confirm-link {
         font-size: 12px;
+    }
+
+    .profile__inputs {
+        margin: 0 auto 363px;
+    }
+}
+
+@media screen and (min-width: 621px) and (max-width: 920px) {
+    .profile__title {
+        margin: 236px auto 80px;
+    }
+
+    .profile__inputs {
+        margin: 0 auto 195px;
     }
 }
