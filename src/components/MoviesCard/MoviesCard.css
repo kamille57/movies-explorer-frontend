@@ -41,7 +41,6 @@
     text-overflow: ellipsis;
     overflow: hidden;
     width: 210px;
-
 }
 
 .card-checkbox {
@@ -105,11 +104,15 @@
     .card-checkbox {
         display: flex;
         justify-content: center;
-        padding-right: 33px;
+        padding-right: 30px;
     }
 
     .card__pic {
         height: 168px;
+    }
+
+    .card__caption {
+        width: 260px;
     }
 }
 
@@ -117,11 +120,15 @@
     .card-checkbox {
         display: flex;
         justify-content: center;
-        padding-right: 18px;
+        padding-right: 0;
         max-width: 280px;
     }
 
     .card__pic {
         height: 190px;
+    }
+
+    .card__caption {
+        width: 230px;
     }
 }

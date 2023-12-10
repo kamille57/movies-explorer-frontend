@@ -21,7 +21,9 @@ function Profile() {
         <> 
             <Header 
                 backgroundColor="#202020" 
-                profileSrc={profileDark} /> 
+                profileSrc={profileDark}
+                isLogged={  true }
+                /> 
             <main className="profile"> 
                 <h1 className="profile__title">Привет, {name}</h1> 
                     <form className="profile__inputs"> 

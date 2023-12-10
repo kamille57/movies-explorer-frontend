@@ -9,7 +9,9 @@ function SavedMovies() {
         <>
             <Header
                 backgroundColor="#202020"
-                iconColor="#0F4157" />
+                iconColor="#313131"
+                isLogged={true}
+            />
             <main className="saved-movies">
                 <section className="saved-movies-page">
                     <SearchForm />

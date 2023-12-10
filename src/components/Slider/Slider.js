@@ -14,7 +14,7 @@ function Slider({ clickHandler }) {
                         className="slider__btn"
                         onClick={ clickHandler }
                     ></button>
-                    <div className="slider__links">
+                    <nav className="slider__links">
                         <NavLink to="/" className="slider__link">
                             Главная
                         </NavLink>
@@ -24,7 +24,7 @@ function Slider({ clickHandler }) {
                         <NavLink to="/saved-movies" className="slider__link">
                             Сохраненные фильмы
                         </NavLink>
-                        </div>
+                        </nav>
                         <img
                             className="slider__img"
                             src={profileDark}

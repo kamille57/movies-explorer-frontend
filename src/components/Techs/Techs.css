@@ -1,6 +1,7 @@
 .techs {
+    margin: 0 auto;
     box-sizing: border-box;
-    padding: 100px 70px;
+    padding: 100px 70px 88px;
     background-color: #272727;
     font-family: 'Inter', 'Helvetica Neue', 'Arial', sans-serif;
     font-style: normal;
@@ -34,7 +35,7 @@
 }
 
 .techs__container-text {
-    margin: 0 0 100px;
+    margin: 0 0 80px;
     font-size: 14px;
     font-weight: 400;
     line-height: 20px;
@@ -80,7 +81,6 @@
 
     .techs__container {
         border-top: 1px solid #000;
-        
     }
 
     .techs__container-title {
@@ -91,7 +91,7 @@
     }
 
     .techs__container-text {
-        margin-bottom: 50px;
+        margin-bottom: 35px;
         width: 100%;
         font-size: 11px;
         font-weight: 400;
@@ -114,7 +114,7 @@
 
 @media screen and (min-width: 621px) and (max-width: 920px) {
     .techs {
-        padding: 90px 50px;
+        padding: 89px 50px 75px;
     }
 
     .techs__container-title {
@@ -122,7 +122,7 @@
     }
 
     .techs__container-text {
-        margin: 0 auto 83px;
+        margin: 0 auto 66px;
         width: 450px;
         font-size: 12px;
         font-weight: 400;
@@ -131,8 +131,9 @@
 
     .techs__stacks {
         display: grid;
-        grid-template-columns: repeat(auto-fill, 84px);
+        grid-template-columns: repeat(auto-fit, 84px);
         justify-content: space-evenly;
+        gap: 4px;
     }
 
     .techs__stack {

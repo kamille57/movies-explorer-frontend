@@ -82,7 +82,7 @@
     .about-columns-description {
         grid-template-columns: minmax(319px) minmax(319px);
         padding-bottom: 92px;
-        gap: 30px;
+        gap: 36px;
     }
 
     .about-column-description {
@@ -95,7 +95,7 @@
     }
 
     .about-columns-duration {
-        grid-template-columns: minmax(140px) minmax(528px);
+        grid-template-columns: minmax(100px, 1fr) minmax(184px, 4fr);
     }
 }
 

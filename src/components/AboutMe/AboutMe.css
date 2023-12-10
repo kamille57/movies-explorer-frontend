@@ -1,6 +1,6 @@
 .me {
     box-sizing: border-box;
-    padding: 114px 70px 100px;
+    padding: 110px 70px 100px;
     width: 100%;
     margin: 0 auto;
     background-color: #202020;
@@ -106,7 +106,7 @@
 
 @media screen and (min-width: 320px) and (max-width: 620px) {
     .me {
-        padding: 86px 14px 70px;
+        padding: 70px 14px 70px;
     }
 
     .me__title {
@@ -139,6 +139,8 @@
         margin: 60px 0 0;
         width: 292px;
         height: 352px;
+        display: block;
+        align-self: center;
     }
 
     .me__text {
