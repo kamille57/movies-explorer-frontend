@@ -3,7 +3,7 @@ import { useForm } from '../../hooks/useForm';
 import logo from '../../images/logo.svg';
 import { useNavigate } from 'react-router-dom';
 
-function Auth({ title, name, button, text, span, children }) {
+function Auth({ title, name, button, text, span, children, handleSubmit }) {
     const navigate = useNavigate();
 
     const initialValues = {
@@ -43,6 +43,7 @@ function Auth({ title, name, button, text, span, children }) {
     };
 
     const {
+        values,
         errors,
         handleChange,
         validateForm,
@@ -52,16 +53,18 @@ function Auth({ title, name, button, text, span, children }) {
         validate
     );
 
-    const handleSubmit = (event) => {
+    const innerHandleSubmit = (event) => {
+        console.log('submit from');
         event.preventDefault();
 
         if (validateForm()) {
+            handleSubmit(values);
         }
     };
 
     return (
         <div className="auth">
-            <form className="auth__form" onSubmit={handleSubmit} id={`${name}Form`} name={name}>
+            <form className="auth__form" onSubmit={innerHandleSubmit} id={`${name}Form`} name={name}>
                 <img className="auth__logo" src={logo} alt="Логотип" onClick={() => navigate("/")}
                 />
                 <h1 className="auth__welcome">{title}</h1>
@@ -96,14 +99,14 @@ function Auth({ title, name, button, text, span, children }) {
                     />
                     <span className="auth__error" id="password-error">{errors.password}</span>
                 </fieldset>
+                <div className="auth__confirm">
+                    <button type="submit" aria-label={`кнопка сохранения ${name}`} className="auth__confirm-btn">
+                        {button}
+                    </button>
+                    <p className="auth__confirm-text">{text}</p>
+                    <span>{span}</span>
+                </div>
             </form>
-            <div className="auth__confirm">
-                <button type="submit" aria-label={`кнопка сохранения ${name}`} className="auth__confirm-btn">
-                    {button}
-                </button>
-                <p className="auth__confirm-text">{text}</p>
-                <span>{span}</span>
-            </div>
         </div>
     );
 }

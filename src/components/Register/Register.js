@@ -2,15 +2,27 @@ import React, { useState } from "react";
 import { useForm } from "../../hooks/useForm";
 import { Link } from "react-router-dom";
 import Auth from "../Auth/Auth.js";
+import MainApi from '../../utils/MainApi.js'
+
+const api = new MainApi();
 
 function Register() {
   const [isLoading, setIsLoading] = useState(false);
   const [name, setName] = useState("");
 
-  const handleRegister = () => {
+  console.log('hello from Register');
+
+  const handleRegister = (dataObj) => {
+    // validation
+    const userData = {...dataObj, ...values};
     setIsLoading(true);
-    // registration logic
-    setIsLoading(false);
+    api.register(userData)
+    .then(data => {
+      console.log('Ответ с сервера:');
+      console.log(data);
+      setIsLoading(false);
+    }, e => console.log(e))
+   
   };
 
   const initialValues = {
@@ -33,14 +45,10 @@ function Register() {
   };
 
   const {
+    values,
     errors,
     getInputProps,
   } = useForm(initialValues, validate);
-
-  const handleNameChange = (e) => {
-    const value = e.target.value;
-    setName(value);
-  };
 
   return ( 
     <main className="register"> 
@@ -52,7 +60,7 @@ function Register() {
         span={ 
           <Link className="auth__confirm-link"to="/signin">Войти</Link> 
         } 
-        onSubmit={handleRegister} 
+        handleSubmit={handleRegister} 
       > 
         <label className="auth__label" htmlFor="name"> 
           Имя 
@@ -67,7 +75,7 @@ function Register() {
           required 
           placeholder="Введите ваше имя" 
           value={name} 
-          onChange={handleNameChange} 
+          onChange={e => setName(e.target.value)} 
           {...getInputProps('name')} 
         /> 
         <span className="auth__error" id="name-error">{errors.name}</span> 

@@ -13,7 +13,7 @@ function Main() {
             <Header
                 backgroundColor="#073042"
                 iconColor="#0F4157" 
-                isLogged={  true }
+                isLogged={ false }
             />
             <main className="main">
                 <section className="main-page">
