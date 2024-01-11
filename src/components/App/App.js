@@ -11,8 +11,9 @@ import Profile from "../Profile/Profile.js";
 import NotFound from "../NotFound/NotFound.js";
 
 function App() {
-    const [currentUser, setCurrentUser] = useState({});
-
+    const [currentUser, setCurrentUser] = useState(null);
+    console.log('Current USER');
+    console.log(currentUser);
     return (
         <CurrentUserContext.Provider value={currentUser}>
             <div className="page">
@@ -20,7 +21,7 @@ function App() {
                     <Routes>
                         <Route path="/" element={<Main />} />
                         <Route path="/signup" element={<Register />} />
-                        <Route path="/signin" element={<Login />} />
+                        <Route path="/signin" element={<Login setCurrentUser={setCurrentUser} />} />
                         <Route path="/movies" element={<Movies />} />
                         <Route path="/saved-movies" element={<SavedMovies />} />
                         <Route path="/profile" element={<Profile />} />

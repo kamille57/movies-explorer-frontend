@@ -61,6 +61,7 @@
     text-align: right;
     font-size: 12px;
     font-weight: 500;
+    cursor: pointer;
 }
 
 .header-nav__signin {
@@ -72,6 +73,7 @@
     height: 32px;
     font-size: 12px;
     font-weight: 500;
+    cursor: pointer;
 }
 
 @media screen and (max-width: 920px) {

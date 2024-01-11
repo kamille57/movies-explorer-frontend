@@ -10,8 +10,6 @@ function Register() {
   const [isLoading, setIsLoading] = useState(false);
   const [name, setName] = useState("");
 
-  console.log('hello from Register');
-
   const handleRegister = (dataObj) => {
     // validation
     const userData = {...dataObj, ...values};
@@ -21,7 +19,7 @@ function Register() {
       console.log('Ответ с сервера:');
       console.log(data);
       setIsLoading(false);
-    }, e => console.log(e))
+    })
    
   };
 
