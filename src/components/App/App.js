@@ -17,44 +17,35 @@ import MainApi from '../../utils/MainApi.js'
 
 function App() {
     const [currentUser, setCurrentUser] = useState(null);
-    const [loggedIn, setLoggedIn] = useState(false);
     // const [email, setEmail] = useState(currentUser?.email);
-   const navigate = useNavigate();
+    const navigate = useNavigate();
     const api = new MainApi();
 
     console.log("currentUser", currentUser);
 
     useEffect(() => {
-        checkContent();
-    }, []);
-
-    useEffect(() => {
-        if (loggedIn) {
-            api.getUserInfo()
-                .then(user => {
-                    setCurrentUser(user);
-                    console.log("user", user);
-                })
-                .catch(err => {
-                    console.log(err);
-                });
+        // Если нет текущего пользоваться ИЛИ пользователь уже залогинен, то берём данные юзера с сервера
+        if (!currentUser) {
+            api.checkToken().then(result => {
+                console.log('result', result);
+                checkContent()
+                //     checkContent(); // Авторизация пользователя должна вызываться в случае если вы еще не авторизированы и если у вас есть токен для быстрйо авторизации
+            })
         }
-    }, [loggedIn]);
+    }, [api, currentUser]);
 
-    function handleLogin(email, password) { 
-        api.authorize(email, password) 
-            .then(res => { 
+    function handleLogin(email, password) {
+        api.authorize(email, password)
+            .then(res => {
                 // localStorage.setItem('jwt', res.token); 
-                Cookies.set('jwt', res.token); 
                 checkContent();
                 navigate("/"); // Add this line
-            }) 
-            .catch(err => { 
-                console.log(err); 
-            }); 
-    } 
+            })
+            .catch(err => {
+                console.log(err);
+            });
+    }
 
-    
     function handleUpdateProfile({ email, name }) {
 
         const updatedUser =
@@ -72,60 +63,47 @@ function App() {
             });
     };
 
-
     function checkContent() {
-        // const token = Cookies.get('jwt');
-        // console.log(token);
-        // const token = localStorage.getItem('jwt');
-        // console.log(token);
-
-        // if (token) {
-            api.checkToken()
-                .then((res) => {
-                    console.log('Тест перед сеттерами');
-                    setCurrentUser(res);
-                    setLoggedIn(true);
-                    // navigate("/"); 
-                })
-                .catch(err => console.log(err));
-        // }
+        api.getUserInfo()
+            .then((res) => {
+                console.log('Тест перед сеттерами');
+                setCurrentUser(res);
+            })
+            .catch(err => console.log(err));
     }
 
-    function signOut() { 
+    function signOut() {
         api.signOut()
-          .then(() => { 
-            setCurrentUser(null); 
-            setLoggedIn(false); 
-          }) 
-          .catch(err => console.log(err)); 
-          console.log("signout1"); 
+            .then(() => {
+                setCurrentUser(null);
+            })
+            .catch(err => console.log(err));
+        console.log("signout1");
 
-      }
+    }
 
     return (
         <CurrentUserContext.Provider value={currentUser}>
             <div className="page">
-                    <Routes>
-                        <Route path="/" element={<Main />} />
-                        <Route path="/signup" element={<Register />} />
-                        <Route path="/signin" element={<Login
-                            setCurrentUser={setCurrentUser}
-                            onLogin={handleLogin}
-                            
-                        />} />
-                        <Route path="/movies" element={<Movies />} />
-                        <Route path="/saved-movies" element={<SavedMovies />} />
-                        <Route
-                            path="/profile"
-                            element={<Profile
-                                setCurrentUser={setCurrentUser}
-                                onUpdateProfile={handleUpdateProfile}
-                                signOut={signOut}
-                                loggedIn={loggedIn}
-                            />}
-                        />
-                        <Route path="*" element={<NotFound />} />
-                    </Routes>
+                <Routes>
+                    <Route path="/" element={<Main />} />
+                    <Route path="/signup" element={<Register />} />
+                    <Route path="/signin" element={<Login
+                        setCurrentUser={setCurrentUser}
+                        onLogin={handleLogin}
+
+                    />} />
+                    <Route path="/movies" element={<Movies />} />
+                    <Route path="/saved-movies" element={<SavedMovies />} />
+                    <Route
+                        path="/profile"
+                        element={<Profile
+                            onUpdateProfile={handleUpdateProfile}
+                            signOut={signOut}
+                        />}
+                    />
+                    <Route path="*" element={<NotFound />} />
+                </Routes>
             </div>
         </CurrentUserContext.Provider>
     );
