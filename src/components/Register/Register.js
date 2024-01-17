@@ -3,12 +3,14 @@ import { useForm } from "../../hooks/useForm";
 import { Link } from "react-router-dom";
 import Auth from "../Auth/Auth.js";
 import MainApi from '../../utils/MainApi.js'
+import { useNavigate } from "react-router-dom";
 
 const api = new MainApi();
 
 function Register() {
   const [isLoading, setIsLoading] = useState(false);
   const [name, setName] = useState("");
+  const navigate = useNavigate();
 
   const handleRegister = (dataObj) => {
     // validation
@@ -19,6 +21,7 @@ function Register() {
       console.log('Ответ с сервера:');
       console.log(data);
       setIsLoading(false);
+      navigate('/signin');
     })
    
   };

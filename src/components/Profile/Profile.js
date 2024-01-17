@@ -3,18 +3,15 @@ import Header from '../Header/Header';
 import { NavLink, useNavigate } from 'react-router-dom';
 import profileDark from "../../images/profileDark.svg";
 import CurrentUserContext from "../../contexts/CurrentUserContext";
-import MainApi from '../../utils/MainApi.js'
 
-const api = new MainApi();
+function Profile({ onUpdateProfile, signOut }) {
 
-function Profile({ setCurrentUser}) {
     const currentUser = useContext(CurrentUserContext);
-    console.log(currentUser);
     const [name, setName] = useState(currentUser?.name);
     const [email, setEmail] = useState(currentUser?.email);
 
 
-    const navigate = useNavigate(); // Add the useNavigate hook
+    const navigate = useNavigate();
 
     const handleInputChange = (event) => {
         const { name, value } = event.target;
@@ -24,23 +21,9 @@ function Profile({ setCurrentUser}) {
             setEmail(value);
         }
     };
-    // TODO: не забудьте собрать новые данные с формы и отправить их на сервер, затем считать ответ от сервера и принять решение что делать в завиисмости от ответа 
     const handleSubmit = (event) => {
         event.preventDefault();
-
-        const updatedUser =
-            { email, name }
-            ;
-        console.log("upduser", updatedUser);
-        api.setUserInfo(updatedUser)
-            .then(({ email, name }) => {
-                console.log({email, name});
-                setCurrentUser({ email, name });
-
-            })
-            .catch((error) => {
-                console.error(error);
-            });
+        onUpdateProfile({ email, name });
     };
 
     useEffect(function () {
@@ -50,8 +33,6 @@ function Profile({ setCurrentUser}) {
             navigate("/signup");
         }
     }, [currentUser, navigate])
-
-
 
     return (
         <>
@@ -95,7 +76,7 @@ function Profile({ setCurrentUser}) {
                     </span>
                     <button type="submit" className="profile__submit">Редактировать</button>
                 </form>
-                <NavLink to="/" className="profile__link">
+                <NavLink to="/" className="profile__link" onClick={signOut}>
                     Выйти из аккаунта
                 </NavLink>
             </main>

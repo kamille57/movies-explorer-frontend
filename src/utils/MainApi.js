@@ -37,6 +37,7 @@ class MainApi {
       .then(response => this._checkResponse(response));
   }
 
+  // TODO: кажется это нужно доделать
   checkToken() {
     return fetch(`${this.baseUrl}/users/me`, {
       method: 'GET',
@@ -52,7 +53,9 @@ class MainApi {
   getUserInfo() {
     return fetch(`${this.baseUrl}/users/me`, {
       method: 'GET',
+      credentials: this.credentials,
       headers: {
+        "Accept": "application/json",
         "Content-Type": "application/json"
       }
     })
@@ -70,6 +73,16 @@ class MainApi {
 
     })
       .then(response => this._checkResponse(response));
+  }
+
+  signOut() {
+    return fetch(`${this.baseUrl}/signout`, {
+      method: 'POST',
+      credentials: this.credentials,
+      headers: {
+        "Content-Type": "application/json"
+      },
+    })
   }
 }
 

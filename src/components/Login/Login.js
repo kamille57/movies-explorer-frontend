@@ -1,29 +1,32 @@
 import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import Auth from "../Auth/Auth.js";
-import MainApi from "../../utils/MainApi.js";
 
-const api = new MainApi();
+//const api = new MainApi();
 
-function Login({ setCurrentUser }) {
+function Login({ onLogin }) {
   const [isLoading, setIsLoading] = useState(false);
-  const navigate = useNavigate(); // Add the useNavigate hook
 
-  const handleLogin = (dataObj) => {
-    // validation 
-    const userData = { ...dataObj };
+  const handleLogin = (email, password) => {
     setIsLoading(true);
-    api.authorize(userData)
-      .then((data) => {
-        console.log("Ответ с сервера:");
-        console.log(data);
-        setIsLoading(false);
-        if(data !== undefined) {
-          setCurrentUser(data);
-        }
-        navigate("/"); // Navigate to the main page
-      });
+    onLogin(email, password);
   };
+  // const navigate = useNavigate(); // Add the useNavigate hook
+
+  // const handleLogin = () => {
+  //   // validation 
+  //   const userData = { ...dataObj };
+  // setIsLoading(true);
+  //   api.authorize(userData)
+  //     .then((data) => {
+  //       console.log("ответ с сервера", data);
+  //       setIsLoading(false);
+  //       if(data !== undefined) {
+  //         setCurrentUser(data);
+  //       }
+  //       navigate("/"); // Navigate to the main page
+  //     });
+  // };
 
   return (
     <main className="login">
@@ -37,7 +40,7 @@ function Login({ setCurrentUser }) {
             Регистрация
           </Link>
         }
-        handleSubmit={handleLogin} // Change the prop name here
+        handleSubmit={handleLogin}
       ></Auth>
     </main>
   );
