@@ -13,14 +13,14 @@ class MainApi {
     });
   }
 
-  register({ email, password, name }) {
+  register(name, email, password) {
     return fetch(`${this.baseUrl}/signup`, {
       method: 'POST',
       credentials: this.credentials,
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ email, password, name })
+      body: JSON.stringify({ name, email, password})
     })
       .then(response => this._checkResponse(response));
   }
@@ -77,12 +77,13 @@ class MainApi {
 
   signOut() {
     return fetch(`${this.baseUrl}/signout`, {
-      method: 'POST',
+      method: 'GET',
       credentials: this.credentials,
       headers: {
         "Content-Type": "application/json"
       },
     })
+    .then(response => this._checkResponse(response));
   }
 }
 

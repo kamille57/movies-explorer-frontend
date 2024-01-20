@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { Routes, Route } from 'react-router-dom';
 import { useNavigate } from "react-router-dom";
-import Cookies from 'js-cookie';
 
 import CurrentUserContext from "../../contexts/CurrentUserContext";
 
@@ -17,27 +16,49 @@ import MainApi from '../../utils/MainApi.js'
 
 function App() {
     const [currentUser, setCurrentUser] = useState(null);
-    // const [email, setEmail] = useState(currentUser?.email);
     const navigate = useNavigate();
     const api = new MainApi();
 
     console.log("currentUser", currentUser);
 
+    // useEffect(() => {
+    //     const checkToken = async () => {
+    //         const token = localStorage.getItem('jwt');
+    //         if (token) {
+    //             try {
+    //                 const userData = await getContent(token);
+    //                 setCurrentUser(userData);
+    //                 setLoggedIn(true);
+    //             } catch (err) {
+    //                 const errorMessage = handleError(err, tokenCheckErrors);
+    //                 setServerError(errorMessage);
+    //                 localStorage.removeItem('jwt');
+    //                 setLoggedIn(false);
+    //                 setCurrentUser(null);
+    //             }
+    //         } else {
+    //             setLoggedIn(false);
+    //             setCurrentUser(null);
+    //         }
+    //     };
+        
+    //     checkToken().finally(() => setIsPreloading(false));
+    // }, []);
+
     useEffect(() => {
-        // Если нет текущего пользоваться ИЛИ пользователь уже залогинен, то берём данные юзера с сервера
-        if (!currentUser) {
+        const token = localStorage.getItem('jwt');
+        if (token) {
             api.checkToken().then(result => {
                 console.log('result', result);
-                checkContent()
-                //     checkContent(); // Авторизация пользователя должна вызываться в случае если вы еще не авторизированы и если у вас есть токен для быстрйо авторизации
+                checkContent();
             })
         }
-    }, [api, currentUser]);
+    }, []);
 
     function handleLogin(email, password) {
         api.authorize(email, password)
             .then(res => {
-                // localStorage.setItem('jwt', res.token); 
+                localStorage.setItem('jwt', res.token);
                 checkContent();
                 navigate("/"); // Add this line
             })
@@ -71,15 +92,51 @@ function App() {
             })
             .catch(err => console.log(err));
     }
+    function handleRegister(name, email, password) {
+        api.register(name, email, password)
+
+        .then(res => {
+            localStorage.setItem('jwt', res.token);
+            console.log("handlereg");
+
+                setCurrentUser({ email, name });
+                navigate("/signin");
+            })
+            .catch(err => {
+                console.log('Ошибка в функции регистрации', err);
+            });
+    }
+
+    // async function handleRegister(name, email, password) {
+    //     setIsPreloading(true);
+    //     try {
+    //         await register(name, email, password);
+    //         const userAuth = await authorize(email, password);
+    //         localStorage.setItem('jwt', userAuth.token);
+    //         const userData = await getContent();
+    //         setCurrentUser(userData);
+    //         setLoggedIn(true);
+    //         navigate('/movies');
+    //         setTooltipTitle('Добро пожаловать!');
+    //         setTooltipIcon('success');
+    //         setIsInfoTooltipPopupOpen(true);
+    //     } catch (err) {
+    //         const errorMessage = handleError(err, registerErrors);
+    //         setServerError(errorMessage);
+    //     } finally {
+    //         setIsPreloading(false);
+    //     }
+    // }
 
     function signOut() {
         api.signOut()
             .then(() => {
+                console.log("signout2");
+                localStorage.removeItem('jwt'); 
                 setCurrentUser(null);
+                navigate("/");
             })
             .catch(err => console.log(err));
-        console.log("signout1");
-
     }
 
     return (
@@ -87,21 +144,17 @@ function App() {
             <div className="page">
                 <Routes>
                     <Route path="/" element={<Main />} />
-                    <Route path="/signup" element={<Register />} />
+                    <Route path="/signup" element={<Register onRegister={handleRegister} />} />
                     <Route path="/signin" element={<Login
                         setCurrentUser={setCurrentUser}
                         onLogin={handleLogin}
-
                     />} />
                     <Route path="/movies" element={<Movies />} />
                     <Route path="/saved-movies" element={<SavedMovies />} />
-                    <Route
-                        path="/profile"
-                        element={<Profile
-                            onUpdateProfile={handleUpdateProfile}
-                            signOut={signOut}
-                        />}
-                    />
+                    <Route path="/profile" element={<Profile
+                        onUpdateProfile={handleUpdateProfile}
+                        signOut={signOut}
+                    />} />
                     <Route path="*" element={<NotFound />} />
                 </Routes>
             </div>

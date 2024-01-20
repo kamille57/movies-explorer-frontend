@@ -53,12 +53,30 @@ function Auth({ title, name, button, text, span, children, handleSubmit }) {
         validate
     );
 
+    // function handleSubmit(e) {
+    //     const { email, password } = values;
+    //     console.log(email, password);
+    //     e.preventDefault();
+    //     if (validateForm()) {
+    //         if (isRegistration) {
+    //             console.log(values.name, values.email, values.password);
+    //             onSubmit(values.name, values.email, values.password);
+    //         } else {
+    //             onSubmit(values.email, values.password);
+    //         }
+    //     }
+    // }
+
     const innerHandleSubmit = (event) => {
         console.log('submit from');
         event.preventDefault();
 
+
         if (validateForm()) {
+            const { email, password } = values;
+            console.log(email, password);
             handleSubmit(values);
+            console.log(values);
         }
     };
 
