@@ -3,7 +3,7 @@ import { useForm } from '../../hooks/useForm';
 import logo from '../../images/logo.svg';
 import { useNavigate } from 'react-router-dom';
 
-function Auth({ title, name, button, text, span, children, handleSubmit }) {
+function Auth({ title, name, button, text, span, isRegistration, handleSubmit }) {
     const navigate = useNavigate();
 
     const initialValues = {
@@ -67,18 +67,20 @@ function Auth({ title, name, button, text, span, children, handleSubmit }) {
     //     }
     // }
 
+    // --------------------------------------------------------------исправил
     const innerHandleSubmit = (event) => {
-        console.log('submit from');
         event.preventDefault();
-
-
         if (validateForm()) {
-            const { email, password } = values;
-            console.log(email, password);
-            handleSubmit(values);
-            console.log(values);
+            if (isRegistration) {
+                const { name, email, password } = values;
+                handleSubmit({ name, email, password });
+            } else {
+                const { email, password } = values;
+                handleSubmit({ email, password });
+            }
         }
     };
+// --------------------------------------------------------------исправил
 
     return (
         <div className="auth">
@@ -87,7 +89,25 @@ function Auth({ title, name, button, text, span, children, handleSubmit }) {
                 />
                 <h1 className="auth__welcome">{title}</h1>
                 <fieldset className="auth__fieldset">
-                    {children}
+                    { // ------------------------------------------------сюда добавил поле name
+                        isRegistration && (
+                            <>
+                                <label className="auth__label" htmlFor="name">Имя:</label>
+                                <input
+                                    className="auth__input"
+                                    required
+                                    name="name"
+                                    type="text"
+                                    id="name"
+                                    onChange={handleChange}
+                                    value={values.name}
+                                    {...getInputProps('name')}
+                                    placeholder="Введите ваше имя"
+                                />
+                                <span className="auth__error" id="name-error">{errors.name}</span>
+                            </>
+                        )
+                    }
                     <label className="auth__label" htmlFor="email">
                         E-mail:
                     </label>
@@ -98,6 +118,8 @@ function Auth({ title, name, button, text, span, children, handleSubmit }) {
                         type="email"
                         id="email"
                         onChange={handleChange}
+                        value={values.email}
+
                         {...getInputProps('email')}
                         placeholder="Введите ваш email"
                     />
@@ -112,6 +134,8 @@ function Auth({ title, name, button, text, span, children, handleSubmit }) {
                         type="password"
                         id="password"
                         onChange={handleChange}
+                        value={values.password}
+
                         {...getInputProps('password')}
                         placeholder="Введите ваш пароль"
                     />

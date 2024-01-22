@@ -7,13 +7,13 @@ import AboutMe from "../AboutMe/AboutMe.js"
 import Portfolio from "../Portfolio/Portfolio.js"
 import Footer from "../Footer/Footer.js"
 
-function Main() {
+function Main({isLoggedIn}) {
     return (
         <>
             <Header
                 backgroundColor="#073042"
                 iconColor="#0F4157" 
-                isLogged={ true }
+                isLoggedIn={ isLoggedIn }
             />
             <main className="main">
                 <section className="main-page">

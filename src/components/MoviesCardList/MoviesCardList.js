@@ -1,9 +1,9 @@
 import { useState, useEffect } from 'react';
 import MoviesCard from '../MoviesCard/MoviesCard.js';
 
-function MoviesCardList() {
+function MoviesCardList({ cards }) {
 
-  const [cards, setCards] = useState([]);
+  const [movies, setCards] = useState([]);
 
   useEffect(() => {
     function handleResize() {
@@ -28,11 +28,15 @@ function MoviesCardList() {
   return (
     <section className="cards">
       <ul className="cards__container">
-        {cards.map((_card, index) =>(
-          <li key={index}>
-            <MoviesCard card={_card} index={index} />
+        {cards.map((card) => (
+          <li /*key={card._id}*/>
+            <MoviesCard
+              card={cards}
+            />
+            {console.log(card)}
           </li>
         ))}
+        {console.log(cards)}
       </ul>
       <button
         type="button"

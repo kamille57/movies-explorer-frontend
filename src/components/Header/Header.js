@@ -6,11 +6,13 @@ import Navigation from "../Navigation/Navigation.js";
 import Slider from "../Slider/Slider.js";
 import burger from "../../images/burger.svg";
 
-const Header = ({ backgroundColor, iconColor, isLogged = false }) => {
+const Header = ({ backgroundColor, iconColor, isLoggedIn }) => {
     const navigate = useNavigate();
 
     const [isBurgerMenuOpen, setIsBurgerMenuOpen] = useState(false);
     const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+
+    console.log('Header lOgged in: ' + isLoggedIn);
 
     useEffect(() => {
         const handleResize = () => {
@@ -37,7 +39,7 @@ const Header = ({ backgroundColor, iconColor, isLogged = false }) => {
                 onClick={() => navigate("/")}
                 />
 
-                {isLogged
+                {isLoggedIn
                     ? (windowWidth > 920 ? (
                         <>
                             <Navigation />

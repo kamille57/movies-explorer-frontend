@@ -5,12 +5,14 @@ import Header from '../Header/Header.js'
 import Footer from "../Footer/Footer.js"
 
 function SavedMovies() {
+    console.log('Рендерим сохранненые кино');
+
     return (
         <>
             <Header
                 backgroundColor="#202020"
                 iconColor="#313131"
-                isLogged={true}
+                isLoggedIn={true}
             />
             <main className="saved-movies">
                 <section className="saved-movies-page">

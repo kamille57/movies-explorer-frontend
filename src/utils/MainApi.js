@@ -13,26 +13,26 @@ class MainApi {
     });
   }
 
-  register(name, email, password) {
+  register(userData) {
     return fetch(`${this.baseUrl}/signup`, {
       method: 'POST',
       credentials: this.credentials,
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ name, email, password})
+      body: JSON.stringify(userData)
     })
       .then(response => this._checkResponse(response));
   }
 
-  authorize({ email, password }) {
+  authorize(email, password) {
     return fetch(`${this.baseUrl}/signin`, {
       method: 'POST',
       credentials: this.credentials,
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ email, password })
+      body: JSON.stringify(email, password)
     })
       .then(response => this._checkResponse(response));
   }
@@ -67,6 +67,7 @@ class MainApi {
       method: 'PATCH',
       credentials: this.credentials,
       headers: {
+        "Accept": "application/json",
         "Content-Type": "application/json"
       },
       body: JSON.stringify({ email, name })

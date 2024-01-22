@@ -28,7 +28,6 @@ function Profile({ onUpdateProfile, signOut }) {
 
     useEffect(function () {
         if (!currentUser) {
-            // alert('You forgot loggin');
             console.warn('You forgot loggin');
             navigate("/signup");
         }
@@ -39,7 +38,7 @@ function Profile({ onUpdateProfile, signOut }) {
             <Header
                 backgroundColor="#202020"
                 profileSrc={profileDark}
-                isLogged={true}
+                isLoggedIn={true}
             />
             <main className="profile">
                 <h1 className="profile__title">Привет, {name}</h1>

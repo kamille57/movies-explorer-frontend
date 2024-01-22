@@ -1,14 +1,12 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import React from "react";
+import { NavLink } from "react-router-dom";
 import Auth from "../Auth/Auth.js";
 
 //const api = new MainApi();
 
-function Login({ onLogin }) {
-  const [isLoading, setIsLoading] = useState(false);
+function Login({ onLogin, isLoading }) {
 
   const handleLogin = (email, password) => {
-    setIsLoading(true);
     onLogin(email, password);
   };
   // const navigate = useNavigate(); // Add the useNavigate hook
@@ -36,11 +34,12 @@ function Login({ onLogin }) {
         button={isLoading ? "Идет авторизация..." : "Войти"}
         text="Ещё не зарегистрированы?"
         span={
-          <Link className="auth__confirm-link" to="/signup">
+          <NavLink className="auth__confirm-link" to="/signup">
             Регистрация
-          </Link>
+          </NavLink>
         }
         handleSubmit={handleLogin}
+        isRegistration={false}
       ></Auth>
     </main>
   );

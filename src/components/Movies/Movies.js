@@ -4,18 +4,21 @@ import MoviesCardList from "../MoviesCardList/MoviesCardList.js"
 import Header from '../Header/Header.js'
 import Footer from "../Footer/Footer.js"
 
-function Movies() {
+function Movies({ card }) {
+
+
     return (
         <>
             <Header
                 backgroundColor="#202020"
                 iconColor="#313131"
-                isLogged={ true }
+                isLoggedIn={ true }
             />
             <main className="movies">
                 <section className="movies-page">
                     <SearchForm />
-                    <MoviesCardList />
+                    <MoviesCardList
+                    card={card} />
                 </section >
             </main>
             < Footer />
