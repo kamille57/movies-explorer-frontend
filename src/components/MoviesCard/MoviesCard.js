@@ -4,10 +4,11 @@ import React from "react";
 
 function MoviesCard({ card }) {
     // const currentUser = useContext(CurrentUserContext);
-    console.log(card); 
-const imageUrl = typeof card.image === 'string'
-? card.image
-:`https://api.nomoreparties.co` + card.image.url;
+    // console.log(card); 
+// const imageUrl = typeof card.image.url === 'string'
+// ? card.image
+// :`https://api.nomoreparties.co` + card.image.url;
+const imageUrl = 'https://api.nomoreparties.co' + card.image.url;
 
   return ( 
     <article className="card"> 

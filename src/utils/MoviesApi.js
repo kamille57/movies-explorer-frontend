@@ -48,9 +48,8 @@ class MoviesApi {
             .then(this._checkResponse);
     }
   async getInitialMovies() {//метод для получения карточек с сервера
-        return this._fetchData(this._url, {
-            headers: this._headers
-        });
+        return fetch(this.baseUrl, {headers: this.headers})
+        .then(this._checkResponse);
     }
     
 }

@@ -20,41 +20,32 @@ function App() {
     const [currentUser, setCurrentUser] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
     const [isLoggedIn, setIsLoggedIn] = useState(false);
-    const [card, setMovies] = useState([]);
+    const [cards, setMovies] = useState([]);
 
     const navigate = useNavigate();
     const api = new MainApi();
     const moviesApi = new MoviesApi();
 
-    console.log("currentUser", currentUser);
-    console.log("isLoggedIn", isLoggedIn);
-    console.log("setMovies", card);
-
-    useEffect(() => {  
-        console.log('Сейчас будем проверять ТОКЕН');  
-        const token = localStorage.getItem('jwt');  
-        console.log('jwt', token);
-        if (token) {  
-            Promise.all([api.getUserInfo(token), moviesApi.getInitialMovies()])  
-            .then(([userData, initialMovies]) => {  
-                console.log(userData);
-                console.log(initialMovies);
-
-                setCurrentUser(userData);  
-                setMovies(initialMovies);  
-                setIsLoggedIn(true);  
-            })  
-            .catch((err) => {  
-                console.log('Ошибка при получении данных пользователя:', err);  
-                localStorage.removeItem('jwt');  
-                setIsLoggedIn(false);  
-                setCurrentUser(null);  
-            });  
-        } else {  
-            setIsLoggedIn(false);  
-            setCurrentUser(null);  
-        }  
-    }, []);
+    useEffect(() => {
+        const token = localStorage.getItem('jwt');
+        if (token) {
+          Promise.all([api.getUserInfo(token), moviesApi.getInitialMovies()])
+            .then(([userData, initialMovies]) => {
+              setIsLoggedIn(true);
+              setCurrentUser(userData);
+              setMovies(initialMovies);
+            })
+            .catch((err) => {
+              console.log('Ошибка при получении данных пользователя:', err);
+              localStorage.removeItem('jwt');
+              setIsLoggedIn(false);
+              setCurrentUser(null);
+            });
+        } else {
+          setIsLoggedIn(false);
+          setCurrentUser(null);
+        }
+      }, []);
 
 
     function handleLogin(email, password) {
@@ -63,8 +54,8 @@ function App() {
             .then(res => {
                 localStorage.setItem('jwt', res.token);
                 checkContent();
-                navigate("/"); // Add this line
-                setIsLoggedIn(true)
+                setIsLoggedIn(true);
+                navigate("/");
             })
             .catch(err => {
                 console.log(err);
@@ -74,13 +65,10 @@ function App() {
     }
 
     function handleUpdateProfile({ email, name }) {
-
         const updatedUser =
             { email, name };
-        console.log("upduser", updatedUser);
         api.setUserInfo(updatedUser)
             .then(({ email, name }) => {
-                console.log({ email, name });
                 setCurrentUser({ email, name });
 
             })
@@ -92,19 +80,18 @@ function App() {
     function checkContent() {
         api.getUserInfo()
             .then((res) => {
-                console.log('Тест перед сеттерами');
+                console.log("res", res);
                 setCurrentUser(res);
+                setIsLoggedIn(true);
             })
             .catch(err => console.log(err));
     }
 
     function handleRegister({ name, email, password }) {
         setIsLoading(true)
-
         api.register({ name, email, password })
             .then(res => {
                 localStorage.setItem('jwt', res.token);
-                console.log("handlereg");
                 setCurrentUser({ email, name });
                 setIsLoggedIn(true)
                 navigate("/");
@@ -118,7 +105,6 @@ function App() {
     function signOut() {
         api.signOut()
             .then(() => {
-                console.log("signout2");
                 localStorage.removeItem('jwt');
                 setCurrentUser(null);
                 setIsLoggedIn(false);
@@ -147,8 +133,8 @@ function App() {
                         path="/movies"
                         element={<ProtectedRoute
                             Element={Movies}
-                            card={card}
-                            isLoggedIn={isLoggedIn}
+                            cards={cards}
+                            isLoggedIn={true}
                         />}
                     />
                     <Route

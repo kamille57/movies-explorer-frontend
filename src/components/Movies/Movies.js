@@ -3,9 +3,14 @@ import SearchForm from "../SearchForm/SearchForm.js"
 import MoviesCardList from "../MoviesCardList/MoviesCardList.js"
 import Header from '../Header/Header.js'
 import Footer from "../Footer/Footer.js"
+import { useState } from 'react';
 
-function Movies({ card }) {
+function Movies({ cards }) {
+    const [searchQuery, setSearchQuery] = useState('');
 
+    // TODO: подумать как этот ФЛАГ влияет на выдачу поисковых результатов
+  // Показывать только короткометражки
+  const [onlyShortMovies, setOnlyShortMovies] = useState(false)
 
     return (
         <>
@@ -16,9 +21,8 @@ function Movies({ card }) {
             />
             <main className="movies">
                 <section className="movies-page">
-                    <SearchForm />
-                    <MoviesCardList
-                    card={card} />
+                    <SearchForm setSearchQuery={setSearchQuery} searchQuery={searchQuery} />
+                    <MoviesCardList searchQuery={searchQuery} cards={cards} />
                 </section >
             </main>
             < Footer />
