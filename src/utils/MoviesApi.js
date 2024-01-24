@@ -1,36 +1,6 @@
-// class MoviesApi {
-//     constructor() {
-//     this.baseUrl = 'https://api.nomoreparties.co/beatfilm-movies'; 
-//     this.credentials = 'include';
-//     }
-  
-//     _checkResponse(res) {
-//       if (res.ok) {
-//         return res.json();
-//       }
-//       return res.json().then(error => {
-//         throw new Error(`Ошибка: ${res.status} - ${error.message}`);
-//       });
-//     }
-
-//     getInitialMovies() {
-//         return fetch(`${this.baseUrl}/users/me`, {
-//             method: 'GET',
-//             credentials: this.credentials,
-//             headers: {
-//               "Accept": "application/json",
-//               "Content-Type": "application/json"
-//             }
-//           })
-//             .then(response => this._checkResponse(response));
-//     }
-// }  
-
-// export default MoviesApi;
 class MoviesApi {
     constructor() {
         this.baseUrl = 'https://api.nomoreparties.co/beatfilm-movies'; 
-        //this.baseUrl = 'http://localhost:3001';
         this.headers = {
             'Content-Type': 'application/json'
         };
@@ -56,57 +26,6 @@ class MoviesApi {
 
 export default MoviesApi;
 
-// import { BEATFILM_MOVIE_API_URL } from '../constants/constatnts';
-
-// class MoviesApi {
-//     constructor(config) {// конструктор принимает объект конфигурации API
-//         this._url = config.url;
-//         this._headers = config.headers;
-//     }
-  
-//     async _handleResponse(res) {
-//         if (res.ok) {
-//             return res.json();
-//         }
-//         const errorMessage = await res.text();
-//         const error = new Error(errorMessage);
-//         error.status = res.status;
-//         throw error;
-//     }
-  
-//     async _fetchData(url, options) {
-//         try {
-//             const response = await fetch(url, options);
-//             if (response.ok && response.status !== 204) { // проверка, что не пустой прежде чем преобразовать в json
-//                 return response.json();
-//             } else if (response.ok && response.status === 204) {
-//                 return {}; // просто возвращаем пустой объект
-//             } else {
-//                 throw new Error(`Ошибка ${response.status}`);
-//             }
-//         } catch (error) {
-//             throw new Error('Ошибка сети');
-//         }
-//     }
-  
-//     async getInitialMovies() {//метод для получения карточек с сервера
-//         return this._fetchData(this._url, {
-//             headers: this._headers
-//         });
-//     }
-// }
-  
-// //класс для апи
-// export const moviesApi = new MoviesApi({
-//     url: BEATFILM_MOVIE_API_URL,
-//     headers: {
-//         'Content-Type': 'application/json',
-//     }
-// });
-
-// // Movies.js
-
-// // export const MOVIE_API_URL = 'https://api.nomoreparties.co';
 
 // import React, { useState, useContext, useEffect } from 'react';
 // import MoviesCardList from '../MoviesCardList/MoviesCardList';
