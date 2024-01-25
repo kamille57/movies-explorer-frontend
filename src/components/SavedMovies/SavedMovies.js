@@ -4,7 +4,7 @@ import MoviesCardList from "../MoviesCardList/MoviesCardList.js"
 import Header from '../Header/Header.js'
 import Footer from "../Footer/Footer.js"
 
-function SavedMovies() {
+function SavedMovies({ cards }) {
     console.log('Рендерим сохранненые кино');
 
     return (
@@ -17,7 +17,7 @@ function SavedMovies() {
             <main className="saved-movies">
                 <section className="saved-movies-page">
                     <SearchForm />
-                    <MoviesCardList />
+                    <MoviesCardList cards={cards} />
                 </section >
             </main>
             <Footer />

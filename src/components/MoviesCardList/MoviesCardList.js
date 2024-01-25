@@ -5,6 +5,7 @@ function MoviesCardList({ cards, searchQuery, onlyShortMovies }) {
   const [movies, setMovies] = useState(cards); 
 
   useEffect(() => {    
+    console.log(cards);
     const regex = new RegExp(searchQuery, 'gi'); 
     const filteredMovies = cards.filter(movie => movie.nameRU.match(regex)); 
     setMovies(filteredMovies); 

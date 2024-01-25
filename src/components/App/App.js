@@ -21,6 +21,7 @@ function App() {
     const [isLoading, setIsLoading] = useState(false);
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [cards, setMovies] = useState([]);
+    const [savedMovies, setSavedMovies] = useState([]);
 
     const navigate = useNavigate();
     const api = new MainApi();
@@ -137,11 +138,13 @@ function App() {
                             isLoggedIn={true}
                         />}
                     />
+                    {console.log(savedMovies)}
                     <Route
                         path="/saved-movies"
                         element={<ProtectedRoute
                             Element={SavedMovies}
-                            isLoggedIn={isLoggedIn}
+                            cards={savedMovies}
+                            isLoggedIn={true}
                         />}
                     />
                     <Route path="/profile" element={<Profile
