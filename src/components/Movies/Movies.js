@@ -29,6 +29,8 @@ function Movies({ cards }) {
             cards={cards}
             onlyShortMovies={onlyShortMovies}
           />
+                      {console.log("cards movies", cards)};
+
         </section>
       </main>
       <Footer />

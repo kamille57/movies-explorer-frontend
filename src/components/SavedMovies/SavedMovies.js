@@ -6,7 +6,7 @@ import Footer from "../Footer/Footer.js"
 
 function SavedMovies({ cards }) {
     console.log('Рендерим сохранненые кино');
-
+console.log("log savedmovies cards",{ cards });
     return (
         <>
             <Header

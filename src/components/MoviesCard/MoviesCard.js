@@ -1,24 +1,30 @@
 import React from "react";
 import MoviesApi from "../../utils/MoviesApi";
-//import CurrentUserContext from "../../contexts/CurrentUserContext";
 
 function MoviesCard({ card }) {
+  const imageUrl = typeof card.image === 'string'
+         ? card.image
+         : 'https://api.nomoreparties.co' + card.image.url;
 
-  const imageUrl = 'https://api.nomoreparties.co' + card.image.url;
   const moviesApi = new MoviesApi();
 
-  function handleChange(e) {
-    console.log(e.target);
-    const isChecked = e.target.checked;
-    console.log(isChecked);
-    if(isChecked) {
-      console.log('need to save');
-      moviesApi.createMovie(card)
-    } else {
-      console.log('need to delete');
-      moviesApi.deleteMovie(card.id)
-    }
+function handleChange(e) {
+  const isChecked = e.target.checked;
+  const updatedCard = { ...card, image: imageUrl };
+console.log("updatedCard", updatedCard);
+  if (isChecked) {
+    // Создаем новый объект карточки с обновленным полем image
+
+    // Продолжаем сохранять карточку с обновленным полем image
+    moviesApi.createMovie(updatedCard);
+    console.log(updatedCard);
+  } else {
+    // Продолжаем удалять карточку с оригинальным полем image
+    moviesApi.deleteMovie(updatedCard.id);
+    console.log('привет');
+
   }
+}
 
   return (
     <article className="card">

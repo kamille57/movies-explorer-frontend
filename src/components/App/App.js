@@ -113,7 +113,7 @@ function App() {
             })
             .catch(err => console.log(err));
     }
-
+    
     return (
         <CurrentUserContext.Provider value={currentUser}>
             <div className="page">
@@ -138,6 +138,7 @@ function App() {
                             isLoggedIn={true}
                         />}
                     />
+                    
                     {console.log(savedMovies)}
                     <Route
                         path="/saved-movies"

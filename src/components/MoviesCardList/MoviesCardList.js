@@ -3,13 +3,24 @@ import MoviesCard from '../MoviesCard/MoviesCard.js';
 
 function MoviesCardList({ cards, searchQuery, onlyShortMovies }) { 
   const [movies, setMovies] = useState(cards); 
+console.log("карточки из мувиз кардс лист", cards);
 
-  useEffect(() => {    
-    console.log(cards);
-    const regex = new RegExp(searchQuery, 'gi'); 
-    const filteredMovies = cards.filter(movie => movie.nameRU.match(regex)); 
-    setMovies(filteredMovies); 
-  }, [searchQuery, cards]); 
+useEffect(() => {     
+  const fixedCards = cards.map(card => { 
+      const imageUrl = typeof card.image === 'string' 
+          ? card.image 
+          : 'https://api.nomoreparties.co' + card.image.url; 
+      const newCard ={  
+          ...card,  
+          image: imageUrl
+      }; 
+      return newCard;
+  }); 
+
+  const regex = new RegExp(searchQuery, 'gi');  
+  const filteredMovies = fixedCards.filter(movie => movie.nameRU.match(regex));  
+  setMovies(filteredMovies);  
+}, [searchQuery, cards]);
   
   const filterMovies = (movies) => { 
     if (onlyShortMovies) { 
@@ -18,17 +29,17 @@ function MoviesCardList({ cards, searchQuery, onlyShortMovies }) {
       return movies; 
     } 
   }
-
   const filteredMovies = filterMovies(movies);
-
+console.log(movies);
   return ( 
     <section className="cards"> 
       <ul className="cards__container"> 
-        {searchQuery !== '' && filteredMovies && filteredMovies.map((card) => ( 
-          <li key={card.id}> 
+        {searchQuery !== '' && filteredMovies && filteredMovies.map((newCard) => ( 
+          <li key={newCard.id}> 
             <MoviesCard 
-              card={card} 
+              card={newCard} 
             /> 
+            {console.log("newCard", newCard)}
           </li> 
         ))} 
       </ul> 
