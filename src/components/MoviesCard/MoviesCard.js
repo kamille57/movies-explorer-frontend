@@ -1,7 +1,7 @@
 import React from "react";
 import MoviesApi from "../../utils/MoviesApi";
 
-function MoviesCard({ card }) {
+function MoviesCard({ card, isSavedPage, onLike, onDelete, likedMovies }) {
   const imageUrl = typeof card.image === 'string'
          ? card.image
          : 'https://api.nomoreparties.co' + card.image.url;
@@ -12,6 +12,7 @@ function handleChange(e) {
   const isChecked = e.target.checked;
   const updatedCard = { ...card, image: imageUrl };
 console.log("updatedCard", updatedCard);
+console.log(isChecked);
   if (isChecked) {
     // Создаем новый объект карточки с обновленным полем image
 

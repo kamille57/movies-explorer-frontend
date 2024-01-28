@@ -27,6 +27,7 @@ class MoviesApi {
     }
 
     async createMovie(movieData) { 
+        console.log("movieData", movieData);
         return fetch(this.localUrl, {
             method: 'POST',
             headers: this.headers,

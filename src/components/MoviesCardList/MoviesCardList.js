@@ -30,7 +30,6 @@ useEffect(() => {
     } 
   }
   const filteredMovies = filterMovies(movies);
-console.log(movies);
   return ( 
     <section className="cards"> 
       <ul className="cards__container"> 
@@ -39,7 +38,6 @@ console.log(movies);
             <MoviesCard 
               card={newCard} 
             /> 
-            {console.log("newCard", newCard)}
           </li> 
         ))} 
       </ul> 
