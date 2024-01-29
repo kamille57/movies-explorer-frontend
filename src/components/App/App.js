@@ -12,8 +12,10 @@ import Register from "../Register/Register.js";
 import Login from "../Login/Login.js";
 import Profile from "../Profile/Profile.js";
 import NotFound from "../NotFound/NotFound.js";
-import MainApi from '../../utils/MainApi.js'
-import MoviesApi from '../../utils/MoviesApi.js'
+import MainApi from '../../utils/MainApi.js';
+import MoviesApi from '../../utils/MoviesApi.js';
+import InfoToolTipSuccess from "../InfoToolTipSuccess/InfoToolTipSuccess.js";
+import InfoToolTipFail from "../InfoToolTipFail/InfoToolTipFail.js"
 
 
 function App() {
@@ -21,7 +23,8 @@ function App() {
     const [isLoading, setIsLoading] = useState(false);
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [cards, setMovies] = useState([]);
-    const [savedMovies, setSavedMovies] = useState([]);
+    const [isToolTipSuccessOpen, setIsToolTipSuccessOpen] = useState(false);
+    const [isToolTipFailOpen, setIsToolTipFailOpen] = useState(false);
 
     const navigate = useNavigate();
     const api = new MainApi();
@@ -30,24 +33,39 @@ function App() {
     useEffect(() => {
         const token = localStorage.getItem('jwt');
         if (token) {
-          Promise.all([api.getUserInfo(token), moviesApi.getInitialMovies()])
-            .then(([userData, initialMovies]) => {
-              setIsLoggedIn(true);
-              setCurrentUser(userData);
-              setMovies(initialMovies);
-            })
-            .catch((err) => {
-              console.log('Ошибка при получении данных пользователя:', err);
-              localStorage.removeItem('jwt');
-              setIsLoggedIn(false);
-              setCurrentUser(null);
-            });
+            Promise.all([
+                api.getUserInfo(token), 
+                moviesApi.getInitialMovies(),
+            ])
+                .then(([userData, initialMovies]) => {
+                    setIsLoggedIn(true);
+                    setCurrentUser(userData);
+                    setMovies(initialMovies);
+                })
+                .catch((err) => {
+                    console.log('Ошибка при получении данных пользователя:', err);
+                    localStorage.removeItem('jwt');
+                    setIsLoggedIn(false);
+                    setCurrentUser(null);
+                });
         } else {
-          setIsLoggedIn(false);
-          setCurrentUser(null);
+            setIsLoggedIn(false);
+            setCurrentUser(null);
         }
-      }, []);
+    }, []);
 
+    function closeAllPopups() {
+        setIsToolTipSuccessOpen(false);
+        setIsToolTipFailOpen(false);
+    }
+
+    function onRegister() {
+        setIsToolTipSuccessOpen(true);
+    }
+
+    function onError() {
+        setIsToolTipFailOpen(true);
+    }
 
     function handleLogin(email, password) {
         setIsLoading(true)
@@ -96,8 +114,10 @@ function App() {
                 setCurrentUser({ email, name });
                 setIsLoggedIn(true)
                 navigate("/");
+                onRegister();
             })
             .catch(err => {
+                onError();
                 console.log('Ошибка в функции регистрации', err);
             })
             .finally(() => setIsLoading(false));
@@ -113,7 +133,7 @@ function App() {
             })
             .catch(err => console.log(err));
     }
-    
+
     return (
         <CurrentUserContext.Provider value={currentUser}>
             <div className="page">
@@ -138,13 +158,10 @@ function App() {
                             isLoggedIn={true}
                         />}
                     />
-                    
-                    {console.log(savedMovies)}
                     <Route
                         path="/saved-movies"
                         element={<ProtectedRoute
                             Element={SavedMovies}
-                            cards={savedMovies}
                             isLoggedIn={true}
                         />}
                     />
@@ -154,6 +171,14 @@ function App() {
                     />} />
                     <Route path="*" element={<NotFound />} />
                 </Routes>
+                <InfoToolTipSuccess
+                    isOpen={isToolTipSuccessOpen}
+                    onClose={closeAllPopups}
+                />
+                <InfoToolTipFail
+                    isOpen={isToolTipFailOpen}
+                    onClose={closeAllPopups}
+                />
             </div>
         </CurrentUserContext.Provider>
     );

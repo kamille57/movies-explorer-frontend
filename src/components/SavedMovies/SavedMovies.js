@@ -1,12 +1,24 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import SearchForm from "../SearchForm/SearchForm.js"
 import MoviesCardList from "../MoviesCardList/MoviesCardList.js"
+import MoviesApi from '../../utils/MoviesApi.js';
 import Header from '../Header/Header.js'
 import Footer from "../Footer/Footer.js"
 
-function SavedMovies({ cards }) {
+function SavedMovies() {
+    const [savedMovies, setSavedMovies] = useState([]);
+
+    
+    const moviesApi = new MoviesApi();
+
+
     console.log('Рендерим сохранненые кино');
-console.log("log savedmovies cards",{ cards });
+
+    useEffect(function(params) {
+        moviesApi.getSavedMovies().then(setSavedMovies)
+        // setSavedMovies(savedMovies);
+    },[])
+
     return (
         <>
             <Header
@@ -17,7 +29,7 @@ console.log("log savedmovies cards",{ cards });
             <main className="saved-movies">
                 <section className="saved-movies-page">
                     <SearchForm />
-                    <MoviesCardList cards={cards} />
+                    <MoviesCardList cards={savedMovies} />
                 </section >
             </main>
             <Footer />

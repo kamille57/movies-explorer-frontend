@@ -10,7 +10,16 @@ function MoviesCard({ card, isSavedPage, onLike, onDelete, likedMovies }) {
 
 function handleChange(e) {
   const isChecked = e.target.checked;
-  const updatedCard = { ...card, image: imageUrl };
+  const updatedCard = { 
+    ...card, 
+    image: imageUrl, 
+    director: card.director.slice(0, 30),
+    createdAt: card.created_at,
+    updatedAt: card.updated_at,
+  };
+  
+  delete updatedCard.created_at;
+  delete updatedCard.updated_at;
 console.log("updatedCard", updatedCard);
 console.log(isChecked);
   if (isChecked) {

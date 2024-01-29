@@ -1,7 +1,7 @@
 class MoviesApi {
     constructor() {
         this.baseUrl = 'https://api.nomoreparties.co/beatfilm-movies'; 
-        this.localUrl = 'http://localhost:3001/movies'; 
+        this.localUrl = 'http://localhost:3001'; 
         this.credentials = 'include';
         this.headers = {
             'Content-Type': 'application/json'
@@ -19,6 +19,15 @@ class MoviesApi {
         return fetch(url, options)
             .then(this._checkResponse);
     }
+
+    async getSavedMovies() { 
+        return fetch(`${this.localUrl}/movies`, {
+            headers: this.headers,
+            credentials: this.credentials
+        })
+        .then(this._checkResponse);
+    }
+    
     async getInitialMovies() { 
         return fetch(this.baseUrl, {
             headers: this.headers
@@ -27,8 +36,7 @@ class MoviesApi {
     }
 
     async createMovie(movieData) { 
-        console.log("movieData", movieData);
-        return fetch(this.localUrl, {
+        return fetch(this.localUrl + '/movies', {
             method: 'POST',
             headers: this.headers,
             credentials: this.credentials,
@@ -38,7 +46,7 @@ class MoviesApi {
     }
     
     async deleteMovie(movieId) {
-        return fetch(`${this.localUrl}/${movieId}`, {
+        return fetch(`${this.localUrl}/movies/${movieId}`, {
             method: 'DELETE',
             credentials: this.credentials,
             headers: this.headers
