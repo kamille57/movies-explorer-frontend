@@ -4,8 +4,9 @@ import MoviesCardList from "../MoviesCardList/MoviesCardList.js";
 import Header from '../Header/Header.js';
 import Footer from "../Footer/Footer.js";
 import { useState } from 'react';
+import Preloader from '../Preloader/Preloader.js';
 
-function Movies({ cards }) {
+function Movies({ cards, isLoading }) {
   const [searchQuery, setSearchQuery] = useState('');
   const [onlyShortMovies, setOnlyShortMovies] = useState(false);
 
@@ -24,13 +25,15 @@ function Movies({ cards }) {
             setOnlyShortMovies={setOnlyShortMovies}
             onlyShortMovies={onlyShortMovies}
           />
-          <MoviesCardList
-            searchQuery={searchQuery}
-            cards={cards}
-            onlyShortMovies={onlyShortMovies}
-          />
-                      {console.log("cards movies", cards)};
-
+            {isLoading ? (
+            <Preloader /> // Display a loading indicator if isLoading is true
+          ) : (
+            <MoviesCardList
+              searchQuery={searchQuery}
+              cards={cards}
+              onlyShortMovies={onlyShortMovies}
+            />
+          )}
         </section>
       </main>
       <Footer />

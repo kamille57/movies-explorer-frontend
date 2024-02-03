@@ -33,11 +33,16 @@ function App() {
     useEffect(() => {
         const token = localStorage.getItem('jwt');
         if (token) {
+            setIsLoggedIn(true);
+
+            setIsLoading(true);
             Promise.all([
                 api.getUserInfo(token), 
                 moviesApi.getInitialMovies(),
             ])
                 .then(([userData, initialMovies]) => {
+                    console.log('Login удался, логиним вас');
+                    setIsLoading(false);
                     setIsLoggedIn(true);
                     setCurrentUser(userData);
                     setMovies(initialMovies);
@@ -47,8 +52,10 @@ function App() {
                     localStorage.removeItem('jwt');
                     setIsLoggedIn(false);
                     setCurrentUser(null);
+                    setIsLoading(false);
                 });
         } else {
+            console.log('Ушли в елсе');
             setIsLoggedIn(false);
             setCurrentUser(null);
         }
@@ -150,19 +157,22 @@ function App() {
                         onLogin={handleLogin}
                         isLoading={isLoading}
                     />} />
+                    {console.log('isLoading before MOVIES', isLoading)}
                     <Route
                         path="/movies"
                         element={<ProtectedRoute
                             Element={Movies}
                             cards={cards}
-                            isLoggedIn={true}
+                            isLoggedIn={isLoggedIn}
+                            isLoading={isLoading}
                         />}
                     />
+                     {console.log('isLoading after MOVIES', isLoading)}
                     <Route
                         path="/saved-movies"
                         element={<ProtectedRoute
                             Element={SavedMovies}
-                            isLoggedIn={true}
+                            isLoggedIn={isLoggedIn}
                         />}
                     />
                     <Route path="/profile" element={<Profile

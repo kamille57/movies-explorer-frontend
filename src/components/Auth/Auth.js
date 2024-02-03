@@ -53,21 +53,8 @@ function Auth({ title, name, button, text, span, isRegistration, handleSubmit })
         validate
     );
 
-    // function handleSubmit(e) {
-    //     const { email, password } = values;
-    //     console.log(email, password);
-    //     e.preventDefault();
-    //     if (validateForm()) {
-    //         if (isRegistration) {
-    //             console.log(values.name, values.email, values.password);
-    //             onSubmit(values.name, values.email, values.password);
-    //         } else {
-    //             onSubmit(values.email, values.password);
-    //         }
-    //     }
-    // }
 
-    // --------------------------------------------------------------исправил
+    // --------------------------------------------------------------исправлено
     const innerHandleSubmit = (event) => {
         event.preventDefault();
         if (validateForm()) {
@@ -80,7 +67,7 @@ function Auth({ title, name, button, text, span, isRegistration, handleSubmit })
             }
         }
     };
-// --------------------------------------------------------------исправил
+// --------------------------------------------------------------исправлено
 
     return (
         <div className="auth">

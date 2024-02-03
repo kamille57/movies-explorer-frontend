@@ -3,7 +3,6 @@ import MoviesCard from '../MoviesCard/MoviesCard.js';
 
 function MoviesCardList({ cards, searchQuery, onlyShortMovies }) { 
   const [movies, setMovies] = useState(cards); 
-console.log("карточки из мувиз кардс лист", cards);
 
 useEffect(() => {     
   const fixedCards = cards.map(card => { 

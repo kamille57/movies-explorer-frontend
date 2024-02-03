@@ -11,9 +11,6 @@ function SavedMovies() {
     
     const moviesApi = new MoviesApi();
 
-
-    console.log('Рендерим сохранненые кино');
-
     useEffect(function(params) {
         moviesApi.getSavedMovies().then(setSavedMovies)
         // setSavedMovies(savedMovies);
