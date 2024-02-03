@@ -10,19 +10,6 @@ import Preloader from "../Preloader/Preloader";
 // }
 
 function ProtectedRoute({ isLoggedIn, isLoading, Element, ...props }) {
-    
-    console.log("isLoading", isLoading);
-    console.log("isLoggedIn", isLoggedIn);
-
-    useEffect(() => {
-        console.log('Re-render protected route ====================');
-    }, [])
-
-    useEffect(() => {
-           
-        console.log("useEffect - isLoading", isLoading);
-        console.log("useEffect - isLoggedIn", isLoggedIn);
-    }, [isLoading, isLoggedIn]);
 
 
     // TODO: проблема -при заходе на страницу, у нас состояние isLoading(false), из-за которого нас сразу редиретит
@@ -43,5 +30,11 @@ function ProtectedRoute({ isLoggedIn, isLoading, Element, ...props }) {
         isLoading ? <Preloader /> : (isLoggedIn ? <Element {...props} /> : <Navigate to="/signin" />)
     );
 }
+
+// function ProtectedRoute({ loggedIn, isLoading, element }) {
+//     return (
+//         isLoading ? <Preloader /> : (loggedIn ? element : <Navigate to="/signin" />)
+//     );
+// }
 
 export default ProtectedRoute;

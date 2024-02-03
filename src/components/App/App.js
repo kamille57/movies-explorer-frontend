@@ -16,6 +16,7 @@ import MainApi from '../../utils/MainApi.js';
 import MoviesApi from '../../utils/MoviesApi.js';
 import InfoToolTipSuccess from "../InfoToolTipSuccess/InfoToolTipSuccess.js";
 import InfoToolTipFail from "../InfoToolTipFail/InfoToolTipFail.js"
+import Preloader from "../Preloader/Preloader";
 
 
 function App() {
@@ -30,36 +31,68 @@ function App() {
     const api = new MainApi();
     const moviesApi = new MoviesApi();
 
-    useEffect(() => {
-        const token = localStorage.getItem('jwt');
-        if (token) {
-            setIsLoggedIn(true);
+    // useEffect(() => { 
+    //     const token = localStorage.getItem('jwt'); 
+    //     if (token) { 
+    //         setIsLoading(false); 
+    //         setIsLoggedIn(true); 
 
-            setIsLoading(true);
-            Promise.all([
-                api.getUserInfo(token), 
-                moviesApi.getInitialMovies(),
-            ])
-                .then(([userData, initialMovies]) => {
-                    console.log('Login удался, логиним вас');
-                    setIsLoading(false);
-                    setIsLoggedIn(true);
+    //         Promise.all([ 
+    //             api.getUserInfo(token), 
+    //             moviesApi.getInitialMovies(), 
+    //         ]) 
+    //             .then(([userData, initialMovies]) => { 
+    //                 console.log('Login удался, логиним вас'); 
+    //                 setIsLoggedIn(true); 
+ 
+    //                 setCurrentUser(userData); 
+    //                 setMovies(initialMovies); 
+    //                 console.log(isLoggedIn); 
+    //                 console.log(isLoading); 
+    //             }) 
+    //             .catch((err) => { 
+    //                 console.log('Ошибка при получении данных пользователя:', err); 
+    //                 localStorage.removeItem('jwt'); 
+    //                 setIsLoggedIn(false); 
+    //                 setCurrentUser(null); 
+    //                 setIsLoading(false); 
+    //             }); 
+    //     } else { 
+    //         console.log('Ушли в елсе'); 
+    //         setIsLoggedIn(false); 
+    //         setCurrentUser(null); 
+    //     } 
+    // }, []);
+
+    useEffect(() => {
+        const checkToken = async () => {
+            const token = localStorage.getItem('jwt');
+            if (token) {
+
+                try {
+                    const userData = await api.getUserInfo(token);
                     setCurrentUser(userData);
+                    const initialMovies = await moviesApi.getInitialMovies();
                     setMovies(initialMovies);
-                })
-                .catch((err) => {
+                    setIsLoggedIn(true);
+                    console.log("LOGIN", isLoggedIn);
+
+
+                } catch (err) {
                     console.log('Ошибка при получении данных пользователя:', err);
                     localStorage.removeItem('jwt');
                     setIsLoggedIn(false);
                     setCurrentUser(null);
-                    setIsLoading(false);
-                });
-        } else {
-            console.log('Ушли в елсе');
-            setIsLoggedIn(false);
-            setCurrentUser(null);
-        }
+                }
+            } else {
+                setIsLoggedIn(false);
+                setCurrentUser(null);
+            }
+        };
+        
+        checkToken().finally(() => setIsLoading(false));
     }, []);
+    console.log("currentUser", currentUser);
 
     function closeAllPopups() {
         setIsToolTipSuccessOpen(false);
@@ -74,21 +107,43 @@ function App() {
         setIsToolTipFailOpen(true);
     }
 
-    function handleLogin(email, password) {
-        setIsLoading(true)
-        api.authorize(email, password)
-            .then(res => {
-                localStorage.setItem('jwt', res.token);
-                checkContent();
-                setIsLoggedIn(true);
-                navigate("/");
-            })
-            .catch(err => {
-                console.log(err);
-            })
-            .finally(() => setIsLoading(false));
-        ;
-    }
+    // function handleLogin(email, password) {
+    //     setIsLoading(true);
+    //     console.log("isLoading from login", isLoading);
+    //     console.log("isLoggedIn from login", isLoggedIn);
+
+    //     api.authorize(email, password)
+    //         .then(res => {
+    //             localStorage.setItem('jwt', res.token);
+    //             setIsLoggedIn(true);
+    //             checkContent();
+    //             navigate("/");
+    //         })
+    //         .catch(err => {
+    //             console.log(err);
+    //         })
+    //         .finally(() => setIsLoading(false));
+    //     ;
+    // }
+
+    const handleLogin = async (password, email) => {
+        setIsLoading(true);
+        try {
+            const authData = await api.authorize(password, email);
+            localStorage.setItem('jwt', authData.token);
+            const userData = await api.getUserInfo(authData.token);
+            setCurrentUser(userData);
+            setIsLoggedIn(true);
+            navigate('/');
+            // setTooltipTitle('С возвращением!');
+            // setTooltipIcon('success');
+            // setIsInfoTooltipPopupOpen(true);
+        } catch (err) {
+            console.log('Ошибка при получении данных пользователя:', err);
+        } finally {
+            setIsLoading(false);
+        }
+    };
 
     function handleUpdateProfile({ email, name }) {
         const updatedUser =
@@ -103,15 +158,14 @@ function App() {
             });
     };
 
-    function checkContent() {
-        api.getUserInfo()
-            .then((res) => {
-                console.log("res", res);
-                setCurrentUser(res);
-                setIsLoggedIn(true);
-            })
-            .catch(err => console.log(err));
-    }
+    // function checkContent() {
+    //     api.getUserInfo()
+    //         .then((res) => {
+    //             setCurrentUser(res);
+    //             setIsLoggedIn(true);
+    //         })
+    //         .catch(err => console.log(err));
+    // }
 
     function handleRegister({ name, email, password }) {
         setIsLoading(true)
@@ -119,7 +173,8 @@ function App() {
             .then(res => {
                 localStorage.setItem('jwt', res.token);
                 setCurrentUser({ email, name });
-                setIsLoggedIn(true)
+                setIsLoggedIn(true);
+                //setIsLoading(false);
                 navigate("/");
                 onRegister();
             })
@@ -144,6 +199,7 @@ function App() {
     return (
         <CurrentUserContext.Provider value={currentUser}>
             <div className="page">
+            {isLoading && <Preloader />}
                 <Routes>
                     <Route path="/" element={<Main
                         isLoggedIn={isLoggedIn}
@@ -156,18 +212,34 @@ function App() {
                         setCurrentUser={setCurrentUser}
                         onLogin={handleLogin}
                         isLoading={isLoading}
+                        
                     />} />
+                    {/* <Route path='/signup' element={loggedIn ? <Navigate to="/" /> : <Register
+                            onRegister={handleRegister}
+                            errorMessage={serverError}
+                            isPreloading={isPreloading}
+                        />}
+                        />
+                        <Route path='/signin' element={loggedIn ? <Navigate to="/" /> : <Login
+                            onLogin={handleLogin}
+                            errorMessage={serverError}
+                            isPreloading={isPreloading}
+                        />} */}
                     {console.log('isLoading before MOVIES', isLoading)}
+                    {console.log('IsLoggedIn before MOVIES', isLoggedIn)}
+
                     <Route
                         path="/movies"
                         element={<ProtectedRoute
                             Element={Movies}
                             cards={cards}
-                            isLoggedIn={isLoggedIn}
                             isLoading={isLoading}
+                            isLoggedIn={isLoggedIn}
                         />}
                     />
-                     {console.log('isLoading after MOVIES', isLoading)}
+                    {console.log('isLoading after MOVIES', isLoading)}
+                    {console.log('currentUs', currentUser)}
+
                     <Route
                         path="/saved-movies"
                         element={<ProtectedRoute
