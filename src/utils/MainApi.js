@@ -32,7 +32,7 @@ class MainApi {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(email, password)
+      body: JSON.stringify({email, password}) // поставил фигурные скобки
     })
       .then(response => this._checkResponse(response));
   }
@@ -89,4 +89,3 @@ class MainApi {
 }
 
 export default MainApi;
-  

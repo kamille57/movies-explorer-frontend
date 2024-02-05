@@ -26,72 +26,12 @@ function App() {
     const [cards, setMovies] = useState([]);
     const [isToolTipSuccessOpen, setIsToolTipSuccessOpen] = useState(false);
     const [isToolTipFailOpen, setIsToolTipFailOpen] = useState(false);
+    const [isCheckingAuth, setIsCheckingAuth] = useState(true);
 
     const navigate = useNavigate();
     const api = new MainApi();
     const moviesApi = new MoviesApi();
 
-    // useEffect(() => { 
-    //     const token = localStorage.getItem('jwt'); 
-    //     if (token) { 
-    //         setIsLoading(false); 
-    //         setIsLoggedIn(true); 
-
-    //         Promise.all([ 
-    //             api.getUserInfo(token), 
-    //             moviesApi.getInitialMovies(), 
-    //         ]) 
-    //             .then(([userData, initialMovies]) => { 
-    //                 console.log('Login удался, логиним вас'); 
-    //                 setIsLoggedIn(true); 
- 
-    //                 setCurrentUser(userData); 
-    //                 setMovies(initialMovies); 
-    //                 console.log(isLoggedIn); 
-    //                 console.log(isLoading); 
-    //             }) 
-    //             .catch((err) => { 
-    //                 console.log('Ошибка при получении данных пользователя:', err); 
-    //                 localStorage.removeItem('jwt'); 
-    //                 setIsLoggedIn(false); 
-    //                 setCurrentUser(null); 
-    //                 setIsLoading(false); 
-    //             }); 
-    //     } else { 
-    //         console.log('Ушли в елсе'); 
-    //         setIsLoggedIn(false); 
-    //         setCurrentUser(null); 
-    //     } 
-    // }, []);
-
-    useEffect(() => {
-        const checkToken = async () => {
-            const token = localStorage.getItem('jwt');
-            if (token) {
-
-                try {
-                    const userData = await api.getUserInfo(token);
-                    setCurrentUser(userData);
-                    const initialMovies = await moviesApi.getInitialMovies();
-                    setMovies(initialMovies);
-                    setIsLoggedIn(true);
-                    console.log("LOGIN", isLoggedIn);
-
-
-                } catch (err) {
-                    console.log('Ошибка при получении данных пользователя:', err);
-                    localStorage.removeItem('jwt');
-                    setIsLoggedIn(false);
-                    setCurrentUser(null);
-                }
-            } else {
-                setIsLoggedIn(false);
-                setCurrentUser(null);
-            }
-        };
-        
-        checkToken().finally(() => setIsLoading(false));
-    }, []);
     console.log("currentUser", currentUser);
 
     function closeAllPopups() {
@@ -107,44 +47,6 @@ function App() {
         setIsToolTipFailOpen(true);
     }
 
-    // function handleLogin(email, password) {
-    //     setIsLoading(true);
-    //     console.log("isLoading from login", isLoading);
-    //     console.log("isLoggedIn from login", isLoggedIn);
-
-    //     api.authorize(email, password)
-    //         .then(res => {
-    //             localStorage.setItem('jwt', res.token);
-    //             setIsLoggedIn(true);
-    //             checkContent();
-    //             navigate("/");
-    //         })
-    //         .catch(err => {
-    //             console.log(err);
-    //         })
-    //         .finally(() => setIsLoading(false));
-    //     ;
-    // }
-
-    const handleLogin = async (password, email) => {
-        setIsLoading(true);
-        try {
-            const authData = await api.authorize(password, email);
-            localStorage.setItem('jwt', authData.token);
-            const userData = await api.getUserInfo(authData.token);
-            setCurrentUser(userData);
-            setIsLoggedIn(true);
-            navigate('/');
-            // setTooltipTitle('С возвращением!');
-            // setTooltipIcon('success');
-            // setIsInfoTooltipPopupOpen(true);
-        } catch (err) {
-            console.log('Ошибка при получении данных пользователя:', err);
-        } finally {
-            setIsLoading(false);
-        }
-    };
-
     function handleUpdateProfile({ email, name }) {
         const updatedUser =
             { email, name };
@@ -158,29 +60,45 @@ function App() {
             });
     };
 
-    // function checkContent() {
-    //     api.getUserInfo()
-    //         .then((res) => {
-    //             setCurrentUser(res);
-    //             setIsLoggedIn(true);
-    //         })
-    //         .catch(err => console.log(err));
-    // }
+    const handleLogin = async ({ email, password }) => { // скобки фигурные
+        setIsLoading(true);
+        try {
+            console.log('pass and email in try', password, email);
+            const authData = await api.authorize(email, password);
+            localStorage.setItem('jwt', authData.token);
+            console.log('token', authData);
+            const userData = await api.getUserInfo(authData.token);
+            console.log('userData', userData);
+            setCurrentUser(userData);
+            setIsLoggedIn(true);
+            navigate('/');
+        } catch (err) {
+            console.log('Ошибка при получении данных пользователя:', err);
+        } finally {
+            setIsLoading(false);
+        }
+    };
 
     function handleRegister({ name, email, password }) {
-        setIsLoading(true)
+        setIsLoading(true);
+        console.log('Регистрация с данными:', { name, email, password });
         api.register({ name, email, password })
             .then(res => {
-                localStorage.setItem('jwt', res.token);
+                console.log('Попытка авторизации для:', email);
+                return api.authorize(email, password);
+            })
+            .then(data => {
+                localStorage.setItem('jwt', data.token);
+                console.log('Авторизация успешна, токен:', data.token);
+
                 setCurrentUser({ email, name });
                 setIsLoggedIn(true);
-                //setIsLoading(false);
                 navigate("/");
                 onRegister();
             })
             .catch(err => {
                 onError();
-                console.log('Ошибка в функции регистрации', err);
+                console.log('Ошибка в функции регистрации/авторизации:', err);
             })
             .finally(() => setIsLoading(false));
     }
@@ -196,10 +114,43 @@ function App() {
             .catch(err => console.log(err));
     }
 
+    useEffect(() => {
+        const checkToken = async () => {
+            setIsLoading(true);
+            const token = localStorage.getItem('jwt');
+            if (!token) {
+                setIsLoggedIn(false);
+                setIsLoading(false);
+                setIsCheckingAuth(false);
+                return;
+            }
+
+            try {
+                const userData = await api.getUserInfo(token);
+                setCurrentUser(userData);
+                const initialMovies = await moviesApi.getInitialMovies();
+                setMovies(initialMovies);
+                setIsLoggedIn(true);
+            } catch (err) {
+                console.log('Ошибка при получении данных пользователя:', err);
+                localStorage.removeItem('jwt');
+                setIsLoggedIn(false);
+            } finally {
+                setIsLoading(false);
+                setIsCheckingAuth(false);
+            }
+        };
+
+        checkToken();
+    }, []);
+
+    if (isCheckingAuth) {
+        return <Preloader />;
+    }
+
     return (
         <CurrentUserContext.Provider value={currentUser}>
             <div className="page">
-            {isLoading && <Preloader />}
                 <Routes>
                     <Route path="/" element={<Main
                         isLoggedIn={isLoggedIn}
@@ -212,19 +163,8 @@ function App() {
                         setCurrentUser={setCurrentUser}
                         onLogin={handleLogin}
                         isLoading={isLoading}
-                        
+
                     />} />
-                    {/* <Route path='/signup' element={loggedIn ? <Navigate to="/" /> : <Register
-                            onRegister={handleRegister}
-                            errorMessage={serverError}
-                            isPreloading={isPreloading}
-                        />}
-                        />
-                        <Route path='/signin' element={loggedIn ? <Navigate to="/" /> : <Login
-                            onLogin={handleLogin}
-                            errorMessage={serverError}
-                            isPreloading={isPreloading}
-                        />} */}
                     {console.log('isLoading before MOVIES', isLoading)}
                     {console.log('IsLoggedIn before MOVIES', isLoggedIn)}
 
