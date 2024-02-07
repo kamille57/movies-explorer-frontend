@@ -1,0 +1,11 @@
+.movies__empty-request {
+    padding: 0 0 350px;
+    margin: 0 auto;
+    width: 320px;
+    height: 36px;
+    color: #FFF;
+    text-align: center;
+    font-size: 12px;
+    font-weight: 500;
+    line-height: normal;
+}

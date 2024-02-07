@@ -13,7 +13,7 @@ function Movies({ cards, isLoading, isRemovable }) {
   const searchResults = () => {
     if(searchQuery === '') {
       return (
-        <h3>Ничего не найдено</h3>
+        <h3 className='movies__empty-request'>Ничего не найдено</h3>
       )
     }
     return (

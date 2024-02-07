@@ -12,8 +12,6 @@ const Header = ({ backgroundColor, iconColor, isLoggedIn }) => {
     const [isBurgerMenuOpen, setIsBurgerMenuOpen] = useState(false);
     const [windowWidth, setWindowWidth] = useState(window.innerWidth);
 
-    // console.log('Header lOgged in: ' + isLoggedIn);
-
     useEffect(() => {
         const handleResize = () => {
             setWindowWidth(window.innerWidth);
