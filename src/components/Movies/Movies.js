@@ -10,6 +10,22 @@ function Movies({ cards, isLoading, isRemovable }) {
   const [searchQuery, setSearchQuery] = useState('');
   const [onlyShortMovies, setOnlyShortMovies] = useState(false);
 
+  const searchResults = () => {
+    if(searchQuery === '') {
+      return (
+        <h3>Ничего не найдено</h3>
+      )
+    }
+    return (
+      <MoviesCardList
+              searchQuery={searchQuery}
+              cards={cards}
+              isRemovable={isRemovable}
+              onlyShortMovies={onlyShortMovies}
+            />
+    )
+  }
+
   return (
     <>
       <Header
@@ -25,16 +41,7 @@ function Movies({ cards, isLoading, isRemovable }) {
             setOnlyShortMovies={setOnlyShortMovies}
             onlyShortMovies={onlyShortMovies}
           />
-            {isLoading ? (
-            <Preloader /> // Display a loading indicator if isLoading is true
-          ) : (
-            <MoviesCardList
-              searchQuery={searchQuery}
-              cards={cards}
-              isRemovable={isRemovable}
-              onlyShortMovies={onlyShortMovies}
-            />
-          )}
+            {isLoading ? <Preloader /> : searchResults() }
         </section>
       </main>
       <Footer />
