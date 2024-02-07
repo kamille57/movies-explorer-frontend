@@ -14,6 +14,7 @@ function SavedMovies({ isRemovable }) {
     useEffect(function(params) {
         moviesApi.getSavedMovies().then(setSavedMovies)
     },[])
+    
 
     return (
         <>
