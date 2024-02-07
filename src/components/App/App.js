@@ -63,12 +63,9 @@ function App() {
     const handleLogin = async ({ email, password }) => { // скобки фигурные
         setIsLoading(true);
         try {
-            console.log('pass and email in try', password, email);
             const authData = await api.authorize(email, password);
             localStorage.setItem('jwt', authData.token);
-            console.log('token', authData);
             const userData = await api.getUserInfo(authData.token);
-            console.log('userData', userData);
             setCurrentUser(userData);
             setIsLoggedIn(true);
             navigate('/');
@@ -165,8 +162,6 @@ function App() {
                         isLoading={isLoading}
 
                     />} />
-                    {console.log('isLoading before MOVIES', isLoading)}
-                    {console.log('IsLoggedIn before MOVIES', isLoggedIn)}
 
                     <Route
                         path="/movies"
@@ -178,8 +173,6 @@ function App() {
                             isRemovable={false}
                         />}
                     />
-                    {console.log('isLoading after MOVIES', isLoading)}
-                    {console.log('currentUs', currentUser)}
 
                     <Route
                         path="/saved-movies"
