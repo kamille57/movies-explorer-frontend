@@ -1,113 +1,126 @@
-import React from "react";
+import React, { useState } from "react";
 import MoviesApi from "../../utils/MoviesApi";
 
-function MoviesCard({ card, isSavedPage, onLike, onDelete, likedMovies }) {
-  const imageUrl = typeof card.image === 'string'
-         ? card.image
-         : 'https://api.nomoreparties.co' + card.image.url;
+function MoviesCard({ card, isRemovable }) {
+  const imageUrl = typeof card.image === "string" ? card.image : "https://api.nomoreparties.co" + card.image.url;
 
   const moviesApi = new MoviesApi();
+  const [isDeleted, setIsDeleted] = useState(false); 
 
-function handleChange(e) {
-  const isChecked = e.target.checked;
-  const updatedCard = { 
-    ...card, 
-    image: imageUrl, 
-    director: card.director.slice(0, 30),
-    createdAt: card.created_at,
-    updatedAt: card.updated_at,
-  };
-  
-  delete updatedCard.created_at;
-  delete updatedCard.updated_at;
-console.log("updatedCard", updatedCard);
-console.log(isChecked);
-  if (isChecked) {
-    // Создаем новый объект карточки с обновленным полем image
-
-    // Продолжаем сохранять карточку с обновленным полем image
-    moviesApi.createMovie(updatedCard);
-    console.log(updatedCard);
-  } else {
-    // Продолжаем удалять карточку с оригинальным полем image
-    moviesApi.deleteMovie(updatedCard.id);
-    console.log('привет');
-
+  function handleRemove() {
+    moviesApi.deleteMovie(card._id)
+      .then(() => {
+        setIsDeleted(true); // Обновление состояния после успешного удаления
+      })
+      .catch((err) => {
+        console.log(err); 
+      });
   }
-}
+
+  function handleChange(e) {  
+    const isChecked = e.target.checked;  
+    const updatedCard = {  
+      ...card,  
+      image: imageUrl,  
+      director: card.director.slice(0, 30),  
+      createdAt: card.created_at,  
+      updatedAt: card.updated_at,  
+    };  
+  
+    delete updatedCard.created_at;  
+    delete updatedCard.updated_at;  
+    if (isChecked) {  
+      moviesApi.createMovie(updatedCard);  
+    }  
+  }  
+
+  if (isDeleted) {
+    return null; // Рендеринг null, если фильм удален
+  }
 
   return (
     <article className="card">
       <figure className="card__figure">
         <img className="card__pic" src={imageUrl} alt={`Заставка ролика ${card.nameRU}`} />
         <figcaption className="card__caption">{card.nameRU}</figcaption>
-        <label className="card-checkbox">
-          <input className="card-checkbox__input" type="checkbox" placeholder="" onChange={handleChange} />
-          <span className="card-checkbox__inner"></span>
-        </label>
+        {isRemovable ? (
+          <div className="card-checkbox__cross" onClick={handleRemove} />
+        ) : (
+          <label className="card-checkbox">
+            <input className="card-checkbox__input" type="checkbox" placeholder="" onChange={handleChange} />
+            <span className="card-checkbox__inner"></span>
+          </label>
+        )}
       </figure>
-      <div className="card__duration" placeholder="Enter duration">{card.duration}мин</div>
+      <div className="card__duration" placeholder="Enter duration">
+        {card.duration}мин
+      </div>
     </article>
   );
 }
 
 export default MoviesCard;
 
-// function MoviesCard({ movie, isSavedPage, onLike, onDelete, likedMovies }) {
-//     const isMovieLiked = likedMovies && likedMovies.some(likedMovie => likedMovie.movieId === movie.id);
+// function MoviesCard({ card, isSavedPage, onLike, onDelete, likedMovies }) {
+//   const isMovieLiked = likedMovies && likedMovies.some(likedMovie => likedMovie.movieId === card.id);
 
-//     const imageUrl = typeof movie.image === 'string'
-//         ? movie.image
-//         : MOVIE_API_URL + movie.image.url;
+//   const imageUrl = typeof card.image === 'string'
+//     ? card.image
+//     : 'https://api.nomoreparties.co' + card.image.url;
 
-//     const handleLikeClick = async () => {
-//         try {
-//             if (isMovieLiked) {
-//                 if (!isSavedPage) {
-//                     await onDelete(movie);
-//                 }
-//             } else {
-//                 if (onLike) {
-//                     await onLike(movie);
-//                 }
-//             }
-//         } catch (error) {
-//             console.error('Ошибка при обработке лайка:', error);
+//   //   const moviesApi = new MoviesApi();
+
+//   const handleLikeClick = async () => {
+//     try {
+//       if (isMovieLiked) {
+//         if (!isSavedPage) {
+//           await onDelete(card);
 //         }
-//     };
-
-//     const handleDeleteClick = () => {
-//         if (isSavedPage) {
-//             onDelete(movie);
+//       } else {
+//         if (onLike) {
+//           await onLike(card);
 //         }
-//     };
+//       }
+//     } catch (error) {
+//       console.error('Ошибка при обработке лайка:', error);
+//     }
+//   };
 
-//     return (
-//         <li className='movies-card'>
-//             <a className='movies-card__movie-link' href={movie.trailerLink} target='_blank' rel='noopener noreferrer'>
-//                 <img
-//                     className='movies-card__image'
-//                     src={imageUrl}
-//                     alt={`Заставка ролика ${movie.nameRU}`}
-//                 />
-//             </a>
-//             <div className='movies-card__group'>
-//                 <h2 className='movies-card__name'>{movie.nameRU}</h2>
-//                 {isSavedPage ? (
-//                     <button
-//                         className='movies-card__button movies-card__button_delete'
-//                         onClick={handleDeleteClick}
-//                         type='button'
-//                     />
-//                 ) : (
-//                     <button
-//                         className={`movies-card__button ${isMovieLiked ? 'movies-card__button_liked' : ''}`}
-//                         onClick={handleLikeClick}
-//                         type='button'
-//                     />
-//                 )}
-//             </div>
-//             <p className='movies-card__duration'>{formatDuration(movie.duration)}</p>
-//         </li>
-//     );
+//   const handleDeleteClick = () => {
+//     if (isSavedPage) {
+//       onDelete(card);
+//     }
+//   };
+
+//   return (
+//     <li className='card'>
+//       <a href={card.trailerLink} target='_blank' rel='noopener noreferrer'>
+//         <img
+//           className='card__pic'
+//           src={imageUrl}
+//           alt={`Заставка ролика ${card.nameRU}`}
+//         />
+//       </a>
+//       <figure className="card__figure">
+//         <img className="card__pic" src={imageUrl} alt={`Заставка ролика ${card.nameRU}`} />
+//         <figcaption className="card__caption">{card.nameRU}</figcaption>
+//         {isSavedPage ? (
+//           <button
+//             className='movies-card__button movies-card__button_delete'
+//             onClick={handleDeleteClick}
+//             type='button'
+//           />
+//         ) : (
+//           <button
+//             className={`movies-card__button ${isMovieLiked ? 'movies-card__button_liked' : ''}`}
+//             onClick={handleLikeClick}
+//             type='button'
+//           />
+//         )}
+//       </figure>
+//       <p className="card__duration" placeholder="Enter duration">{card.duration}мин</p>
+//     </li>
+//   );
 // }
+
+// export default MoviesCard;

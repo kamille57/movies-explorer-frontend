@@ -175,6 +175,7 @@ function App() {
                             cards={cards}
                             isLoading={isLoading}
                             isLoggedIn={isLoggedIn}
+                            isRemovable={false}
                         />}
                     />
                     {console.log('isLoading after MOVIES', isLoading)}
@@ -185,6 +186,8 @@ function App() {
                         element={<ProtectedRoute
                             Element={SavedMovies}
                             isLoggedIn={isLoggedIn}
+                            isLoading={isLoading}
+                            isRemovable={true}
                         />}
                     />
                     <Route path="/profile" element={<Profile

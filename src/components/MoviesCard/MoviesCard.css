@@ -56,6 +56,13 @@
     line-height: normal;
 }
 
+.card-checkbox__cross {
+    background-image: url("../../images/d8.svg");
+    background-size: 25px cover;
+    background-repeat: no-repeat;
+    grid-area: box;
+}
+
 .card-checkbox__input {
     position: absolute;
     opacity: 0;

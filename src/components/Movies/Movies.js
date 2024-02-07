@@ -6,7 +6,7 @@ import Footer from "../Footer/Footer.js";
 import { useState } from 'react';
 import Preloader from '../Preloader/Preloader.js';
 
-function Movies({ cards, isLoading }) {
+function Movies({ cards, isLoading, isRemovable }) {
   const [searchQuery, setSearchQuery] = useState('');
   const [onlyShortMovies, setOnlyShortMovies] = useState(false);
 
@@ -31,6 +31,7 @@ function Movies({ cards, isLoading }) {
             <MoviesCardList
               searchQuery={searchQuery}
               cards={cards}
+              isRemovable={isRemovable}
               onlyShortMovies={onlyShortMovies}
             />
           )}

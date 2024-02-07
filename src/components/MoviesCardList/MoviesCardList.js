@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'; 
 import MoviesCard from '../MoviesCard/MoviesCard.js'; 
 
-function MoviesCardList({ cards, searchQuery, onlyShortMovies }) { 
+function MoviesCardList({ cards, searchQuery, onlyShortMovies, isRemovable }) { 
   const [movies, setMovies] = useState(cards); 
 
 useEffect(() => {     
@@ -36,6 +36,7 @@ useEffect(() => {
           <li key={newCard.id}> 
             <MoviesCard 
               card={newCard} 
+              isRemovable={isRemovable}
             /> 
           </li> 
         ))} 

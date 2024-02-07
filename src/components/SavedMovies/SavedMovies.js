@@ -5,7 +5,7 @@ import MoviesApi from '../../utils/MoviesApi.js';
 import Header from '../Header/Header.js'
 import Footer from "../Footer/Footer.js"
 
-function SavedMovies() {
+function SavedMovies({ isRemovable }) {
     const [savedMovies, setSavedMovies] = useState([]);
 
     
@@ -13,7 +13,6 @@ function SavedMovies() {
 
     useEffect(function(params) {
         moviesApi.getSavedMovies().then(setSavedMovies)
-        // setSavedMovies(savedMovies);
     },[])
 
     return (
@@ -26,7 +25,9 @@ function SavedMovies() {
             <main className="saved-movies">
                 <section className="saved-movies-page">
                     <SearchForm />
-                    <MoviesCardList cards={savedMovies} />
+                    <MoviesCardList 
+                    cards={savedMovies}
+                    isRemovable={isRemovable} />
                 </section >
             </main>
             <Footer />
