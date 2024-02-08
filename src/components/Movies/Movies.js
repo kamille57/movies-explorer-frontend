@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import SearchForm from "../SearchForm/SearchForm.js";
 import MoviesCardList from "../MoviesCardList/MoviesCardList.js";
 import Header from '../Header/Header.js';
@@ -9,6 +9,13 @@ import Preloader from '../Preloader/Preloader.js';
 function Movies({ cards, isLoading, isRemovable }) {
   const [searchQuery, setSearchQuery] = useState('');
   const [onlyShortMovies, setOnlyShortMovies] = useState(false);
+
+  useEffect(function() {
+    const onlyShortMovies = localStorage.getItem('onlyShortMovies');
+    if (onlyShortMovies === "true") {
+      setOnlyShortMovies(true)
+    } 
+  }, [])
 
   const searchResults = () => {
     if(searchQuery === '') {
