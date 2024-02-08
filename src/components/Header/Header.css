@@ -17,6 +17,7 @@
     width: 38px;
     height: 38px;
     object-fit: cover;
+    cursor: pointer;
 }
 
 .header__btn {

@@ -5,7 +5,7 @@ function MoviesCard({ card, isRemovable }) {
   const imageUrl = typeof card.image === "string" ? card.image : "https://api.nomoreparties.co" + card.image.url;
 
   const moviesApi = new MoviesApi();
-  const [isDeleted, setIsDeleted] = useState(false); 
+  const [isDeleted, setIsDeleted] = useState(false);
 
   function handleRemove() {
     moviesApi.deleteMovie(card._id)
@@ -13,29 +13,36 @@ function MoviesCard({ card, isRemovable }) {
         setIsDeleted(true); // Обновление состояния после успешного удаления
       })
       .catch((err) => {
-        console.log(err); 
+        console.log(err);
       });
   }
 
-  function handleChange(e) {  
-    const isChecked = e.target.checked;  
-    const updatedCard = {  
-      ...card,  
-      image: imageUrl,  
-      director: card.director.slice(0, 30),  
-      createdAt: card.created_at,  
-      updatedAt: card.updated_at,  
-    };  
-  
-    delete updatedCard.created_at;  
-    delete updatedCard.updated_at;  
-    if (isChecked) {  
-      moviesApi.createMovie(updatedCard);  
-    }  
-  }  
+  function handleChange(e) {
+    const isChecked = e.target.checked;
+    const updatedCard = {
+      ...card,
+      image: imageUrl,
+      director: card.director.slice(0, 30),
+      createdAt: card.created_at,
+      updatedAt: card.updated_at,
+    };
+
+    delete updatedCard.created_at;
+    delete updatedCard.updated_at;
+    if (isChecked) {
+      moviesApi.createMovie(updatedCard);
+    }
+  }
 
   if (isDeleted) {
     return null; // Рендеринг null, если фильм удален
+  }
+
+  function getDurationInHoursAndMinutes(duration) {
+    const hours = Math.floor(duration / 60);
+    const minutes = duration % 60;
+
+    return `${hours}ч ${minutes}мин`;
   }
 
   return (
@@ -53,7 +60,7 @@ function MoviesCard({ card, isRemovable }) {
         )}
       </figure>
       <div className="card__duration" placeholder="Enter duration">
-        {card.duration}мин
+        {getDurationInHoursAndMinutes(card.duration)}
       </div>
     </article>
   );

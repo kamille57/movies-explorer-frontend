@@ -2,7 +2,6 @@ import React from 'react';
 
 function FilterCheckbox({ setOnlyShortMovies, onlyShortMovies }) {
   const handleCheckboxChange = () => {
-    console.log('Im here');
     setOnlyShortMovies(!onlyShortMovies);
   };
 
