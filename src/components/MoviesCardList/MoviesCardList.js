@@ -3,8 +3,9 @@ import MoviesCard from '../MoviesCard/MoviesCard.js';
 
 function MoviesCardList({ cards, searchQuery, onlyShortMovies, isRemovable }) {
   const [movies, setMovies] = useState(cards);
-  const [chunkSize, setChunkSize] = useState(4);
-  const [cardsLimit, setCardsLimit] = useState(chunkSize);
+  const [isLoadedMore, setIsLoadedMore] = useState(false);
+  const [chunkSize, setChunkSize] = useState(2); // 2 - 2 - 4
+  const [cardsLimit, setCardsLimit] = useState(5); // 5 - 8 - 16
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
 
   useEffect(() => {
@@ -51,14 +52,30 @@ function MoviesCardList({ cards, searchQuery, onlyShortMovies, isRemovable }) {
   useEffect(() => {
     console.log('Width: ' + windowWidth);
 
-    if (windowWidth >= 768) {
-      setChunkSize(8);
+    if (windowWidth >= 1280) {
+      changeMovieListOptions(16, 4);
+    } else if (windowWidth >= 768) {
+      changeMovieListOptions(8, 2);
     } else {
-      setChunkSize(4);
+      changeMovieListOptions(5, 2);
     }
-    setCardsLimit(8)
 
   }, [windowWidth]);
+
+
+  function changeMovieListOptions(limit, chankSize) {
+    !isLoadedMore && setCardsLimit(limit)
+    setChunkSize(chankSize);
+  }
+
+
+  function addMoreItems() {
+    const newLimit = cardsLimit + chunkSize;
+    setCardsLimit(newLimit);
+    if(!isLoadedMore) {
+      setIsLoadedMore(true)
+    }
+  }
 
 
   const loadMoreBtn = () => {
@@ -68,6 +85,7 @@ function MoviesCardList({ cards, searchQuery, onlyShortMovies, isRemovable }) {
           type="button"
           aria-label="кнопка для показа большего количества фильмов"
           className="cards__btn"
+          onClick={addMoreItems}
         >
           Ещё
         </button>
