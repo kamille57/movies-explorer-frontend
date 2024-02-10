@@ -23,6 +23,7 @@ function Movies({ cards, isLoading, isRemovable }) {
         <h3 className='movies__empty-request'>Ничего не найдено</h3>
       )
     }
+    
     return (
       <MoviesCardList
               searchQuery={searchQuery}

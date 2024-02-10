@@ -53,8 +53,6 @@ function Auth({ title, name, button, text, span, isRegistration, handleSubmit })
         validate
     );
 
-
-    // --------------------------------------------------------------исправлено
     const innerHandleSubmit = (event) => {
         event.preventDefault();
         if (validateForm()) {
@@ -67,7 +65,6 @@ function Auth({ title, name, button, text, span, isRegistration, handleSubmit })
             }
         }
     };
-// --------------------------------------------------------------исправлено
 
     return (
         <div className="auth">

@@ -12,7 +12,8 @@ function SavedMovies({ isRemovable }) {
     const moviesApi = new MoviesApi();
 
     useEffect(function(params) {
-        moviesApi.getSavedMovies().then(setSavedMovies)
+        moviesApi.getSavedMovies()
+        .then(setSavedMovies)
     },[])
     
 
