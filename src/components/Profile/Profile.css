@@ -47,11 +47,12 @@
     outline: none;
 }
 
+
 .profile__input-text:first-child {
     border-bottom: 1px solid #424242;
 }
 
-.profile__submit {
+.profile__edit {
     margin: 210px auto 16px;
     background-color: transparent;
     border: none;
@@ -60,6 +61,21 @@
     font-size: 13px;
     font-weight: 400;
     cursor: pointer;
+
+}
+
+.profile__submit {
+    margin: 223px auto 16px;
+    border-radius: 3px;
+    border: none;
+    background: #3456F3;
+    color: #FFF;
+    text-align: center;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    width: 410px;
+    height: 45px;
 }
 
 .profile__link {
