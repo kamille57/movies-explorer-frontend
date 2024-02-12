@@ -4,18 +4,15 @@ import { NavLink, useNavigate } from 'react-router-dom';
 import profileDark from "../../images/profileDark.svg";
 import CurrentUserContext from "../../contexts/CurrentUserContext";
 
-function Profile({ onUpdateProfile, signOut }) {
+
+
+function Profile({ onUpdateProfile, signOut, serverError }) {
   const currentUser = useContext(CurrentUserContext);
-  const [name, setName] = useState(currentUser?.name || "");
-  const [email, setEmail] = useState(currentUser?.email || "");
+  const [name, setName] = useState(currentUser?.name);
+  const [email, setEmail] = useState(currentUser?.email);
   const [isEditing, setIsEditing] = useState(false);
-  const [isSaveDisabled, setIsSaveDisabled] = useState(true);
-  const [isError, setIsError] = useState(false);
 
   const navigate = useNavigate();
-  const validateInputs = () => {
-
-  };
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
@@ -24,29 +21,20 @@ function Profile({ onUpdateProfile, signOut }) {
     } else if (name === "email") {
       setEmail(value);
     }
-    
-    validateInputs(); // Вызывает функцию валидации после обновления значения инпута
   };
 
   const handleSubmit = (event) => {
-    event.preventDefault();
     setIsEditing(false);
+    event.preventDefault();
     onUpdateProfile({ email, name });
   };
 
   useEffect(function () {
     if (!currentUser) {
-      console.warn('You forgot to log in');
+      console.warn('You forgot loggin');
       navigate("/signup");
-    } else if (name.trim() === "" || email.trim() === "") {
-      setIsSaveDisabled(true);
-      setIsError(true);
-    } else {
-      setIsSaveDisabled(false);
-      setIsError(false);
     }
-  }, [currentUser, navigate, name, email]);
-
+  }, [currentUser, navigate])
   return (
     <>
       <Header
@@ -58,7 +46,8 @@ function Profile({ onUpdateProfile, signOut }) {
         <h1 className="profile__title">Привет, {name}</h1>
 
         <form className="profile__form" onSubmit={handleSubmit}>
-          <span className="profile__input-text">Имя
+          <span className="profile__input-text">
+            Имя
             <label className="profile__label" htmlFor="name"></label>
             <input
               type="text"
@@ -69,11 +58,12 @@ function Profile({ onUpdateProfile, signOut }) {
               maxLength="40"
               onChange={handleInputChange}
               value={name}
+              disabled={!isEditing}
               placeholder="Введите имя"
-              readOnly={!isEditing}
             />
           </span>
-          <span className="profile__input-text">E-mail
+          <span className="profile__input-text">
+            E-mail
             <label className="profile__label" htmlFor="email"></label>
             <input
               className="profile__input"
@@ -85,35 +75,31 @@ function Profile({ onUpdateProfile, signOut }) {
               maxLength="40"
               onChange={handleInputChange}
               value={email}
-              placeholder="Введите email"
               disabled={!isEditing}
+              placeholder="Введите email"
             />
           </span>
           {isEditing ? (
-            <>
-              {isError ? (
-                <span className="profile__error_active">Все поля должны быть заполнены корректно</span>
-              ) : (
-                <span className="profile__error_inactive">Все поля заполнены корректно</span>
-              )}
-              <button
-                type="submit"
-                className={`profile__submit ${isSaveDisabled ? 'profile__submit_disabled' : ''}`}
-                disabled={isSaveDisabled}
-                onClick={() => setIsEditing(false)}
-              >
-                Сохранить
-              </button>
-            </>
+            <button
+              type="submit"
+              className="profile__submit"
+              onClick={() => setIsEditing(false)}
+            >
+              Сохранить
+            </button>
           ) : (
-            <>
-              <button type="button" className="profile__edit" onClick={() => setIsEditing(true)}>Редактировать</button>
-              <NavLink to="/" className="profile__link" onClick={signOut}>
-                Выйти из аккаунта
-              </NavLink>
-            </>
+            <button
+              type="submit"
+              className="profile__edit"
+              onClick={() => setIsEditing(true)}
+            >
+              Редактировать
+            </button>
           )}
         </form>
+        <NavLink to="/" className="profile__link" onClick={signOut}>
+          Выйти из аккаунта
+        </NavLink>
       </main>
     </>
   );

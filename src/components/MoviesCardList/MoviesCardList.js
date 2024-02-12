@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import MoviesCard from '../MoviesCard/MoviesCard.js';
 
-function MoviesCardList({ cards, searchQuery, onlyShortMovies, isRemovable }) {
+function MoviesCardList({ cards, searchQuery, onlyShortMovies, isRemovable, showMoviesWhileEmptySearch }) {
   const [movies, setMovies] = useState(cards);
   const [isLoadedMore, setIsLoadedMore] = useState(false);
   const [chunkSize, setChunkSize] = useState(2); // 2 - 2 - 4
@@ -21,8 +21,6 @@ function MoviesCardList({ cards, searchQuery, onlyShortMovies, isRemovable }) {
   }, []);
 
   useEffect(() => {
-    console.log('onlyShortMovies', onlyShortMovies);
-
     const fixedCards = cards.map(card => {
       const imageUrl = typeof card.image === 'string'
         ? card.image
@@ -72,7 +70,8 @@ function MoviesCardList({ cards, searchQuery, onlyShortMovies, isRemovable }) {
   }
 
   return (
-    (movies.length === 0 || searchQuery === '') ? 
+    (movies.length === 0 || !showMoviesWhileEmptySearch && searchQuery === '') ? 
+    // (movies.length === 0 || searchQuery === '') ? 
       <h3 className='movies__empty-request'>Ничего не найдено</h3> 
       :
       <section className="cards">

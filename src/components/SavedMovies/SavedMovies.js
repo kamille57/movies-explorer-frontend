@@ -6,16 +6,25 @@ import Header from '../Header/Header.js'
 import Footer from "../Footer/Footer.js"
 
 function SavedMovies({ isRemovable }) {
+    const [searchQuery, setSearchQuery] = useState('');
+    const [onlyShortMovies, setOnlyShortMovies] = useState(false);
     const [savedMovies, setSavedMovies] = useState([]);
 
-    
+
     const moviesApi = new MoviesApi();
 
-    useEffect(function(params) {
+    useEffect(function (params) {
         moviesApi.getSavedMovies()
-        .then(setSavedMovies)
-    },[])
-    
+            .then(setSavedMovies)
+    }, [])
+
+    useEffect(function () {
+        const onlyShortMovies = localStorage.getItem('onlyShortMovies');
+        if (onlyShortMovies === "true") {
+            setOnlyShortMovies(true)
+        }
+    }, [])
+
 
     return (
         <>
@@ -26,10 +35,19 @@ function SavedMovies({ isRemovable }) {
             />
             <main className="saved-movies">
                 <section className="saved-movies-page">
-                    <SearchForm />
-                    <MoviesCardList 
-                    cards={savedMovies}
-                    isRemovable={isRemovable} />
+                    <SearchForm
+                        setSearchQuery={setSearchQuery}
+                        searchQuery={searchQuery}
+                        setOnlyShortMovies={setOnlyShortMovies}
+                        onlyShortMovies={onlyShortMovies}
+                    />
+                    <MoviesCardList
+                        cards={savedMovies}
+                        searchQuery={searchQuery}
+                        isRemovable={isRemovable}
+                        onlyShortMovies={onlyShortMovies}
+                        showMoviesWhileEmptySearch={true}
+                    />
                 </section >
             </main>
             <Footer />

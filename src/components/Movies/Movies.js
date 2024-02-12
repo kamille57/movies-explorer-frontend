@@ -39,6 +39,7 @@ function Movies({ cards, isLoading, isRemovable }) {
                   cards={cards}
                   isRemovable={isRemovable}
                   onlyShortMovies={onlyShortMovies}
+                  showMoviesWhileEmptySearch={false}
                 /> 
             }
         </section>

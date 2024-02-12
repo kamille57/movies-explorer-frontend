@@ -17,6 +17,8 @@ import MoviesApi from '../../utils/MoviesApi.js';
 import InfoToolTipSuccess from "../InfoToolTipSuccess/InfoToolTipSuccess.js";
 import InfoToolTipFail from "../InfoToolTipFail/InfoToolTipFail.js"
 import Preloader from "../Preloader/Preloader";
+import { handleError } from "../../utils/handleError.js"
+import { profileErrors } from '../../constants/constants.js';
 
 
 function App() {
@@ -27,6 +29,7 @@ function App() {
     const [isToolTipSuccessOpen, setIsToolTipSuccessOpen] = useState(false);
     const [isToolTipFailOpen, setIsToolTipFailOpen] = useState(false);
     const [isCheckingAuth, setIsCheckingAuth] = useState(true);
+    const [serverError, setServerError] = useState('');
 
     const navigate = useNavigate();
     const api = new MainApi();
@@ -46,6 +49,7 @@ function App() {
     function onError() {
         setIsToolTipFailOpen(true);
     }
+    
 
     function handleUpdateProfile({ email, name }) {
         const updatedUser =
@@ -56,8 +60,9 @@ function App() {
 
             })
             .catch((error) => {
-                console.error(error);
-            });
+                const errorMessage = handleError(error, profileErrors);
+                setServerError(errorMessage);
+            })
     };
 
     const handleLogin = async ({ email, password }) => { // скобки фигурные
@@ -186,6 +191,7 @@ function App() {
                     <Route path="/profile" element={<Profile
                         onUpdateProfile={handleUpdateProfile}
                         signOut={signOut}
+                        serverError={serverError}
                     />} />
                     <Route path="*" element={<NotFound />} />
                 </Routes>
