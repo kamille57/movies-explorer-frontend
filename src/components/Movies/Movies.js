@@ -17,23 +17,6 @@ function Movies({ cards, isLoading, isRemovable }) {
     } 
   }, [])
 
-  const searchResults = () => {
-    if(searchQuery === '') {
-      return (
-        <h3 className='movies__empty-request'>Ничего не найдено</h3>
-      )
-    }
-    
-    return (
-      <MoviesCardList
-              searchQuery={searchQuery}
-              cards={cards}
-              isRemovable={isRemovable}
-              onlyShortMovies={onlyShortMovies}
-            />
-    )
-  }
-
   return (
     <>
       <Header
@@ -49,7 +32,15 @@ function Movies({ cards, isLoading, isRemovable }) {
             setOnlyShortMovies={setOnlyShortMovies}
             onlyShortMovies={onlyShortMovies}
           />
-            {isLoading ? <Preloader /> : searchResults() }
+            {isLoading ? 
+                <Preloader /> 
+              : <MoviesCardList
+                  searchQuery={searchQuery}
+                  cards={cards}
+                  isRemovable={isRemovable}
+                  onlyShortMovies={onlyShortMovies}
+                /> 
+            }
         </section>
       </main>
       <Footer />

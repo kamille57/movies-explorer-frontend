@@ -42,9 +42,6 @@ function MoviesCardList({ cards, searchQuery, onlyShortMovies, isRemovable }) {
       filteredMovies = filteredMovies.filter(movie => movie.duration <= 40);
     }
 
-    console.log('Итоговый набор списком: ', filteredMovies);
-    console.log('Итоговый набор длина: ' + filteredMovies.length);
-
     setMovies(filteredMovies);
   }, [searchQuery, cards, onlyShortMovies]);
 
@@ -61,12 +58,10 @@ function MoviesCardList({ cards, searchQuery, onlyShortMovies, isRemovable }) {
 
   }, [windowWidth]);
 
-
   function changeMovieListOptions(limit, chankSize) {
     !isLoadedMore && setCardsLimit(limit)
     setChunkSize(chankSize);
   }
-
 
   function addMoreItems() {
     const newLimit = cardsLimit + chunkSize;
@@ -76,37 +71,32 @@ function MoviesCardList({ cards, searchQuery, onlyShortMovies, isRemovable }) {
     }
   }
 
-
-  const loadMoreBtn = () => {
-    if (movies.length > cardsLimit) {
-      return (
-        <button
-          type="button"
-          aria-label="кнопка для показа большего количества фильмов"
-          className="cards__btn"
-          onClick={addMoreItems}
-        >
-          Ещё
-        </button>
-      )
-    }
-
-  }
-
   return (
-    <section className="cards">
-      <ul className="cards__container">
-        {searchQuery !== '' && movies && movies.slice(0, cardsLimit).map((newCard) => (
-          <li key={newCard.id}>
-            <MoviesCard
-              card={newCard}
-              isRemovable={isRemovable}
-            />
-          </li>
-        ))}
-      </ul>
-      {loadMoreBtn()}
-    </section>
+    (movies.length === 0 || searchQuery === '') ? 
+      <h3 className='movies__empty-request'>Ничего не найдено</h3> 
+      :
+      <section className="cards">
+        <ul className="cards__container">
+          {searchQuery !== '' && movies && movies.slice(0, cardsLimit).map((newCard) => (
+            <li key={newCard.id}>
+              <MoviesCard
+                card={newCard}
+                isRemovable={isRemovable}
+              />
+            </li>
+          ))}
+        </ul>
+        {movies.length > cardsLimit && (
+          <button
+            type="button"
+            aria-label="кнопка для показа большего количества фильмов"
+            className="cards__btn"
+            onClick={addMoreItems}
+          >
+            Ещё
+          </button>
+        )}
+      </section>
   );
 }
 
