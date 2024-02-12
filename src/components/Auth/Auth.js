@@ -1,8 +1,11 @@
 import React from 'react';
 import { useForm } from '../../hooks/useForm';
 import logo from '../../images/logo.svg';
+import { useNavigate } from 'react-router-dom';
 
-function Auth({ title, name, button, text, span, children }) {
+function Auth({ title, name, button, text, span, children, handleSubmit }) {
+    const navigate = useNavigate();
+
     const initialValues = {
         name: '',
         email: '',
@@ -16,6 +19,9 @@ function Auth({ title, name, button, text, span, children }) {
             if (!value) {
                 error = 'Поле E-mail обязательно для заполнения';
                 document.getElementById('email').classList.add('auth__input_invalid');
+            } else if (value.length < 3 || value.length > 64) {
+                error = 'Поле E-mail должно быть длинее 3х символов и короче 64';
+                document.getElementById('email').classList.add('auth__input_invalid');
             } else {
                 document.getElementById('email').classList.remove('auth__input_invalid');
             }
@@ -25,6 +31,9 @@ function Auth({ title, name, button, text, span, children }) {
             if (!value) {
                 error = 'Поле Пароль обязательно для заполнения';
                 document.getElementById('password').classList.add('auth__input_invalid');
+            } else if (value.length < 6 && value.length > 64) {
+                error = 'Поле Password должно быть длинее 6 и короче 64';
+                document.getElementById('email').classList.add('auth__input_invalid');
             } else {
                 document.getElementById('password').classList.remove('auth__input_invalid');
             }
@@ -34,6 +43,7 @@ function Auth({ title, name, button, text, span, children }) {
     };
 
     const {
+        values,
         errors,
         handleChange,
         validateForm,
@@ -43,18 +53,21 @@ function Auth({ title, name, button, text, span, children }) {
         validate
     );
 
-    const handleSubmit = (event) => {
+    const innerHandleSubmit = (event) => {
+        console.log('submit from');
         event.preventDefault();
 
         if (validateForm()) {
+            handleSubmit(values);
         }
     };
 
     return (
         <div className="auth">
-            <form className="auth__form" onSubmit={handleSubmit} id={`${name}Form`} name={name}>
-                <img className="auth__logo" src={logo} alt="Логотип" />
-                <h2 className="auth__welcome">{title}</h2>
+            <form className="auth__form" onSubmit={innerHandleSubmit} id={`${name}Form`} name={name}>
+                <img className="auth__logo" src={logo} alt="Логотип" onClick={() => navigate("/")}
+                />
+                <h1 className="auth__welcome">{title}</h1>
                 <fieldset className="auth__fieldset">
                     {children}
                     <label className="auth__label" htmlFor="email">
@@ -68,6 +81,7 @@ function Auth({ title, name, button, text, span, children }) {
                         id="email"
                         onChange={handleChange}
                         {...getInputProps('email')}
+                        placeholder="Введите ваш email"
                     />
                     <span className="auth__error" id="email-error">{errors.email}</span>
                     <label className="auth__label" htmlFor="password">
@@ -81,17 +95,18 @@ function Auth({ title, name, button, text, span, children }) {
                         id="password"
                         onChange={handleChange}
                         {...getInputProps('password')}
+                        placeholder="Введите ваш пароль"
                     />
                     <span className="auth__error" id="password-error">{errors.password}</span>
                 </fieldset>
+                <div className="auth__confirm">
+                    <button type="submit" aria-label={`кнопка сохранения ${name}`} className="auth__confirm-btn">
+                        {button}
+                    </button>
+                    <p className="auth__confirm-text">{text}</p>
+                    <span>{span}</span>
+                </div>
             </form>
-            <div className="auth__confirm">
-                <button type="submit" aria-label={`кнопка сохранения ${name}`} className="auth__confirm-btn">
-                    {button}
-                </button>
-                <p className="auth__confirm-text">{text}</p>
-                <span>{span}</span>
-            </div>
         </div>
     );
 }

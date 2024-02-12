@@ -3,14 +3,15 @@ import SearchForm from "../SearchForm/SearchForm.js"
 import MoviesCardList from "../MoviesCardList/MoviesCardList.js"
 import Header from '../Header/Header.js'
 import Footer from "../Footer/Footer.js"
-import profileDark from "../../images/profileDark.svg"
 
 function SavedMovies() {
     return (
         <>
             <Header
                 backgroundColor="#202020"
-                profileSrc={profileDark} />
+                iconColor="#313131"
+                isLogged={true}
+            />
             <main className="saved-movies">
                 <section className="saved-movies-page">
                     <SearchForm />
