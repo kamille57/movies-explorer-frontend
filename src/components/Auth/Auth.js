@@ -73,7 +73,7 @@ function Auth({ title, name, button, text, span, isRegistration, handleSubmit })
                 />
                 <h1 className="auth__welcome">{title}</h1>
                 <fieldset className="auth__fieldset">
-                    { // ------------------------------------------------сюда добавил поле name
+                    {
                         isRegistration && (
                             <>
                                 <label className="auth__label" htmlFor="name">Имя:</label>

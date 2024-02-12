@@ -13,6 +13,9 @@ function Profile({ onUpdateProfile, signOut }) {
   const [isError, setIsError] = useState(false);
 
   const navigate = useNavigate();
+  const validateInputs = () => {
+
+  };
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
@@ -21,6 +24,8 @@ function Profile({ onUpdateProfile, signOut }) {
     } else if (name === "email") {
       setEmail(value);
     }
+    
+    validateInputs(); // Вызывает функцию валидации после обновления значения инпута
   };
 
   const handleSubmit = (event) => {

@@ -69,7 +69,9 @@ function App() {
             setCurrentUser(userData);
             setIsLoggedIn(true);
             navigate('/');
+            onRegister();
         } catch (err) {
+            onError();
             console.log('Ошибка при получении данных пользователя:', err);
         } finally {
             setIsLoading(false);
@@ -86,8 +88,6 @@ function App() {
             })
             .then(data => {
                 localStorage.setItem('jwt', data.token);
-                console.log('Авторизация успешна, токен:', data.token);
-
                 setCurrentUser({ email, name });
                 setIsLoggedIn(true);
                 navigate("/");

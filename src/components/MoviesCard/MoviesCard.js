@@ -10,7 +10,7 @@ function MoviesCard({ card, isRemovable }) {
   function handleRemove() {
     moviesApi.deleteMovie(card._id)
       .then(() => {
-        setIsDeleted(true); // Обновление состояния после успешного удаления
+        setIsDeleted(true); 
       })
       .catch((err) => {
         console.log(err);
@@ -35,7 +35,7 @@ function MoviesCard({ card, isRemovable }) {
   }
 
   if (isDeleted) {
-    return null; // Рендеринг null, если фильм удален
+    return null;
   }
 
   function getDurationInHoursAndMinutes(duration) {
