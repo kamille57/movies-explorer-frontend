@@ -38,16 +38,15 @@ function MoviesCardList({ cards, searchQuery, onlyShortMovies, isRemovable }) {
     let filteredMovies = fixedCards.filter(movie => movie.nameRU.match(regex));
 
     if (onlyShortMovies) {
-      console.log('inside if');
+
       filteredMovies = filteredMovies.filter(movie => movie.duration <= 40);
     }
 
+    console.log('Итоговый набор списком: ', filteredMovies);
     console.log('Итоговый набор длина: ' + filteredMovies.length);
 
-
-
     setMovies(filteredMovies);
-  }, [searchQuery, cards]);
+  }, [searchQuery, cards, onlyShortMovies]);
 
   useEffect(() => {
     console.log('Width: ' + windowWidth);
