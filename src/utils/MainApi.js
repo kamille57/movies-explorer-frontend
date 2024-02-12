@@ -4,13 +4,14 @@ class MainApi {
     this.credentials = 'include';
   }
 
-  _checkResponse(res) {
+  async _checkResponse(res) {
     if (res.ok) {
-      return res.json();
+        return res.json();
     }
-    return res.json().then(error => {
-      throw new Error(`Ошибка: ${res.status} - ${error.message}`);
-    });
+    const errorMessage = await res.text();
+    const error = new Error(errorMessage);
+    error.status = res.status;
+    throw error;
   }
 
   register(userData) {
@@ -32,7 +33,7 @@ class MainApi {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({email, password}) // поставил фигурные скобки
+      body: JSON.stringify({email, password}) 
     })
       .then(response => this._checkResponse(response));
   }

@@ -24,9 +24,9 @@ function Profile({ onUpdateProfile, signOut, serverError }) {
   };
 
   const handleSubmit = (event) => {
-    setIsEditing(false);
     event.preventDefault();
     onUpdateProfile({ email, name });
+
   };
 
   useEffect(function () {
@@ -46,8 +46,7 @@ function Profile({ onUpdateProfile, signOut, serverError }) {
         <h1 className="profile__title">Привет, {name}</h1>
 
         <form className="profile__form" onSubmit={handleSubmit}>
-          <span className="profile__input-text">
-            Имя
+          <span className="profile__input-text">Имя
             <label className="profile__label" htmlFor="name"></label>
             <input
               type="text"
@@ -62,8 +61,7 @@ function Profile({ onUpdateProfile, signOut, serverError }) {
               placeholder="Введите имя"
             />
           </span>
-          <span className="profile__input-text">
-            E-mail
+          <span className="profile__input-text">E-mail
             <label className="profile__label" htmlFor="email"></label>
             <input
               className="profile__input"
@@ -97,12 +95,13 @@ function Profile({ onUpdateProfile, signOut, serverError }) {
             </button>
           )}
         </form>
-        <NavLink to="/" className="profile__link" onClick={signOut}>
-          Выйти из аккаунта
-        </NavLink>
+        {!isEditing && (
+          <NavLink to="/" className="profile__link" onClick={signOut}>
+            Выйти из аккаунта
+          </NavLink>
+        )}
       </main>
     </>
   );
 }
-
 export default Profile;
