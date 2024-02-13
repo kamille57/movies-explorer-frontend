@@ -4,37 +4,42 @@ import { NavLink, useNavigate } from 'react-router-dom';
 import profileDark from "../../images/profileDark.svg";
 import CurrentUserContext from "../../contexts/CurrentUserContext";
 
-
-
 function Profile({ onUpdateProfile, signOut, serverError }) {
   const currentUser = useContext(CurrentUserContext);
   const [name, setName] = useState(currentUser?.name);
   const [email, setEmail] = useState(currentUser?.email);
   const [isEditing, setIsEditing] = useState(false);
+  const [isSubmitDisabled, setIsSubmitDisabled] = useState(true);
 
   const navigate = useNavigate();
 
-  const handleInputChange = (event) => {
-    const { name, value } = event.target;
-    if (name === "name") {
-      setName(value);
-    } else if (name === "email") {
-      setEmail(value);
+  const handleInputChange = (event) => { 
+    const { name, value } = event.target; 
+    if (name === "name") { 
+      setName(value); 
+    } else if (name === "email") { 
+      setEmail(value); 
+    } 
+  
+    if (value.trim() === "") {
+      setIsSubmitDisabled(true); 
+    } else {
+      setIsSubmitDisabled(false); 
     }
   };
 
   const handleSubmit = (event) => {
     event.preventDefault();
     onUpdateProfile({ email, name });
-
   };
-
+  
   useEffect(function () {
     if (!currentUser) {
-      console.warn('You forgot loggin');
       navigate("/signup");
-    }
-  }, [currentUser, navigate])
+      setIsSubmitDisabled(true);
+    } 
+  }, [currentUser, isEditing, navigate]);
+
   return (
     <>
       <Header
@@ -77,11 +82,18 @@ function Profile({ onUpdateProfile, signOut, serverError }) {
               placeholder="Введите email"
             />
           </span>
+          {serverError && (
+            <span className="profile__server-error">{serverError}</span>
+          )}
           {isEditing ? (
             <button
               type="submit"
-              className="profile__submit"
-              onClick={() => setIsEditing(false)}
+              className={`profile__submit ${isSubmitDisabled ? "profile__submit_disabled" : ""}`}
+              onClick={() => {
+                setIsEditing(false);
+                setIsSubmitDisabled(true);
+              }}
+              disabled={isSubmitDisabled}
             >
               Сохранить
             </button>
