@@ -47,7 +47,6 @@
     outline: none;
 }
 
-
 .profile__input-text:first-child {
     border-bottom: 1px solid #424242;
 }
@@ -94,7 +93,7 @@
 }
 
 .profile__error_active {
-    padding-top: 189px;
+    /* padding-top: 189px; */
     color: #FF004C;
     text-align: center;
     font-size: 11px;
