@@ -31,7 +31,7 @@ function Auth({ title, name, button, text, span, isRegistration, handleSubmit })
             if (!value) {
                 error = 'Поле Пароль обязательно для заполнения';
                 document.getElementById('password').classList.add('auth__input_invalid');
-            } else if (value.length < 6 && value.length > 64) {
+            } else if (value.length < 6 || value.length > 64) {
                 error = 'Поле Password должно быть длинее 6 и короче 64';
                 document.getElementById('email').classList.add('auth__input_invalid');
             } else {

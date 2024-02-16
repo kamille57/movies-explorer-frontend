@@ -30,12 +30,45 @@ function App() {
     const [isToolTipFailOpen, setIsToolTipFailOpen] = useState(false);
     const [isCheckingAuth, setIsCheckingAuth] = useState(true);
     const [serverError, setServerError] = useState('');
+    const [isSaveBtnDisabled, setIsSaveBtnDisabled] = useState(false);
 
     const navigate = useNavigate();
     const api = new MainApi();
     const moviesApi = new MoviesApi();
 
-    console.log("currentUser", currentUser);
+    useEffect(() => {
+        const checkToken = async () => {
+            setIsLoading(true);
+            const token = localStorage.getItem('jwt');
+            if (!token) {
+                setIsLoggedIn(false);
+                setIsLoading(false);
+                setIsCheckingAuth(false);
+                return;
+            }
+
+            try {
+                const userData = await api.getUserInfo(token);
+                setCurrentUser(userData);
+                const initialMovies = await moviesApi.getInitialMovies();
+                setMovies(initialMovies);
+                setIsLoggedIn(true);
+            } catch (err) {
+                console.log('Ошибка при получении данных пользователя:', err);
+                localStorage.removeItem('jwt');
+                setIsLoggedIn(false);
+            } finally {
+                setIsLoading(false);
+                setIsCheckingAuth(false);
+            }
+        };
+
+        checkToken();
+    }, []);
+
+    if (isCheckingAuth) {
+        return <Preloader />;
+    }
 
     function closeAllPopups() {
         setIsToolTipSuccessOpen(false);
@@ -54,13 +87,16 @@ function App() {
     function handleUpdateProfile({ email, name }) {
         const updatedUser =
             { email, name };
-        api.setUserInfo(updatedUser)
-            .then(({ email, name }) => {
+        api.setUserInfo(updatedUser)        
+            .then(({ email, name }) => {                
                 setCurrentUser({ email, name });
+                setIsSaveBtnDisabled(false);
 
             })
             .catch((error) => {
+                console.log('DIsable button here');
                 const errorMessage = handleError(error, profileErrors);
+                setIsSaveBtnDisabled(true)
                 setServerError(errorMessage);
             })
     };
@@ -116,40 +152,6 @@ function App() {
             .catch(err => console.log(err));
     }
 
-    useEffect(() => {
-        const checkToken = async () => {
-            setIsLoading(true);
-            const token = localStorage.getItem('jwt');
-            if (!token) {
-                setIsLoggedIn(false);
-                setIsLoading(false);
-                setIsCheckingAuth(false);
-                return;
-            }
-
-            try {
-                const userData = await api.getUserInfo(token);
-                setCurrentUser(userData);
-                const initialMovies = await moviesApi.getInitialMovies();
-                setMovies(initialMovies);
-                setIsLoggedIn(true);
-            } catch (err) {
-                console.log('Ошибка при получении данных пользователя:', err);
-                localStorage.removeItem('jwt');
-                setIsLoggedIn(false);
-            } finally {
-                setIsLoading(false);
-                setIsCheckingAuth(false);
-            }
-        };
-
-        checkToken();
-    }, []);
-
-    if (isCheckingAuth) {
-        return <Preloader />;
-    }
-
     return (
         <CurrentUserContext.Provider value={currentUser}>
             <div className="page">
@@ -191,6 +193,7 @@ function App() {
                     <Route path="/profile" element={<Profile
                         onUpdateProfile={handleUpdateProfile}
                         signOut={signOut}
+                        isSaveBtnDisabled={isSaveBtnDisabled}
                         serverError={serverError}
                     />} />
                     <Route path="*" element={<NotFound />} />

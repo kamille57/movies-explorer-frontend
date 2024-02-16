@@ -5,51 +5,38 @@ import { NavLink, useNavigate } from 'react-router-dom';
 import profileDark from "../../images/profileDark.svg";
 import CurrentUserContext from "../../contexts/CurrentUserContext";
 
-function Profile({ onUpdateProfile, signOut, serverError }) {
+function Profile({ onUpdateProfile, signOut, serverError, isSaveBtnDisabled }) {
   const currentUser = useContext(CurrentUserContext);
   const [name, setName] = useState(currentUser?.name);
   const [email, setEmail] = useState(currentUser?.email);
   const [isEditing, setIsEditing] = useState(false);
   const [isSubmitDisabled, setIsSubmitDisabled] = useState(true);
 
-  const userNameInput = useRef(0)
-
   const navigate = useNavigate();
 
   const initialValues = {
     name: name,
-    email: '',
+    email: email,
   };
 
   const validate = (name, value) => {
     let error = '';
 
     if (name === 'name') {
-      const userInput = userNameInput.current;
       if (!value) {
-        error = 'Поле обязательно для заполнения';
-        userInput.classList.add('profile__error_active');
-      } else if (value.length < 6 || value.length > 64) {
-        error = 'Поле должно быть длинее 6 и короче 64';
-        userInput.classList.add('profile__error_active');
-      } else {
-        userInput.classList.remove('profile__error_active');
+        error = 'Поле Имя обязательно для заполнения';
+      } else if (value.length < 2 || value.length > 32) {
+        error = 'Поле Имя должно быть длинее 2х символов и короче 32';
       }
     }
-
 
     if (name === 'email') {
       if (!value) {
         error = 'Поле E-mail обязательно для заполнения';
-        document.getElementById('email').classList.add('auth__input_invalid');
       } else if (value.length < 3 || value.length > 64) {
         error = 'Поле E-mail должно быть длинее 3х символов и короче 64';
-        document.getElementById('email').classList.add('auth__input_invalid');
-      } else {
-        document.getElementById('email').classList.remove('auth__input_invalid');
       }
     }
-
 
     return error;
   };
@@ -80,11 +67,17 @@ function Profile({ onUpdateProfile, signOut, serverError }) {
       setIsSubmitDisabled(false);
     }
   };
-
   const handleSubmit = (event) => {
     event.preventDefault();
-    onUpdateProfile({ email, name });
+    if (validateForm()) {
+      const { email, name } = values;
+      onUpdateProfile({ email, name });
+    }
   };
+  // const handleSubmit = (event) => {
+  //   event.preventDefault();
+  //   onUpdateProfile({ email, name });
+  // };
 
   useEffect(function () {
     if (!currentUser) {
@@ -113,17 +106,17 @@ function Profile({ onUpdateProfile, signOut, serverError }) {
               id="name"
               minLength="2"
               maxLength="40"
-              // onChange={handleInputChange}
               onChange={handleChange}
-              // value={name}
-              ref={userNameInput}
               value={values.name}
+              {...getInputProps('name')}
               disabled={!isEditing}
               placeholder="Введите имя"
             />
-            <span className="auth__error" id="name-error">{errors.name}</span>
+            <span className={`profile__error ${errors.name ? 'profile__error_active' : ''}`}
+              id="name-error">{errors.name}
+            </span>
           </fieldset>
-          <span className="profile__input-text">E-mail
+          <fieldset className="profile__input-text">E-mail
             <label className="profile__label" htmlFor="email"></label>
             <input
               className="profile__input"
@@ -133,20 +126,37 @@ function Profile({ onUpdateProfile, signOut, serverError }) {
               id="email"
               minLength="2"
               maxLength="40"
-              onChange={handleInputChange}
-              value={email}
+              onChange={handleChange}
+              value={values.email}
+              {...getInputProps('email')}
               disabled={!isEditing}
               placeholder="Введите email"
             />
-          </span>
+            <span className={`profile__error ${errors.email ? 'profile__error_active' : ''}`}
+              id="name-error">{errors.email}
+            </span>
+          </fieldset>
+
+          {/* 
+            1. Если серверная ошибка есть, то показываем кнопку ошибку И СОХРАНИТЬ 
+            2. Иначе (ошибки нет), показыаем редактировать и выйти
+          */}
           {serverError && (
             <span className="profile__server-error">{serverError}</span>
           )}
-          {isEditing ? (
+
+
+
+          {isEditing || serverError ? (
             <button
               type="submit"
               className={`profile__submit ${isSubmitDisabled ? "profile__submit_disabled" : ""}`}
               onClick={() => {
+                // TODO: пишите инструкци к тому что должно происходить с isEditing в зависимости от isSaveBtnDisabled
+                // isEditing - true и serverError false = submit активен
+                // isEditing - true и serverError true = submit неактивен
+                // isEditing - false и serverError true = submit активен
+                // isEditing - false и serverError false = submit неактивен
                 setIsEditing(false);
                 setIsSubmitDisabled(true);
               }}
@@ -164,7 +174,7 @@ function Profile({ onUpdateProfile, signOut, serverError }) {
             </button>
           )}
         </form>
-        {!isEditing && (
+        {!isEditing && !serverError && (
           <NavLink to="/" className="profile__link" onClick={signOut}>
             Выйти из аккаунта
           </NavLink>
