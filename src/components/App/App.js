@@ -90,13 +90,15 @@ function App() {
         api.setUserInfo(updatedUser)        
             .then(({ email, name }) => {                
                 setCurrentUser({ email, name });
-                setIsSaveBtnDisabled(false);
+                console.log("currentUser", currentUser);
+                setIsSaveBtnDisabled(true);
+                console.log('able button here');
 
             })
             .catch((error) => {
                 console.log('DIsable button here');
                 const errorMessage = handleError(error, profileErrors);
-                setIsSaveBtnDisabled(true)
+                // setIsSaveBtnDisabled(true)
                 setServerError(errorMessage);
             })
     };

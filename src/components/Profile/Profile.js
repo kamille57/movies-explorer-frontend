@@ -1,22 +1,19 @@
-import React, { useState, useContext, useEffect, useRef } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { useForm } from '../../hooks/useForm';
 import Header from '../Header/Header';
 import { NavLink, useNavigate } from 'react-router-dom';
 import profileDark from "../../images/profileDark.svg";
 import CurrentUserContext from "../../contexts/CurrentUserContext";
 
-function Profile({ onUpdateProfile, signOut, serverError, isSaveBtnDisabled }) {
+function Profile({ onUpdateProfile, signOut, serverError, isSaveBtnDisabled, isLoading }) {
   const currentUser = useContext(CurrentUserContext);
-  const [name, setName] = useState(currentUser?.name);
-  const [email, setEmail] = useState(currentUser?.email);
   const [isEditing, setIsEditing] = useState(false);
-  const [isSubmitDisabled, setIsSubmitDisabled] = useState(true);
 
   const navigate = useNavigate();
 
   const initialValues = {
-    name: name,
-    email: email,
+    name: currentUser?.name,
+    email: currentUser?.email,
   };
 
   const validate = (name, value) => {
@@ -53,36 +50,37 @@ function Profile({ onUpdateProfile, signOut, serverError, isSaveBtnDisabled }) {
   );
 
 
-  const handleInputChange = (event) => {
-    const { name, value } = event.target;
-    if (name === "name") {
-      setName(value);
-    } else if (name === "email") {
-      setEmail(value);
-    }
+  // const handleInputChange = (event) => {
+  //   const { name, value } = event.target;
+  //   if (name === "name") {
+  //     setName(value);
+  //   } else if (name === "email") {
+  //     setEmail(value);
+  //   }
 
-    if (value.trim() === "") {
-      setIsSubmitDisabled(true);
-    } else {
-      setIsSubmitDisabled(false);
-    }
-  };
+  //   if (value.trim() === "") {
+  //     //setIsSubmitDisabled(true);
+  //   } else {
+  //     //setIsSubmitDisabled(false);
+  //   }
+  // };
+
   const handleSubmit = (event) => {
     event.preventDefault();
     if (validateForm()) {
       const { email, name } = values;
       onUpdateProfile({ email, name });
+      //setIsSubmitDisabled(false);
+
+      console.log('давим сабмит');
     }
   };
-  // const handleSubmit = (event) => {
-  //   event.preventDefault();
-  //   onUpdateProfile({ email, name });
-  // };
 
+  const isDataChanged = values.username !== currentUser?.name || values.email !== currentUser?.email;
   useEffect(function () {
     if (!currentUser) {
       navigate("/signup");
-      setIsSubmitDisabled(true);
+      //setIsSubmitDisabled(true);
     }
   }, [currentUser, isEditing, navigate]);
 
@@ -94,9 +92,13 @@ function Profile({ onUpdateProfile, signOut, serverError, isSaveBtnDisabled }) {
         isLoggedIn={true}
       />
       <main className="profile">
-        <h1 className="profile__title">Привет, {name}</h1>
+        <h1 className="profile__title">Привет, {values.name}</h1>
 
-        <form className="profile__form" onSubmit={handleSubmit}>
+        <form className="profile__form" 
+        onSubmit={handleSubmit}
+        onChange={handleChange}
+
+        >
           <fieldset className="profile__input-text">Имя
             <label className="profile__label" htmlFor="name"></label>
             <input
@@ -106,7 +108,7 @@ function Profile({ onUpdateProfile, signOut, serverError, isSaveBtnDisabled }) {
               id="name"
               minLength="2"
               maxLength="40"
-              onChange={handleChange}
+              //onChange={handleChange}
               value={values.name}
               {...getInputProps('name')}
               disabled={!isEditing}
@@ -126,7 +128,7 @@ function Profile({ onUpdateProfile, signOut, serverError, isSaveBtnDisabled }) {
               id="email"
               minLength="2"
               maxLength="40"
-              onChange={handleChange}
+              //onChange={handleChange}
               value={values.email}
               {...getInputProps('email')}
               disabled={!isEditing}
@@ -136,32 +138,30 @@ function Profile({ onUpdateProfile, signOut, serverError, isSaveBtnDisabled }) {
               id="name-error">{errors.email}
             </span>
           </fieldset>
-
-          {/* 
-            1. Если серверная ошибка есть, то показываем кнопку ошибку И СОХРАНИТЬ 
-            2. Иначе (ошибки нет), показыаем редактировать и выйти
-          */}
           {serverError && (
             <span className="profile__server-error">{serverError}</span>
           )}
 
+          {/* disabled={!isDataChanged || isPreloading || !isValid}
+const isDataChanged = values.username !== currentUser?.name || values.email !== currentUser?.email;
+    const buttonClass = `profile__submit-button ${!isDataChanged || isPreloading || !isValid ? 'profile__submit-button_disabled' : ''}`; */}
 
-
-          {isEditing || serverError ? (
+          {isEditing || errors ? (
             <button
               type="submit"
-              className={`profile__submit ${isSubmitDisabled ? "profile__submit_disabled" : ""}`}
+              className={`profile__submit ${!isDataChanged || isLoading ? "profile__submit_disabled" : ""}`}
               onClick={() => {
                 // TODO: пишите инструкци к тому что должно происходить с isEditing в зависимости от isSaveBtnDisabled
                 // isEditing - true и serverError false = submit активен
                 // isEditing - true и serverError true = submit неактивен
-                // isEditing - false и serverError true = submit активен
-                // isEditing - false и serverError false = submit неактивен
+                // isEditing - false
+                // isEditing - false и serverError false = показать кнопку выйти
                 setIsEditing(false);
-                setIsSubmitDisabled(true);
+                //isSaveBtnDisabled(true);
               }}
-              disabled={isSubmitDisabled}
+              disabled={!isDataChanged || isLoading}
             >
+
               Сохранить
             </button>
           ) : (
@@ -170,6 +170,7 @@ function Profile({ onUpdateProfile, signOut, serverError, isSaveBtnDisabled }) {
               className="profile__edit"
               onClick={() => setIsEditing(true)}
             >
+              {console.log(isEditing)}
               Редактировать
             </button>
           )}
