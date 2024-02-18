@@ -125,9 +125,9 @@ function Profile({ onUpdateProfile, signOut, serverError, isLoading }) {
           {isEditing ? (
             <button
               type="submit"
-              disabled={!isDataChanged}
+              disabled={!isDataChanged || errors.name || errors.email || serverError} 
               onClick={() => setIsEditing(false)}
-              className={`profile__submit ${!isDataChanged ? 'profile__submit_disabled' : ''}`} 
+              className={`profile__submit ${!isDataChanged || errors.name || errors.email ? 'profile__submit_disabled' : ''}`}
             >
               {console.log("isEditing", isEditing)}
               {console.log("isDataChanged", isDataChanged)}

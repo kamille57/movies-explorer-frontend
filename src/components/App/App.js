@@ -101,7 +101,7 @@ function App() {
             .catch((error) => {
                 console.log('DIsable button here');
                 const errorMessage = handleError(error, profileErrors);
-                // setIsSaveBtnDisabled(true)
+                setIsSaveBtnDisabled(true)
                 setServerError(errorMessage);
             })
     };
