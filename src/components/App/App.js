@@ -53,6 +53,7 @@ function App() {
                 const initialMovies = await moviesApi.getInitialMovies();
                 setMovies(initialMovies);
                 setIsLoggedIn(true);
+                setIsSaveBtnDisabled(true);
             } catch (err) {
                 console.log('Ошибка при получении данных пользователя:', err);
                 localStorage.removeItem('jwt');
@@ -91,8 +92,10 @@ function App() {
             .then(({ email, name }) => {                
                 setCurrentUser({ email, name });
                 console.log("currentUser", currentUser);
-                setIsSaveBtnDisabled(true);
+                setIsSaveBtnDisabled(false);
                 console.log('able button here');
+                console.log("isSaveBtnDisabled", isSaveBtnDisabled)
+
 
             })
             .catch((error) => {
