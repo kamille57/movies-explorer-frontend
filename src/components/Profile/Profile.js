@@ -5,37 +5,15 @@ import { NavLink, useNavigate } from 'react-router-dom';
 import profileDark from "../../images/profileDark.svg";
 import CurrentUserContext from "../../contexts/CurrentUserContext";
 
-function Profile({ onUpdateProfile, signOut, serverError, isLoading }) {
+function Profile({ onUpdateProfile, signOut, serverError, setServerError, isEditing, setIsEditing, isLoading }) {
   const currentUser = useContext(CurrentUserContext);
-  const [isEditing, setIsEditing] = useState(false);
+  const [isDataChanged, setIsDataChanged] = useState(false);
 
   const navigate = useNavigate();
 
   const initialValues = {
     name: currentUser?.name,
     email: currentUser?.email,
-  };
-
-  const validate = (name, value) => {
-    let error = '';
-
-    if (name === 'name') {
-      if (!value) {
-        error = 'Поле Имя обязательно для заполнения';
-      } else if (value.length < 2 || value.length > 32) {
-        error = 'Поле Имя должно быть длинее 2х символов и короче 32';
-      }
-    }
-
-    if (name === 'email') {
-      if (!value) {
-        error = 'Поле E-mail обязательно для заполнения';
-      } else if (!/\S+@\S+\.\S+/.test(value)) {
-        error = 'Некорректный адрес электронной почты';
-      }
-    }
-
-    return error;
   };
 
   const {
@@ -46,9 +24,18 @@ function Profile({ onUpdateProfile, signOut, serverError, isLoading }) {
     getInputProps,
   } = useForm(
     initialValues,
-    validate
   );
-  const isDataChanged = values.name !== currentUser?.name || values.email !== currentUser?.email;
+
+  useEffect(function () {
+    console.log('Зарегистрирована попытка изменения values');
+    const isValuesChanged = values.name !== currentUser?.name || values.email !== currentUser?.email;
+    if (isValuesChanged) {
+      console.log('Данные поменялись, поэтому убираем серверную ошибку');
+      setIsDataChanged(true);
+      setServerError(null);
+    }
+  }, [values, values.name, values.email])
+
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -112,32 +99,63 @@ function Profile({ onUpdateProfile, signOut, serverError, isLoading }) {
               {...getInputProps('email')}
               disabled={!isEditing}
               onChange={handleChange}
-
               placeholder="Введите email"
             />
             <span className={`profile__error ${errors.email ? 'profile__error_active' : ''}`}
-              id="name-error">{errors.email}
+              id="email-error">{errors.email}
             </span>
           </fieldset>
-          {serverError && (
-            <span className="profile__server-error">{serverError}</span>
-          )}
+
+          {/* Как должна выглядеть страница после того как пришла ошибка от сервера? */}
+          {/* 1. Показываем текст ошибки (от сервера) */}
+          {/* 2. Неактивная кнопка сохранить */}
+
+
+          {/* Что происходит после начала редактирования? */}
+          {/* Как узнать что у нас началось начало редактирования? - редактирование началось когда поменялись "values, values.name, values.email" */}
+          {/* 0. Скрываем текст ошибки (от сервера) - serverError переводим в состояние false */}
+          {/* 1. Кнопка сохранить становится активной (убираем disabled) */}
+
+
+          {/* Для того чтобы начать редактировать, нужно войти в режим редактирования (isEditing == true) */}
+
+          {/* Как войти в режим редактирования? */}
+          {/* 1. Обычный способ - нажать кнопку редактировать */}
+          {/* 2. Никак, только способ 1 */}
+
+          {/* Как ВЫЙТИ из режима редактирования? */}
+          {/*  1. Обычный способ - нажать СОХРАНИТЬ и при этом НЕ получить ошибку сервера */}
+
+          {/* Как разблокировать кнопку сохранить? */}
+          {/* 1. (После того как сервер прислал ошибку,) начинаем менять имя или почту в полях ввода  */}
+
+
+          {/* После отправки данных на сервер, мы должны выйти из режима редактирвоания, НО
+          мы вернемся в его если есть ошибка от сервера */}
+
+          {/* После отправки данных  на сервере, мы выходим из режима редактирвоания ТОЛЬКО ЕСЛИ ошибки нет */}
+
+
+
+          <span className={`profile__server-error ${serverError ? 'profile__server-error_active' : ''}`}>
+            {serverError}
+          </span>
+
           {isEditing ? (
             <button
               type="submit"
-              disabled={!isDataChanged || errors.name || errors.email || serverError} 
-              onClick={() => setIsEditing(false)}
-              className={`profile__submit ${!isDataChanged || errors.name || errors.email ? 'profile__submit_disabled' : ''}`}
+              disabled={!isDataChanged || errors.name || errors.email || serverError}
+              className={`profile__submit ${!isDataChanged || errors.name || errors.email || serverError ? 'profile__submit_disabled' : ''}`}
             >
-              {console.log("isEditing", isEditing)}
-              {console.log("isDataChanged", isDataChanged)}
               {isLoading ? 'Сохранение...' : 'Сохранить'}
             </button>
           ) : (
             <button
               type="submit"
               className="profile__edit"
-              onClick={() => setIsEditing(true)
+              onClick={() => {
+                setIsEditing(true);
+              }
               }
             >
               Редактировать

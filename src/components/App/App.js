@@ -8,8 +8,7 @@ import CurrentUserContext from "../../contexts/CurrentUserContext";
 import Main from "../Main/Main.js";
 import Movies from "../Movies/Movies.js";
 import SavedMovies from "../SavedMovies/SavedMovies.js";
-import Register from "../Register/Register.js";
-import Login from "../Login/Login.js";
+import Auth from "../Auth/Auth.js"
 import Profile from "../Profile/Profile.js";
 import NotFound from "../NotFound/NotFound.js";
 import MainApi from '../../utils/MainApi.js';
@@ -30,7 +29,7 @@ function App() {
     const [isToolTipFailOpen, setIsToolTipFailOpen] = useState(false);
     const [isCheckingAuth, setIsCheckingAuth] = useState(true);
     const [serverError, setServerError] = useState('');
-    const [isSaveBtnDisabled, setIsSaveBtnDisabled] = useState(false);
+    const [isEditing, setIsEditing] = useState(false);
 
     const navigate = useNavigate();
     const api = new MainApi();
@@ -53,7 +52,6 @@ function App() {
                 const initialMovies = await moviesApi.getInitialMovies();
                 setMovies(initialMovies);
                 setIsLoggedIn(true);
-                setIsSaveBtnDisabled(true);
             } catch (err) {
                 console.log('Ошибка при получении данных пользователя:', err);
                 localStorage.removeItem('jwt');
@@ -83,68 +81,64 @@ function App() {
     function onError() {
         setIsToolTipFailOpen(true);
     }
-    
+
 
     function handleUpdateProfile({ email, name }) {
         const updatedUser =
             { email, name };
-        api.setUserInfo(updatedUser)        
-            .then(({ email, name }) => {                
+        api.setUserInfo(updatedUser)
+            .then(({ email, name }) => {
                 setCurrentUser({ email, name });
-                console.log("currentUser", currentUser);
-                setIsSaveBtnDisabled(false);
-                console.log('able button here');
-                console.log("isSaveBtnDisabled", isSaveBtnDisabled)
-
-
+                setIsEditing(false);
             })
             .catch((error) => {
-                console.log('DIsable button here');
                 const errorMessage = handleError(error, profileErrors);
-                setIsSaveBtnDisabled(true)
                 setServerError(errorMessage);
             })
     };
 
-    const handleLogin = async ({ email, password }) => { // скобки фигурные
+    const handleLogin = ({ email, password }) => {
         setIsLoading(true);
-        try {
-            const authData = await api.authorize(email, password);
-            localStorage.setItem('jwt', authData.token);
-            const userData = await api.getUserInfo(authData.token);
-            setCurrentUser(userData);
-            setIsLoggedIn(true);
-            navigate('/');
-            onRegister();
-        } catch (err) {
-            onError();
-            console.log('Ошибка при получении данных пользователя:', err);
-        } finally {
-            setIsLoading(false);
-        }
-    };
-
-    function handleRegister({ name, email, password }) {
-        setIsLoading(true);
-        console.log('Регистрация с данными:', { name, email, password });
-        api.register({ name, email, password })
-            .then(res => {
-                console.log('Попытка авторизации для:', email);
-                return api.authorize(email, password);
+        api.authorize(email, password)
+            .then(authData => {
+                localStorage.setItem('jwt', authData.token);
+                return api.getUserInfo(authData.token);
             })
-            .then(data => {
-                localStorage.setItem('jwt', data.token);
-                setCurrentUser({ email, name });
+            .then(userData => {
+                setCurrentUser(userData);
                 setIsLoggedIn(true);
-                navigate("/");
+                navigate('/');
                 onRegister();
             })
             .catch(err => {
                 onError();
-                console.log('Ошибка в функции регистрации/авторизации:', err);
+                console.log('Ошибка при получении данных пользователя:', err);
             })
-            .finally(() => setIsLoading(false));
-    }
+            .finally(() => {
+                setIsLoading(false);
+            });
+    };
+
+    const handleRegister = ({ name, email, password }) => { 
+        setIsLoading(true); 
+        api.register({ name, email, password }) 
+            .then(res => { 
+                console.log('Попытка авторизации для:', email); 
+                return api.authorize(email, password); 
+            }) 
+            .then(data => { 
+                localStorage.setItem('jwt', data.token); 
+                setCurrentUser({ email, name }); 
+                setIsLoggedIn(true); 
+                navigate("/"); 
+                onRegister(); 
+            }) 
+            .catch(err => { 
+                onError(); 
+                console.log('Ошибка в функции регистрации/авторизации:', err); 
+            }) 
+            .finally(() => setIsLoading(false)); 
+    };
 
     function signOut() {
         api.signOut()
@@ -164,15 +158,16 @@ function App() {
                     <Route path="/" element={<Main
                         isLoggedIn={isLoggedIn}
                     />} />
-                    <Route path="/signup" element={<Register
+                    <Route path="/signup" element={<Auth
                         onRegister={handleRegister}
                         isLoading={isLoading}
+                        isRegistration={true}
                     />} />
-                    <Route path="/signin" element={<Login
+                    <Route path="/signin" element={<Auth
+                        isRegistration={false}
                         setCurrentUser={setCurrentUser}
                         onLogin={handleLogin}
                         isLoading={isLoading}
-
                     />} />
 
                     <Route
@@ -198,8 +193,11 @@ function App() {
                     <Route path="/profile" element={<Profile
                         onUpdateProfile={handleUpdateProfile}
                         signOut={signOut}
-                        isSaveBtnDisabled={isSaveBtnDisabled}
                         serverError={serverError}
+                        setServerError={setServerError}
+                        isLoading={isLoading}
+                        setIsEditing={setIsEditing}
+                        isEditing={isEditing}
                     />} />
                     <Route path="*" element={<NotFound />} />
                 </Routes>
