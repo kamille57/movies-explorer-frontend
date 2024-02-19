@@ -27,6 +27,14 @@ function Profile({ onUpdateProfile, signOut, serverError, setServerError, isEdit
   );
 
   useEffect(function () {
+    if (!currentUser) {
+      navigate("/signup");
+    }
+    console.log('isEditing', isEditing);
+
+  }, [currentUser, isEditing, navigate]);
+
+  useEffect(function () {
     console.log('Зарегистрирована попытка изменения values');
     const isValuesChanged = values.name !== currentUser?.name || values.email !== currentUser?.email;
     if (isValuesChanged) {
@@ -34,7 +42,7 @@ function Profile({ onUpdateProfile, signOut, serverError, setServerError, isEdit
       setIsDataChanged(true);
       setServerError(null);
     }
-  }, [values, values.name, values.email])
+  }, [values, values.name, values.email, setServerError, currentUser?.name, currentUser?.email])
 
 
   const handleSubmit = (event) => {
@@ -42,14 +50,10 @@ function Profile({ onUpdateProfile, signOut, serverError, setServerError, isEdit
     if (validateForm()) {
       const { email, name } = values;
       onUpdateProfile({ email, name });
+      setIsEditing(true)
+      console.log('isEditing', isEditing);
     }
   };
-
-  useEffect(function () {
-    if (!currentUser) {
-      navigate("/signup");
-    }
-  }, [currentUser, isEditing, navigate]);
 
   return (
     <>
@@ -153,10 +157,7 @@ function Profile({ onUpdateProfile, signOut, serverError, setServerError, isEdit
             <button
               type="submit"
               className="profile__edit"
-              onClick={() => {
-                setIsEditing(true);
-              }
-              }
+              onClick={() => setIsEditing(true)}
             >
               Редактировать
             </button>
@@ -167,7 +168,7 @@ function Profile({ onUpdateProfile, signOut, serverError, setServerError, isEdit
             Выйти из аккаунта
           </NavLink>
         )}
-      </main>
+      </main >
     </>
   );
 }

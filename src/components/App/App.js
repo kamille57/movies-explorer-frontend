@@ -112,32 +112,34 @@ function App() {
             })
             .catch(err => {
                 onError();
-                console.log('Ошибка при получении данных пользователя:', err);
+                const errorMessage = handleError(err, profileErrors);
+                setServerError(errorMessage);
             })
             .finally(() => {
                 setIsLoading(false);
             });
     };
 
-    const handleRegister = ({ name, email, password }) => { 
-        setIsLoading(true); 
-        api.register({ name, email, password }) 
-            .then(res => { 
-                console.log('Попытка авторизации для:', email); 
-                return api.authorize(email, password); 
-            }) 
-            .then(data => { 
-                localStorage.setItem('jwt', data.token); 
-                setCurrentUser({ email, name }); 
-                setIsLoggedIn(true); 
-                navigate("/"); 
-                onRegister(); 
-            }) 
-            .catch(err => { 
-                onError(); 
-                console.log('Ошибка в функции регистрации/авторизации:', err); 
-            }) 
-            .finally(() => setIsLoading(false)); 
+    const handleRegister = ({ name, email, password }) => {
+        setIsLoading(true);
+        api.register({ name, email, password })
+            .then(res => {
+                console.log('Попытка авторизации для:', email);
+                return api.authorize(email, password);
+            })
+            .then(data => {
+                localStorage.setItem('jwt', data.token);
+                setCurrentUser({ email, name });
+                setIsLoggedIn(true);
+                navigate("/");
+                onRegister();
+            })
+            .catch(err => {
+                onError();
+                const errorMessage = handleError(err, profileErrors);
+                setServerError(errorMessage);
+            })
+            .finally(() => setIsLoading(false));
     };
 
     function signOut() {
@@ -162,12 +164,16 @@ function App() {
                         onRegister={handleRegister}
                         isLoading={isLoading}
                         isRegistration={true}
+                        serverError={serverError}
+                        setServerError={setServerError}
                     />} />
                     <Route path="/signin" element={<Auth
-                        isRegistration={false}
-                        setCurrentUser={setCurrentUser}
                         onLogin={handleLogin}
+                        setCurrentUser={setCurrentUser}
                         isLoading={isLoading}
+                        isRegistration={false}
+                        serverError={serverError}
+                        setServerError={setServerError}
                     />} />
 
                     <Route

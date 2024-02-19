@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useForm } from '../../hooks/useForm';
 import logo from '../../images/logo.svg';
 import { NavLink, useNavigate } from 'react-router-dom';
 
-function Auth({ name, isRegistration, onRegister, onLogin }) {
+function Auth({ name, isRegistration, onRegister, onLogin, serverError, setServerError }) {
     const navigate = useNavigate();
+    const [isDataChanged, setIsDataChanged] = useState(false);
 
     const initialValues = {
         name: '',
@@ -21,6 +22,24 @@ function Auth({ name, isRegistration, onRegister, onLogin }) {
     } = useForm(
         initialValues,
     );
+
+    useEffect(function () { 
+        console.log('Зарегистрирована попытка изменения values'); 
+        const isValuesChanged = values.email !== initialValues.email && values.password !== initialValues.password; 
+        const isNameChanged = values.name !== initialValues.name;
+        
+        if (!isRegistration && isValuesChanged) { 
+            console.log('Данные поменялись, поэтому убираем серверную ошибку'); 
+            setIsDataChanged(true); 
+            setServerError(null); 
+        } else if (isRegistration && isValuesChanged && isNameChanged) { 
+            console.log('Данные поменялись, поэтому убираем серверную ошибку'); 
+            setIsDataChanged(true); 
+            setServerError(null); 
+        } 
+    }, [values, values.name, values.email, values.password, initialValues.name, initialValues.email, initialValues.password])
+
+
     const handleRegister = ({ name, email, password }) => {
         console.log('отработал хэндл register');
         onRegister({ name, email, password });
@@ -34,16 +53,18 @@ function Auth({ name, isRegistration, onRegister, onLogin }) {
     const innerHandleSubmit = (event) => {
         event.preventDefault();
         if (validateForm()) {
-            console.log('isRegistration',isRegistration);
+            console.log('isRegistration', isRegistration);
             if (isRegistration) {
                 const { name, email, password } = values;
-                handleRegister({ name, email, password })
+                handleRegister({ name, email, password });
             } else {
                 console.warn('ПОПАЛИ В ЕЛСЕ');
+                
             }
+        } else {
+            const { email, password } = values;
+                handleLogin({ email, password });
         }
-        const { email, password } = values;
-        handleLogin({ email, password });
     };
 
     return (
@@ -111,8 +132,9 @@ function Auth({ name, isRegistration, onRegister, onLogin }) {
                         <>
                             <button
                                 type="submit"
+                                disabled={!isDataChanged || errors.name || errors.email || errors.password || serverError}
                                 aria-label={`кнопка сохранения ${name}`}
-                                className="auth__confirm-btn"
+                                className={`auth__confirm-btn ${!isDataChanged || errors.name || errors.email || errors.password || serverError ? 'profile__submit_disabled' : ''}`}
                             >
                                 Регистрация
                             </button>
@@ -127,8 +149,9 @@ function Auth({ name, isRegistration, onRegister, onLogin }) {
                         <>
                             <button
                                 type="submit"
+                                disabled={!isDataChanged || errors.email || errors.password || serverError}
                                 aria-label={`кнопка сохранения ${name}`}
-                                className="auth__confirm-btn"
+                                className={`auth__confirm-btn ${!isDataChanged || errors.email || errors.password || serverError ? 'profile__submit_disabled' : ''}`}
                             >
                                 Войти
                             </button>
