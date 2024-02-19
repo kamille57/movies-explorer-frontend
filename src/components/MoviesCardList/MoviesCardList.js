@@ -70,13 +70,13 @@ function MoviesCardList({ cards, searchQuery, onlyShortMovies, isRemovable, show
   }
 
   return (
-    (movies.length === 0 || !showMoviesWhileEmptySearch && searchQuery === '') ? 
+    (movies.length === 0 || (!showMoviesWhileEmptySearch && searchQuery === "")) ? 
     // (movies.length === 0 || searchQuery === '') ? 
       <h3 className='movies__empty-request'>Ничего не найдено</h3> 
       :
       <section className="cards">
         <ul className="cards__container">
-          {searchQuery !== '' && movies && movies.slice(0, cardsLimit).map((newCard) => (
+          {movies && movies.slice(0, cardsLimit).map((newCard) => (
             <li key={newCard.id}>
               <MoviesCard
                 card={newCard}
