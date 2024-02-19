@@ -23,8 +23,14 @@ function SavedMovies({ isRemovable }) {
         if (onlyShortMovies === "true") {
             setOnlyShortMovies(true)
         }
+        const moviesSearchQuery = localStorage.getItem('savedMoviesSearchQuery');
+        if(moviesSearchQuery) setSearchQuery(moviesSearchQuery)
     }, [])
 
+
+    useEffect(function () {
+        localStorage.setItem('savedMoviesSearchQuery', searchQuery);
+    }, [searchQuery, setSearchQuery])
 
     return (
         <>

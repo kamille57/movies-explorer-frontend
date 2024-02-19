@@ -15,7 +15,14 @@ function Movies({ cards, isLoading, isRemovable }) {
     if (onlyShortMovies === "true") {
       setOnlyShortMovies(true)
     } 
+    const moviesSearchQuery = localStorage.getItem('moviesSearchQuery');
+    if(moviesSearchQuery) setSearchQuery(moviesSearchQuery)
   }, [])
+
+
+  useEffect(function() {
+    localStorage.setItem('moviesSearchQuery', searchQuery);
+  }, [searchQuery, setSearchQuery])
 
   return (
     <>
