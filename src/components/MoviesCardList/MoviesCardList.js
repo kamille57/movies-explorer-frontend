@@ -29,14 +29,14 @@ function MoviesCardList({ cards, searchQuery, onlyShortMovies, isRemovable, show
         ...card,
         image: imageUrl
       };
+      console.log(newCard)
+
       return newCard;
     });
-
     const regex = new RegExp(searchQuery, 'gi');
     let filteredMovies = fixedCards.filter(movie => movie.nameRU.match(regex));
 
     if (onlyShortMovies) {
-
       filteredMovies = filteredMovies.filter(movie => movie.duration <= 40);
     }
 
@@ -44,8 +44,6 @@ function MoviesCardList({ cards, searchQuery, onlyShortMovies, isRemovable, show
   }, [searchQuery, cards, onlyShortMovies]);
 
   useEffect(() => {
-    console.log('Width: ' + windowWidth);
-
     if (windowWidth >= 1280) {
       changeMovieListOptions(16, 4);
     } else if (windowWidth >= 768) {
@@ -64,20 +62,19 @@ function MoviesCardList({ cards, searchQuery, onlyShortMovies, isRemovable, show
   function addMoreItems() {
     const newLimit = cardsLimit + chunkSize;
     setCardsLimit(newLimit);
-    if(!isLoadedMore) {
+    if (!isLoadedMore) {
       setIsLoadedMore(true)
     }
   }
 
   return (
-    (movies.length === 0 || (!showMoviesWhileEmptySearch && searchQuery === "")) ? 
-    // (movies.length === 0 || searchQuery === '') ? 
-      <h3 className='movies__empty-request'>Ничего не найдено</h3> 
+    (movies.length === 0 || (!showMoviesWhileEmptySearch && searchQuery === "")) ?
+      <h3 className='movies__empty-request'>Ничего не найдено</h3>
       :
       <section className="cards">
         <ul className="cards__container">
           {movies && movies.slice(0, cardsLimit).map((newCard) => (
-            <li key={newCard.id}>
+            <li key={newCard._id}>
               <MoviesCard
                 card={newCard}
                 isRemovable={isRemovable}

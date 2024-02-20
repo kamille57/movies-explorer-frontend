@@ -27,7 +27,7 @@ function MoviesCard({ card, isRemovable, renewCards }) {
       createdAt: card.created_at,
       updatedAt: card.updated_at,
     };
-
+console.log(updatedCard);
     delete updatedCard.created_at;
     delete updatedCard.updated_at;
     if (isChecked) {

@@ -2,7 +2,6 @@ import React from 'react';
 
 function FilterCheckbox({ setOnlyShortMovies, onlyShortMovies }) {
   const handleCheckboxChange = () => {
-    // save to localStorage
     localStorage.setItem('onlyShortMovies', !onlyShortMovies)
     setOnlyShortMovies(!onlyShortMovies);
   };

@@ -82,19 +82,22 @@ function App() {
         setIsToolTipFailOpen(true);
     }
 
-
     function handleUpdateProfile({ email, name }) {
+        setIsLoading(true);
         const updatedUser =
             { email, name };
         api.setUserInfo(updatedUser)
             .then(({ email, name }) => {
                 setCurrentUser({ email, name });
-                setIsEditing(false);
             })
             .catch((error) => {
                 const errorMessage = handleError(error, profileErrors);
                 setServerError(errorMessage);
+                setIsEditing(true);
             })
+            .finally(() => {
+                setIsLoading(false);
+            });
     };
 
     const handleLogin = ({ email, password }) => {

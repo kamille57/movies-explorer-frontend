@@ -5,9 +5,10 @@ import { NavLink, useNavigate } from 'react-router-dom';
 import profileDark from "../../images/profileDark.svg";
 import CurrentUserContext from "../../contexts/CurrentUserContext";
 
-function Profile({ onUpdateProfile, signOut, serverError, setServerError, isEditing, setIsEditing, isLoading }) {
+function Profile({ onUpdateProfile, signOut, serverError, setServerError, isLoading, isEditing, setIsEditing }) {
   const currentUser = useContext(CurrentUserContext);
   const [isDataChanged, setIsDataChanged] = useState(false);
+  //const [isEditing, setIsEditing] = useState(false);
 
   const navigate = useNavigate();
 
@@ -50,7 +51,6 @@ function Profile({ onUpdateProfile, signOut, serverError, setServerError, isEdit
     if (validateForm()) {
       const { email, name } = values;
       onUpdateProfile({ email, name });
-      setIsEditing(true)
       console.log('isEditing', isEditing);
     }
   };
@@ -139,17 +139,20 @@ function Profile({ onUpdateProfile, signOut, serverError, setServerError, isEdit
 
           {/* После отправки данных  на сервере, мы выходим из режима редактирвоания ТОЛЬКО ЕСЛИ ошибки нет */}
 
-
-
           <span className={`profile__server-error ${serverError ? 'profile__server-error_active' : ''}`}>
             {serverError}
           </span>
 
-          {isEditing ? (
+          {isEditing || serverError ? (
             <button
               type="submit"
               disabled={!isDataChanged || errors.name || errors.email || serverError}
               className={`profile__submit ${!isDataChanged || errors.name || errors.email || serverError ? 'profile__submit_disabled' : ''}`}
+              onClick={() => {
+
+                setIsEditing(false);
+
+              }}
             >
               {isLoading ? 'Сохранение...' : 'Сохранить'}
             </button>
