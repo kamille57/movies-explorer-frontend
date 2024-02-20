@@ -32,6 +32,10 @@ function SavedMovies({ isRemovable }) {
         localStorage.setItem('savedMoviesSearchQuery', searchQuery);
     }, [searchQuery, setSearchQuery])
 
+    function renewCards() {
+        moviesApi.getSavedMovies().then(setSavedMovies);
+    }
+
     return (
         <>
             <Header
@@ -53,6 +57,7 @@ function SavedMovies({ isRemovable }) {
                         isRemovable={isRemovable}
                         onlyShortMovies={onlyShortMovies}
                         showMoviesWhileEmptySearch={true}
+                        renewCards={renewCards}
                     />
                 </section >
             </main>

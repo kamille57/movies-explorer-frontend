@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import MoviesApi from "../../utils/MoviesApi";
 
-function MoviesCard({ card, isRemovable }) {
+function MoviesCard({ card, isRemovable, renewCards }) {
   const imageUrl = typeof card.image === "string" ? card.image : "https://api.nomoreparties.co" + card.image.url;
 
   const moviesApi = new MoviesApi();
@@ -11,6 +11,7 @@ function MoviesCard({ card, isRemovable }) {
     moviesApi.deleteMovie(card._id)
       .then(() => {
         setIsDeleted(true); 
+        renewCards()
       })
       .catch((err) => {
         console.log(err);
