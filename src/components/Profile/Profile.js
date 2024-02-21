@@ -31,15 +31,12 @@ function Profile({ onUpdateProfile, signOut, serverError, setServerError, isLoad
     if (!currentUser) {
       navigate("/signup");
     }
-    console.log('isEditing', isEditing);
 
   }, [currentUser, isEditing, navigate]);
 
   useEffect(function () {
-    console.log('Зарегистрирована попытка изменения values');
     const isValuesChanged = values.name !== currentUser?.name || values.email !== currentUser?.email;
     if (isValuesChanged) {
-      console.log('Данные поменялись, поэтому убираем серверную ошибку');
       setIsDataChanged(true);
       setServerError(null);
     }

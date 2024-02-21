@@ -29,10 +29,10 @@ function MoviesCardList({ cards, searchQuery, onlyShortMovies, isRemovable, show
         ...card,
         image: imageUrl
       };
-      console.log(newCard)
 
       return newCard;
     });
+    
     const regex = new RegExp(searchQuery, 'gi');
     let filteredMovies = fixedCards.filter(movie => movie.nameRU.match(regex));
 

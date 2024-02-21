@@ -24,16 +24,13 @@ function Auth({ name, isRegistration, onRegister, onLogin, serverError, setServe
     );
 
     useEffect(function () { 
-        console.log('Зарегистрирована попытка изменения values'); 
         const isValuesChanged = values.email !== initialValues.email && values.password !== initialValues.password; 
         const isNameChanged = values.name !== initialValues.name;
         
         if (!isRegistration && isValuesChanged) { 
-            console.log('Данные поменялись, поэтому убираем серверную ошибку'); 
             setIsDataChanged(true); 
             setServerError(null); 
         } else if (isRegistration && isValuesChanged && isNameChanged) { 
-            console.log('Данные поменялись, поэтому убираем серверную ошибку'); 
             setIsDataChanged(true); 
             setServerError(null); 
         } 
@@ -41,13 +38,11 @@ function Auth({ name, isRegistration, onRegister, onLogin, serverError, setServe
 
 
     const handleRegister = ({ name, email, password }) => {
-        console.log('отработал хэндл register');
         onRegister({ name, email, password });
     }
 
     const handleLogin = (email, password) => {
         onLogin(email, password);
-        console.log('отработал хэндл логин');
     };
 
     const innerHandleSubmit = (event) => {
@@ -57,9 +52,7 @@ function Auth({ name, isRegistration, onRegister, onLogin, serverError, setServe
             if (isRegistration) {
                 const { name, email, password } = values;
                 handleRegister({ name, email, password });
-            } else {
-                console.warn('ПОПАЛИ В ЕЛСЕ');
-                
+            } else {                
             }
         } else {
             const { email, password } = values;

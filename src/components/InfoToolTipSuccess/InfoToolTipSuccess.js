@@ -6,7 +6,7 @@ function InfoToolTipSuccess({ isOpen, onClose }) {
     
     return (
         <InfoToolTips
-            title="Вы успешно зарегистрировались!"
+            title="Вход выполнен успешно!"
             tooltipImg={success}
             name="toolTipSuccess"
             isOpen={isOpen}

@@ -17,7 +17,7 @@ import InfoToolTipSuccess from "../InfoToolTipSuccess/InfoToolTipSuccess.js";
 import InfoToolTipFail from "../InfoToolTipFail/InfoToolTipFail.js"
 import Preloader from "../Preloader/Preloader";
 import { handleError } from "../../utils/handleError.js"
-import { profileErrors } from '../../constants/constants.js';
+import { profileErrors, registerErrors, loginErrors, serverErrors, signOutErrors } from '../../constants/constants.js';
 
 
 function App() {
@@ -53,7 +53,9 @@ function App() {
                 setMovies(initialMovies);
                 setIsLoggedIn(true);
             } catch (err) {
-                console.log('Ошибка при получении данных пользователя:', err);
+                onError();
+                const errorMessage = handleError(err, serverErrors);
+                setServerError(errorMessage);
                 localStorage.removeItem('jwt');
                 setIsLoggedIn(false);
             } finally {
@@ -91,6 +93,7 @@ function App() {
                 setCurrentUser({ email, name });
             })
             .catch((error) => {
+                onError();
                 const errorMessage = handleError(error, profileErrors);
                 setServerError(errorMessage);
                 setIsEditing(true);
@@ -115,7 +118,7 @@ function App() {
             })
             .catch(err => {
                 onError();
-                const errorMessage = handleError(err, profileErrors);
+                const errorMessage = handleError(err, loginErrors);
                 setServerError(errorMessage);
             })
             .finally(() => {
@@ -139,7 +142,7 @@ function App() {
             })
             .catch(err => {
                 onError();
-                const errorMessage = handleError(err, profileErrors);
+                const errorMessage = handleError(err, registerErrors);
                 setServerError(errorMessage);
             })
             .finally(() => setIsLoading(false));
@@ -153,8 +156,13 @@ function App() {
                 setIsLoggedIn(false);
                 navigate("/");
             })
-            .catch(err => console.log(err));
-    }
+            .catch(err => {
+                onError();
+                const errorMessage = handleError(err, signOutErrors);
+                setServerError(errorMessage);
+            })
+            .finally(() => setIsLoading(false));
+    };
 
     return (
         <CurrentUserContext.Provider value={currentUser}>
@@ -217,6 +225,7 @@ function App() {
                 <InfoToolTipFail
                     isOpen={isToolTipFailOpen}
                     onClose={closeAllPopups}
+                    serverError={serverError}
                 />
             </div>
         </CurrentUserContext.Provider>
