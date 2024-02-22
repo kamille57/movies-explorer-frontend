@@ -12,15 +12,10 @@ function SavedMovies({ isRemovable }) {
 
     const moviesApi = new MoviesApi();
 
-    useEffect(() => { 
+    useEffect(function (params) { 
         moviesApi.getSavedMovies() 
-            .then((movies) => { 
-                const uniqueMovies = Array.from(new Set(movies.map(a => a.id))).map(id => { 
-                    return movies.find(a => a.id === id) 
-                }); 
-                setSavedMovies(uniqueMovies); 
-            }) 
-    }, []); 
+            .then(setSavedMovies) 
+    }, []) 
 
     useEffect(function () {
         const onlyShortMovies = localStorage.getItem('onlyShortMovies');

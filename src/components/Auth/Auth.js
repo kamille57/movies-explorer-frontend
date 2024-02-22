@@ -23,17 +23,18 @@ function Auth({ name, isRegistration, onRegister, onLogin, serverError, setServe
         initialValues,
     );
 
-    useEffect(function () { 
-        const isValuesChanged = values.email !== initialValues.email && values.password !== initialValues.password; 
+    useEffect(function () {
+        const isValuesChanged = values.email !== initialValues.email && values.password !== initialValues.password;
         const isNameChanged = values.name !== initialValues.name;
-        
-        if (!isRegistration && isValuesChanged) { 
-            setIsDataChanged(true); 
-            setServerError(null); 
-        } else if (isRegistration && isValuesChanged && isNameChanged) { 
-            setIsDataChanged(true); 
-            setServerError(null); 
-        } 
+
+        if (!isRegistration && isValuesChanged) {
+            setIsDataChanged(true);
+            setServerError(null);
+        } else if (isRegistration && isValuesChanged && isNameChanged) {
+            setIsDataChanged(true);
+            setServerError(null);
+        }
+
     }, [values, values.name, values.email, values.password, initialValues.name, initialValues.email, initialValues.password])
 
 
@@ -52,11 +53,11 @@ function Auth({ name, isRegistration, onRegister, onLogin, serverError, setServe
             if (isRegistration) {
                 const { name, email, password } = values;
                 handleRegister({ name, email, password });
-            } else {                
+            } else {
             }
         } else {
             const { email, password } = values;
-                handleLogin({ email, password });
+            handleLogin({ email, password });
         }
     };
 

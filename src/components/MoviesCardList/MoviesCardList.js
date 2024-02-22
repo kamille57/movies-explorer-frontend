@@ -73,8 +73,8 @@ function MoviesCardList({ cards, searchQuery, onlyShortMovies, isRemovable, show
       :
       <section className="cards">
         <ul className="cards__container">
-          {movies && movies.slice(0, cardsLimit).map((newCard) => (
-            <li key={newCard._id}>
+          {movies && movies.slice(0, cardsLimit).map((newCard, index) => (
+            <li key={index}>
               <MoviesCard
                 card={newCard}
                 isRemovable={isRemovable}
