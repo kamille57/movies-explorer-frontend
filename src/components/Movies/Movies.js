@@ -6,10 +6,11 @@ import Footer from "../Footer/Footer.js";
 import { useState } from 'react';
 import Preloader from '../Preloader/Preloader.js';
 
-function Movies({ cards, isLoading, isRemovable }) {
+function Movies({ cards, savedMovies, isLoading, isRemovable,  renewCards }) {
   const [searchQuery, setSearchQuery] = useState('');
   const [onlyShortMovies, setOnlyShortMovies] = useState(false);
-
+  const [movies, setMovies] = useState(cards);
+  
   useEffect(function() {
     const onlyShortMovies = localStorage.getItem('onlyShortMovies');
     if (onlyShortMovies === "true") {
@@ -17,11 +18,25 @@ function Movies({ cards, isLoading, isRemovable }) {
     } 
     const moviesSearchQuery = localStorage.getItem('moviesSearchQuery');
     if(moviesSearchQuery) setSearchQuery(moviesSearchQuery)
+
+
+    // Даны два массива - найти в бОльшом элементы из меньшего и ЗАМЕНИТЬ
+    const finalCards = cards.map(function(movie) {
+      const findedSavedMovie = savedMovies.find(sm => sm.id === movie.id);
+      if(findedSavedMovie){
+        movie.saved = true;
+      }
+      return movie
+    })
+    setMovies(finalCards);
+    console.log(finalCards);
+
   }, [])
 
 
   useEffect(function() {
     localStorage.setItem('moviesSearchQuery', searchQuery);
+    renewCards()
   }, [searchQuery, setSearchQuery])
 
   return (
@@ -43,7 +58,8 @@ function Movies({ cards, isLoading, isRemovable }) {
                 <Preloader /> 
               : <MoviesCardList
                   searchQuery={searchQuery}
-                  cards={cards}
+                  cards={movies}
+                  renewCards={renewCards}
                   isRemovable={isRemovable}
                   onlyShortMovies={onlyShortMovies}
                   showMoviesWhileEmptySearch={false}

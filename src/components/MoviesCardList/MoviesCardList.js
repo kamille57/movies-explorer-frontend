@@ -7,7 +7,6 @@ function MoviesCardList({ cards, searchQuery, onlyShortMovies, isRemovable, show
   const [chunkSize, setChunkSize] = useState(2); // 2 - 2 - 4
   const [cardsLimit, setCardsLimit] = useState(5); // 5 - 8 - 16
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
-
   useEffect(() => {
     const handleResize = () => {
       setWindowWidth(window.innerWidth);
@@ -78,6 +77,7 @@ function MoviesCardList({ cards, searchQuery, onlyShortMovies, isRemovable, show
               <MoviesCard
                 card={newCard}
                 isRemovable={isRemovable}
+                isSaved={newCard.saved}
                 renewCards={renewCards}
               />
             </li>

@@ -24,12 +24,13 @@ function App() {
     const [currentUser, setCurrentUser] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
     const [isLoggedIn, setIsLoggedIn] = useState(false);
-    const [cards, setMovies] = useState([]);
+    const [movies, setMovies] = useState([]);
     const [isToolTipSuccessOpen, setIsToolTipSuccessOpen] = useState(false);
     const [isToolTipFailOpen, setIsToolTipFailOpen] = useState(false);
     const [isCheckingAuth, setIsCheckingAuth] = useState(true);
     const [serverError, setServerError] = useState('');
     const [isEditing, setIsEditing] = useState(false);
+    const [savedMovies, setSavedMovies] = useState([]);
 
     const navigate = useNavigate();
     const api = new MainApi();
@@ -49,14 +50,19 @@ function App() {
             try {
                 const userData = await api.getUserInfo(token);
                 setCurrentUser(userData);
+                console.log(userData._id);
                 const initialMovies = await moviesApi.getInitialMovies();
                 setMovies(initialMovies);
+                const savedMovies = await moviesApi.getSavedMovies()
+                setSavedMovies(savedMovies)
                 setIsLoggedIn(true);
             } catch (err) {
                 onError();
                 const errorMessage = handleError(err, serverErrors);
                 setServerError(errorMessage);
                 localStorage.removeItem('jwt');
+                localStorage.removeItem('moviesSearchQuery');
+                localStorage.removeItem('searchQuery');
                 setIsLoggedIn(false);
             } finally {
                 setIsLoading(false);
@@ -82,6 +88,13 @@ function App() {
 
     function onError() {
         setIsToolTipFailOpen(true);
+    }
+
+    
+    function renewCards() {
+        console.log('renewCards');
+        moviesApi.getInitialMovies().then(setMovies);
+        moviesApi.getSavedMovies().then(setSavedMovies);
     }
 
     function handleUpdateProfile({ email, name }) {
@@ -152,6 +165,8 @@ function App() {
         api.signOut()
             .then(() => {
                 localStorage.removeItem('jwt');
+                localStorage.removeItem('moviesSearchQuery');
+                localStorage.removeItem('searchQuery');
                 setCurrentUser(null);
                 setIsLoggedIn(false);
                 navigate("/");
@@ -191,9 +206,11 @@ function App() {
                         path="/movies"
                         element={<ProtectedRoute
                             Element={Movies}
-                            cards={cards}
+                            cards={movies}
+                            savedMovies={savedMovies}
                             isLoading={isLoading}
                             isLoggedIn={isLoggedIn}
+                            renewCards={renewCards}
                             isRemovable={false}
                         />}
                     />
@@ -202,8 +219,12 @@ function App() {
                         path="/saved-movies"
                         element={<ProtectedRoute
                             Element={SavedMovies}
+                            cards={savedMovies}
+                            currentUser={currentUser}
+                            setSavedMovies={setSavedMovies}
                             isLoggedIn={isLoggedIn}
                             isLoading={isLoading}
+                            renewCards={renewCards}
                             isRemovable={true}
                         />}
                     />

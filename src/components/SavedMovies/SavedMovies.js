@@ -5,17 +5,17 @@ import MoviesApi from '../../utils/MoviesApi.js';
 import Header from '../Header/Header.js'
 import Footer from "../Footer/Footer.js"
 
-function SavedMovies({ isRemovable }) {
+function SavedMovies({ cards, setSavedMovies, isRemovable, renewCards, currentUser }) {
     const [searchQuery, setSearchQuery] = useState('');
     const [onlyShortMovies, setOnlyShortMovies] = useState(false);
-    const [savedMovies, setSavedMovies] = useState([]);
+    // const [savedMovies, setSavedMovies] = useState([]);
 
     const moviesApi = new MoviesApi();
 
-    useEffect(function (params) { 
-        moviesApi.getSavedMovies() 
-            .then(setSavedMovies) 
-    }, []) 
+    // useEffect(function (params) { 
+    //     moviesApi.getSavedMovies() 
+    //         .then(setSavedMovies) 
+    // }, []) 
 
     useEffect(function () {
         const onlyShortMovies = localStorage.getItem('onlyShortMovies');
@@ -31,9 +31,6 @@ function SavedMovies({ isRemovable }) {
         localStorage.setItem('savedMoviesSearchQuery', searchQuery);
     }, [searchQuery, setSearchQuery])
 
-    function renewCards() {
-        moviesApi.getSavedMovies().then(setSavedMovies);
-    }
 
     return (
         <>
@@ -51,7 +48,8 @@ function SavedMovies({ isRemovable }) {
                         onlyShortMovies={onlyShortMovies}
                     />
                     <MoviesCardList
-                        cards={savedMovies}
+                        cards={cards}
+                        currentUser={currentUser}
                         searchQuery={searchQuery}
                         isRemovable={isRemovable}
                         onlyShortMovies={onlyShortMovies}
