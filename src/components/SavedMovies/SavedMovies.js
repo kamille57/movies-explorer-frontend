@@ -1,21 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import SearchForm from "../SearchForm/SearchForm.js"
 import MoviesCardList from "../MoviesCardList/MoviesCardList.js"
-import MoviesApi from '../../utils/MoviesApi.js';
 import Header from '../Header/Header.js'
 import Footer from "../Footer/Footer.js"
+import Preloader from '../Preloader/Preloader.js';
 
-function SavedMovies({ cards, setSavedMovies, isRemovable, renewCards, currentUser }) {
+function SavedMovies({ cards, isLoading, isRemovable, renewCards, currentUser }) {
     const [searchQuery, setSearchQuery] = useState('');
     const [onlyShortMovies, setOnlyShortMovies] = useState(false);
-    // const [savedMovies, setSavedMovies] = useState([]);
 
-    const moviesApi = new MoviesApi();
-
-    // useEffect(function (params) { 
-    //     moviesApi.getSavedMovies() 
-    //         .then(setSavedMovies) 
-    // }, []) 
 
     useEffect(function () {
         const onlyShortMovies = localStorage.getItem('onlyShortMovies');
@@ -23,7 +16,7 @@ function SavedMovies({ cards, setSavedMovies, isRemovable, renewCards, currentUs
             setOnlyShortMovies(true)
         }
         const moviesSearchQuery = localStorage.getItem('savedMoviesSearchQuery');
-        if(moviesSearchQuery) setSearchQuery(moviesSearchQuery)
+        if (moviesSearchQuery) setSearchQuery(moviesSearchQuery)
     }, [])
 
 
@@ -47,15 +40,18 @@ function SavedMovies({ cards, setSavedMovies, isRemovable, renewCards, currentUs
                         setOnlyShortMovies={setOnlyShortMovies}
                         onlyShortMovies={onlyShortMovies}
                     />
-                    <MoviesCardList
-                        cards={cards}
-                        currentUser={currentUser}
-                        searchQuery={searchQuery}
-                        isRemovable={isRemovable}
-                        onlyShortMovies={onlyShortMovies}
-                        showMoviesWhileEmptySearch={true}
-                        renewCards={renewCards}
-                    />
+                    {isLoading ?
+                        <Preloader />
+                        : <MoviesCardList
+                            cards={cards}
+                            currentUser={currentUser}
+                            searchQuery={searchQuery}
+                            isRemovable={isRemovable}
+                            onlyShortMovies={onlyShortMovies}
+                            showMoviesWhileEmptySearch={true}
+                            renewCards={renewCards}
+                        />
+                    }
                 </section >
             </main>
             <Footer />

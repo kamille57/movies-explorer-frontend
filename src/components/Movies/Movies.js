@@ -10,7 +10,7 @@ function Movies({ cards, savedMovies, isLoading, isRemovable,  renewCards }) {
   const [searchQuery, setSearchQuery] = useState('');
   const [onlyShortMovies, setOnlyShortMovies] = useState(false);
   const [movies, setMovies] = useState(cards);
-  
+
   useEffect(function() {
     const onlyShortMovies = localStorage.getItem('onlyShortMovies');
     if (onlyShortMovies === "true") {
@@ -29,7 +29,6 @@ function Movies({ cards, savedMovies, isLoading, isRemovable,  renewCards }) {
       return movie
     })
     setMovies(finalCards);
-    console.log(finalCards);
 
   }, [])
 

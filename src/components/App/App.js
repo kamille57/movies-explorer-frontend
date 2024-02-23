@@ -46,16 +46,15 @@ function App() {
                 setIsCheckingAuth(false);
                 return;
             }
-
             try {
                 const userData = await api.getUserInfo(token);
                 setCurrentUser(userData);
-                console.log(userData._id);
                 const initialMovies = await moviesApi.getInitialMovies();
                 setMovies(initialMovies);
                 const savedMovies = await moviesApi.getSavedMovies()
                 setSavedMovies(savedMovies)
                 setIsLoggedIn(true);
+                setIsLoading(true);
             } catch (err) {
                 onError();
                 const errorMessage = handleError(err, serverErrors);
