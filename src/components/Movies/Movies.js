@@ -30,12 +30,11 @@ function Movies({ cards, savedMovies, isLoading, isRemovable,  renewCards }) {
     })
     setMovies(finalCards);
 
-  }, [])
+  }, [cards, savedMovies])
 
 
   useEffect(function() {
     localStorage.setItem('moviesSearchQuery', searchQuery);
-    renewCards()
   }, [searchQuery, setSearchQuery])
 
   return (

@@ -57,6 +57,7 @@ function MoviesCard({ card, isRemovable, isSaved = false, renewCards }) {
           const ownerId = savedMovies.find(movie => movie.id === card.id).owner;
           console.log(savedMovies);
           console.log('ownerID', ownerId);
+
           api.getUserInfo() // получаем id юзера, чтобы сравнить с id овнера карточки    
             .then((userData) => {
               console.log('Owner ID:', ownerId);

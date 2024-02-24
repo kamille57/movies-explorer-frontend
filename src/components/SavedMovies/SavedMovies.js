@@ -9,7 +9,6 @@ function SavedMovies({ cards, isLoading, isRemovable, renewCards, currentUser })
     const [searchQuery, setSearchQuery] = useState('');
     const [onlyShortMovies, setOnlyShortMovies] = useState(false);
 
-
     useEffect(function () {
         const onlyShortMovies = localStorage.getItem('onlyShortMovies');
         if (onlyShortMovies === "true") {
