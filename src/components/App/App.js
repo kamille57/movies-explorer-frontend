@@ -125,7 +125,7 @@ function App() {
             .then(userData => {
                 setCurrentUser(userData);
                 setIsLoggedIn(true);
-                navigate('/');
+                navigate('/movies');
                 onRegister();
             })
             .catch(err => {

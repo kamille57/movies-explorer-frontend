@@ -77,12 +77,17 @@ function MoviesCard({ card, isRemovable, isSaved = false, renewCards }) {
   }
 
 
-  function getDurationInHoursAndMinutes(duration) {
-    const hours = Math.floor(duration / 60);
-    const minutes = duration % 60;
-
-    return `${hours}ч ${minutes}мин`;
-  }
+  function getDurationInHoursAndMinutes(duration) { 
+    if (duration < 60) {
+        return `${duration} мин`; 
+    } else if (duration % 60 === 0) {
+        return `${duration / 60} ч`; 
+    } else {
+        const hours = Math.floor(duration / 60); 
+        const minutes = duration % 60; 
+        return `${hours}ч ${minutes}мин`; 
+    }
+}
 
   return (
     <article className="card">
