@@ -69,7 +69,7 @@ function App() {
         };
 
         checkToken();
-    }, [api]);
+    }, []);
 
     if (isCheckingAuth) {
         return <Preloader />;
@@ -124,6 +124,7 @@ function App() {
                 setIsLoggedIn(true);
                 navigate('/movies');
                 onRegister();
+                renewCards();
             })
             .catch(err => {
                 onError();
@@ -147,6 +148,7 @@ function App() {
                 setIsLoggedIn(true);
                 navigate("/");
                 onRegister();
+                renewCards();
             })
             .catch(err => {
                 onError();

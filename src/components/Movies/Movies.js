@@ -27,6 +27,7 @@ function Movies({ cards, savedMovies, isLoading, isRemovable, renewCards }) {
 
 
   const globalCardFilter = (e) => {
+    console.log('жму тут');
     e.preventDefault();
     const fixedCards = cards.map(card => {
       const imageUrl = typeof card.image === 'string'
