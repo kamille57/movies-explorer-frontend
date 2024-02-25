@@ -74,18 +74,20 @@ function Movies({ cards, savedMovies, isLoading, isRemovable, renewCards }) {
             setOnlyShortMovies={setOnlyShortMovies}
             onlyShortMovies={onlyShortMovies}
           />
-          {isLoading ?
-            <Preloader />
-            : <MoviesCardList
-              searchQuery={searchQuery}
-              cards={movies}
-              isSaved={cards.saved}
-              renewCards={renewCards}
-              isRemovable={isRemovable}
-              onlyShortMovies={onlyShortMovies}
-              showMoviesWhileEmptySearch={false}
-            />
-          }
+           {isLoading ? 
+            <Preloader /> 
+            : (movies.length > 0 && 
+              <MoviesCardList 
+                searchQuery={searchQuery} 
+                cards={movies} 
+                isSaved={cards.saved} 
+                renewCards={renewCards} 
+                isRemovable={isRemovable} 
+                onlyShortMovies={onlyShortMovies} 
+                showMoviesWhileEmptySearch={false} 
+              />
+            ) 
+          } 
         </section>
       </main>
       <Footer />
