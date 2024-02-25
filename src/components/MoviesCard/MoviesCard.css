@@ -27,7 +27,6 @@
     cursor: pointer;
     height: 151px;
     background-color: yellow;
-    grid-area: pic;
 }
 
 .card__caption {
@@ -57,12 +56,14 @@
 }
 
 .card__link {
-    grid-area: box;
+    grid-area: pic;
+    width: 100%;
 }
 
 .card-checkbox__cross {
     background-image: url("../../images/d8.svg");
-    background-size: 25px cover;
+    background-size: cover;
+    grid-area: box;
     background-repeat: no-repeat;
     width: 16px;
 }

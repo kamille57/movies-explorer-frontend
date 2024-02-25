@@ -46,10 +46,10 @@ function App() {
                 return;
             }
             try {
-                const userData = await api.getUserInfo(token);
-                setCurrentUser(userData);
                 const initialMovies = await moviesApi.getInitialMovies();
                 setMovies(initialMovies);
+                const userData = await api.getUserInfo(token);
+                setCurrentUser(userData);
                 const savedMovies = await moviesApi.getSavedMovies()
                 setSavedMovies(savedMovies)
                 setIsLoggedIn(true);
@@ -69,7 +69,7 @@ function App() {
         };
 
         checkToken();
-    }, []);
+    }, [api]);
 
     if (isCheckingAuth) {
         return <Preloader />;
@@ -139,7 +139,6 @@ function App() {
         setIsLoading(true);
         api.register({ name, email, password })
             .then(res => {
-                console.log('Попытка авторизации для:', email);
                 return api.authorize(email, password);
             })
             .then(data => {

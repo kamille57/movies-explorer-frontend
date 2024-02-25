@@ -65,7 +65,7 @@ function MoviesCard({ card, isRemovable, isSaved = false, renewCards }) {
         .catch(error => {
           console.error('Ошибка при получении сохраненных фильмов: ', error);
         });
-    }
+    } 
   }
 
 
