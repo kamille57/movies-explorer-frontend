@@ -8,6 +8,8 @@ import Preloader from '../Preloader/Preloader.js';
 function SavedMovies({ cards, isLoading, isRemovable, renewCards, currentUser }) {
     const [searchQuery, setSearchQuery] = useState('');
     const [onlyShortMovies, setOnlyShortMovies] = useState(false);
+    const [movies, setMovies] = useState(cards);
+
 
     useEffect(function () {
         const onlyShortMovies = localStorage.getItem('onlyShortMovies');
@@ -24,6 +26,34 @@ function SavedMovies({ cards, isLoading, isRemovable, renewCards, currentUser })
     }, [searchQuery, setSearchQuery])
 
 
+
+    const globalCardFilter = (e) => {
+        console.log('FILTER GLOBAL');
+        e.preventDefault();
+        const fixedCards = cards.map(card => {
+            const imageUrl = typeof card.image === 'string'
+                ? card.image
+                : 'https://api.nomoreparties.co' + card.image.url;
+            const newCard = {
+                ...card,
+                image: imageUrl
+            };
+
+            return newCard;
+        });
+        console.log(fixedCards);
+
+        const regex = new RegExp(searchQuery, 'gi');
+        let filteredMovies = fixedCards.filter(movie => movie.nameRU.match(regex));
+        console.log(filteredMovies);
+
+        if (onlyShortMovies) {
+            filteredMovies = filteredMovies.filter(movie => movie.duration <= 40);
+        }
+
+        setMovies(filteredMovies);
+    };
+
     return (
         <>
             <Header
@@ -36,13 +66,14 @@ function SavedMovies({ cards, isLoading, isRemovable, renewCards, currentUser })
                     <SearchForm
                         setSearchQuery={setSearchQuery}
                         searchQuery={searchQuery}
+                        handleSubmit={globalCardFilter}
                         setOnlyShortMovies={setOnlyShortMovies}
                         onlyShortMovies={onlyShortMovies}
                     />
                     {isLoading ?
                         <Preloader />
                         : <MoviesCardList
-                            cards={cards}
+                            cards={movies}
                             currentUser={currentUser}
                             searchQuery={searchQuery}
                             isRemovable={isRemovable}

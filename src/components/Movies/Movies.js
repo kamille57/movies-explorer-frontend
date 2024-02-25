@@ -9,7 +9,7 @@ import Preloader from '../Preloader/Preloader.js';
 function Movies({ cards, savedMovies, isLoading, isRemovable,  renewCards }) {
   const [searchQuery, setSearchQuery] = useState('');
   const [onlyShortMovies, setOnlyShortMovies] = useState(false);
-  const [movies, setMovies] = useState(cards);
+  const [movies, setMovies] = useState([]);
 
   useEffect(function() {
     const onlyShortMovies = localStorage.getItem('onlyShortMovies');
@@ -20,22 +20,47 @@ function Movies({ cards, savedMovies, isLoading, isRemovable,  renewCards }) {
     if(moviesSearchQuery) setSearchQuery(moviesSearchQuery)
 
 
-    // Даны два массива - найти в бОльшом элементы из меньшего и ЗАМЕНИТЬ
-    const finalCards = cards.map(function(movie) {
+  }, [cards, savedMovies])
+
+
+  useEffect(function() {
+    setMovies([]);
+    localStorage.setItem('moviesSearchQuery', searchQuery);
+  }, [searchQuery, setSearchQuery])
+
+
+  const globalCardFilter = (e) => {
+    e.preventDefault();
+    const fixedCards = cards.map(card => {
+      const imageUrl = typeof card.image === 'string'
+        ? card.image
+        : 'https://api.nomoreparties.co' + card.image.url;
+      const newCard = {
+        ...card,
+        image: imageUrl
+      };
+
+      return newCard;
+    });
+    
+    const regex = new RegExp(searchQuery, 'gi');
+    let filteredMovies = fixedCards.filter(movie => movie.nameRU.match(regex));
+
+    if (onlyShortMovies) {
+      filteredMovies = filteredMovies.filter(movie => movie.duration <= 40);
+    }
+
+     // Даны два массива - найти в бОльшом элементы из меньшего и ЗАМЕНИТЬ
+     filteredMovies = filteredMovies.map(function(movie) {
       const findedSavedMovie = savedMovies.find(sm => sm.id === movie.id);
       if(findedSavedMovie){
         movie.saved = true;
       }
       return movie
     })
-    setMovies(finalCards);
 
-  }, [cards, savedMovies])
-
-
-  useEffect(function() {
-    localStorage.setItem('moviesSearchQuery', searchQuery);
-  }, [searchQuery, setSearchQuery])
+    setMovies(filteredMovies);
+  };
 
   return (
     <>
@@ -49,6 +74,7 @@ function Movies({ cards, savedMovies, isLoading, isRemovable,  renewCards }) {
           <SearchForm
             setSearchQuery={setSearchQuery}
             searchQuery={searchQuery}
+            handleSubmit={globalCardFilter}
             setOnlyShortMovies={setOnlyShortMovies}
             onlyShortMovies={onlyShortMovies}
           />

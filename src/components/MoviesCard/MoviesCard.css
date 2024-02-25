@@ -61,6 +61,7 @@
     background-size: 25px cover;
     background-repeat: no-repeat;
     grid-area: box;
+    width: 16px;
 }
 
 .card-checkbox__input {

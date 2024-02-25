@@ -77,22 +77,24 @@ function MoviesCard({ card, isRemovable, isSaved = false, renewCards }) {
   }
 
 
-  function getDurationInHoursAndMinutes(duration) { 
+  function getDurationInHoursAndMinutes(duration) {
     if (duration < 60) {
-        return `${duration} мин`; 
+      return `${duration} мин`;
     } else if (duration % 60 === 0) {
-        return `${duration / 60} ч`; 
+      return `${duration / 60} ч`;
     } else {
-        const hours = Math.floor(duration / 60); 
-        const minutes = duration % 60; 
-        return `${hours}ч ${minutes}мин`; 
+      const hours = Math.floor(duration / 60);
+      const minutes = duration % 60;
+      return `${hours}ч ${minutes}мин`;
     }
-}
+  }
 
   return (
     <article className="card">
       <figure className="card__figure">
-        <img className="card__pic" src={imageUrl} alt={`Заставка ролика ${card.nameRU}`} />
+        <a href={card.trailerLink}>
+          <img className="card__pic" src={imageUrl} alt={`Заставка ролика ${card.nameRU}`} />
+        </a>
         <figcaption className="card__caption">{card.nameRU}</figcaption>
         {isRemovable ? (
           <div className="card-checkbox__cross" onClick={handleRemove} />
