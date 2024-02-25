@@ -8,6 +8,6 @@
 
 IP 178.154.207.70
 
-Frontend https://api.movie.nomoredomainsmonster.ru
+Frontend https://movie.nomoredomainsmonster.ru
 
 Ссылка на пул реквест: https://github.com/kamille57/movies-explorer-frontend/pull/2#issue-2152790014
