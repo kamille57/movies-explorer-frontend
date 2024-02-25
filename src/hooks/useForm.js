@@ -18,7 +18,7 @@ export function useForm(initialValues) {
     } else if (name === 'movie' && value.length < 1) {
       error = 'Введите более 1 символа для поиска ролика';
     } else if (name === 'name' && !/^[A-Za-zА-Яа-я\s-]+$/.test(value)) {
-      error = 'Имя должно содержать только латиницу, кириллицу, пробел или дефис';
+      error = 'Латиница или кириллица допустимы для ввода';
     } else if (name === 'name' && value.length < 2) {
       error = 'Имя должно содержать не менее 2 символов';
     }

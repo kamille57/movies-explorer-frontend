@@ -114,7 +114,6 @@ function App() {
 
     const handleLogin = ({ email, password }) => {
         setIsLoading(true);
-        renewCards();
         api.authorize(email, password)
             .then(authData => {
                 localStorage.setItem('jwt', authData.token);
@@ -138,7 +137,6 @@ function App() {
 
     const handleRegister = ({ name, email, password }) => {
         setIsLoading(true);
-        renewCards();
         api.register({ name, email, password })
             .then(res => {
                 return api.authorize(email, password);
@@ -147,7 +145,7 @@ function App() {
                 localStorage.setItem('jwt', data.token);
                 setCurrentUser({ email, name });
                 setIsLoggedIn(true);
-                navigate("/movies");
+                navigate("/");
                 onRegister();
             })
             .catch(err => {

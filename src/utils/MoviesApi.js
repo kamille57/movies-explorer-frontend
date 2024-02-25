@@ -2,6 +2,8 @@ class MoviesApi {
     constructor() {
         this.baseUrl = 'https://api.nomoreparties.co/beatfilm-movies';
         this.localUrl = 'https://api.movie.nomoredomainsmonster.ru';
+       // this.localUrl = 'http://localhost:3001';
+
         this.credentials = 'include';
         this.headers = {
             'Content-Type': 'application/json'

@@ -4,11 +4,13 @@ import MoviesCardList from "../MoviesCardList/MoviesCardList.js"
 import Header from '../Header/Header.js'
 import Footer from "../Footer/Footer.js"
 import Preloader from '../Preloader/Preloader.js';
+import MoviesApi from "../../utils/MoviesApi";
 
 function SavedMovies({ cards, isLoading, isRemovable, renewCards, currentUser }) {
     const [searchQuery, setSearchQuery] = useState('');
     const [onlyShortMovies, setOnlyShortMovies] = useState(false);
-    const [movies, setMovies] = useState(cards);
+    const [movies, setSavedMovies] = useState(cards);
+    const moviesApi = new MoviesApi();
 
     useEffect(function () {
         const onlyShortMovies = localStorage.getItem('onlyShortMovies');
@@ -43,9 +45,18 @@ function SavedMovies({ cards, isLoading, isRemovable, renewCards, currentUser })
         if (onlyShortMovies) {
             filteredMovies = filteredMovies.filter(movie => movie.duration <= 40);
         }
-
-        setMovies(filteredMovies);
+        setSavedMovies(filteredMovies);
     };
+
+    function handleRemove(movieId) {
+        moviesApi.deleteMovie(movieId)
+            .then(() => {
+                moviesApi.getSavedMovies().then(setSavedMovies);
+            })
+            .catch((err) => {
+                console.log(err);
+            });
+    }
 
     return (
         <>
@@ -66,6 +77,7 @@ function SavedMovies({ cards, isLoading, isRemovable, renewCards, currentUser })
                     {isLoading ?
                         <Preloader />
                         : <MoviesCardList
+                            handleRemove={handleRemove}
                             cards={movies}
                             currentUser={currentUser}
                             searchQuery={searchQuery}

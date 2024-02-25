@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import MoviesApi from "../../utils/MoviesApi";
 import MainApi from '../../utils/MainApi.js';
 
-function MoviesCard({ card, isRemovable, isSaved = false, renewCards }) {
+function MoviesCard({ card, isRemovable, isSaved = false, renewCards, handleRemove }) {
   const imageUrl = typeof card.image === "string" ? card.image : "https://api.nomoreparties.co" + card.image.url;
 
   const moviesApi = new MoviesApi();
@@ -19,17 +19,12 @@ function MoviesCard({ card, isRemovable, isSaved = false, renewCards }) {
     }
   }, [isSaved]);
 
-  function handleRemove() {
-    moviesApi.deleteMovie(card._id)
-      .then(() => {
-        setIsMovieChecked(false);
-        setIsMovieSaved(false)
-        renewCards();
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }
+  const movieRemove = () => {
+    setIsMovieChecked(false);
+    setIsMovieSaved(false);
+    renewCards(); // Обновляем список карточек
+    handleRemove(card._id);
+}
 
   function handleChange(e) {
     const isChecked = e.target.checked;
@@ -43,16 +38,16 @@ function MoviesCard({ card, isRemovable, isSaved = false, renewCards }) {
     delete updatedCard.created_at;
     delete updatedCard.updated_at;
 
-    if (isChecked) { // если чекнуто, добавляем фильм на сервер  
+    if (isChecked) { // если чекнуто, добавляем фильм на сервер   
 
       moviesApi.createMovie(updatedCard);
       renewCards();
 
-      moviesApi.getSavedMovies() // Получаем ownerId   
+      moviesApi.getSavedMovies() // Получаем ownerId    
         .then(savedMovies => {
           const ownerId = savedMovies.find(movie => movie.id === card.id).owner;
 
-          api.getUserInfo() // получаем id юзера, чтобы сравнить с id овнера карточки    
+          api.getUserInfo() // получаем id юзера, чтобы сравнить с id овнера карточки     
             .then((userData) => {
               if (userData._id === ownerId) {
                 setIsMovieSaved(isChecked);
@@ -63,11 +58,10 @@ function MoviesCard({ card, isRemovable, isSaved = false, renewCards }) {
             });
         })
         .catch(error => {
-          console.error('Ошибка при получении сохраненных фильмов: ', error);
+          console.log('Ошибка при получении сохраненных фильмов: ', error);
         });
-    } 
+    }
   }
-
 
   function getDurationInHoursAndMinutes(duration) {
     if (duration < 60) {
@@ -89,7 +83,7 @@ function MoviesCard({ card, isRemovable, isSaved = false, renewCards }) {
         </a>
         <figcaption className="card__caption">{card.nameRU}</figcaption>
         {isRemovable ? (
-          <div className="card-checkbox__cross" onClick={handleRemove} />
+          <div className="card-checkbox__cross" onClick={movieRemove} />
         ) : (
           <label className="card-checkbox">
             <input className="card-checkbox__input" type="checkbox" placeholder="" checked={isMovieSaved} onChange={handleChange} />

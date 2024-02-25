@@ -79,6 +79,7 @@ function Movies({ cards, savedMovies, isLoading, isRemovable, renewCards }) {
             : <MoviesCardList
               searchQuery={searchQuery}
               cards={movies}
+              isSaved={cards.saved}
               renewCards={renewCards}
               isRemovable={isRemovable}
               onlyShortMovies={onlyShortMovies}

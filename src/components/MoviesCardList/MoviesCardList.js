@@ -1,12 +1,11 @@
 import { useState, useEffect } from 'react';
 import MoviesCard from '../MoviesCard/MoviesCard.js';
 
-function MoviesCardList({ cards, searchQuery, onlyShortMovies, isRemovable, showMoviesWhileEmptySearch, renewCards }) {
+function MoviesCardList({ cards, searchQuery, isRemovable, showMoviesWhileEmptySearch, renewCards, handleRemove }) {
   const [isLoadedMore, setIsLoadedMore] = useState(false);
   const [chunkSize, setChunkSize] = useState(2); // 2 - 2 - 4
   const [cardsLimit, setCardsLimit] = useState(5); // 5 - 8 - 16
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
-
   useEffect(() => {
     const handleResize = () => {
       setWindowWidth(window.innerWidth);
@@ -17,7 +16,7 @@ function MoviesCardList({ cards, searchQuery, onlyShortMovies, isRemovable, show
     return () => {
       window.removeEventListener('resize', handleResize);
     };
-    
+
   }, []);
 
   useEffect(() => {
@@ -53,6 +52,7 @@ function MoviesCardList({ cards, searchQuery, onlyShortMovies, isRemovable, show
           {cards && cards.slice(0, cardsLimit).map((newCard, index) => (
             <li key={index}>
               <MoviesCard
+                handleRemove={handleRemove}
                 card={newCard}
                 isRemovable={isRemovable}
                 isSaved={newCard.saved}
