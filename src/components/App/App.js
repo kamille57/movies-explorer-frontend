@@ -19,7 +19,6 @@ import Preloader from "../Preloader/Preloader";
 import { handleError } from "../../utils/handleError.js"
 import { profileErrors, registerErrors, loginErrors, serverErrors, signOutErrors } from '../../constants/constants.js';
 
-
 function App() {
     const [currentUser, setCurrentUser] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
@@ -89,9 +88,7 @@ function App() {
         setIsToolTipFailOpen(true);
     }
 
-    
     function renewCards() {
-        console.log('renewCards');
         moviesApi.getInitialMovies().then(setMovies);
         moviesApi.getSavedMovies().then(setSavedMovies);
     }
@@ -182,24 +179,32 @@ function App() {
         <CurrentUserContext.Provider value={currentUser}>
             <div className="page">
                 <Routes>
-                    <Route path="/" element={<Main
-                        isLoggedIn={isLoggedIn}
-                    />} />
-                    <Route path="/signup" element={<Auth
-                        onRegister={handleRegister}
-                        isLoading={isLoading}
-                        isRegistration={true}
-                        serverError={serverError}
-                        setServerError={setServerError}
-                    />} />
-                    <Route path="/signin" element={<Auth
-                        onLogin={handleLogin}
-                        setCurrentUser={setCurrentUser}
-                        isLoading={isLoading}
-                        isRegistration={false}
-                        serverError={serverError}
-                        setServerError={setServerError}
-                    />} />
+                    <Route path="/"
+                        element={<Main
+                            isLoggedIn={isLoggedIn}
+                        />}
+                    />
+
+                    <Route path="/signup"
+                        element={<Auth
+                            onRegister={handleRegister}
+                            isLoading={isLoading}
+                            isRegistration={true}
+                            serverError={serverError}
+                            setServerError={setServerError}
+                        />}
+                    />
+
+                    <Route path="/signin"
+                        element={<Auth
+                            onLogin={handleLogin}
+                            setCurrentUser={setCurrentUser}
+                            isLoading={isLoading}
+                            isRegistration={false}
+                            serverError={serverError}
+                            setServerError={setServerError}
+                        />}
+                    />
 
                     <Route
                         path="/movies"
@@ -227,16 +232,24 @@ function App() {
                             isRemovable={true}
                         />}
                     />
-                    <Route path="/profile" element={<Profile
-                        onUpdateProfile={handleUpdateProfile}
-                        signOut={signOut}
-                        serverError={serverError}
-                        setServerError={setServerError}
-                        isLoading={isLoading}
-                        setIsEditing={setIsEditing}
-                        isEditing={isEditing}
-                    />} />
-                    <Route path="*" element={<NotFound />} />
+
+                    <Route path="/profile"
+                        element={<Profile
+                            onUpdateProfile={handleUpdateProfile}
+                            signOut={signOut}
+                            serverError={serverError}
+                            setServerError={setServerError}
+                            isLoading={isLoading}
+                            setIsEditing={setIsEditing}
+                            isEditing={isEditing}
+                        />}
+                    />
+
+                    <Route path="*"
+                        element={<NotFound
+                        />}
+                    />
+
                 </Routes>
                 <InfoToolTipSuccess
                     isOpen={isToolTipSuccessOpen}

@@ -49,7 +49,6 @@ function Auth({ name, isRegistration, onRegister, onLogin, serverError, setServe
     const innerHandleSubmit = (event) => {
         event.preventDefault();
         if (validateForm()) {
-            console.log('isRegistration', isRegistration);
             if (isRegistration) {
                 const { name, email, password } = values;
                 handleRegister({ name, email, password });

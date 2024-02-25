@@ -33,7 +33,6 @@ function MoviesCard({ card, isRemovable, isSaved = false, renewCards }) {
 
   function handleChange(e) {
     const isChecked = e.target.checked;
-    console.log('card', card);
     const updatedCard = {
       ...card,
       image: imageUrl,
@@ -44,24 +43,17 @@ function MoviesCard({ card, isRemovable, isSaved = false, renewCards }) {
     delete updatedCard.created_at;
     delete updatedCard.updated_at;
 
-    console.log(updatedCard);
     if (isChecked) { // если чекнуто, добавляем фильм на сервер  
 
       moviesApi.createMovie(updatedCard);
       renewCards();
 
-      // Получаем ownerId    
-      moviesApi.getSavedMovies()
-
+      moviesApi.getSavedMovies() // Получаем ownerId   
         .then(savedMovies => {
           const ownerId = savedMovies.find(movie => movie.id === card.id).owner;
-          console.log(savedMovies);
-          console.log('ownerID', ownerId);
 
           api.getUserInfo() // получаем id юзера, чтобы сравнить с id овнера карточки    
             .then((userData) => {
-              console.log('Owner ID:', ownerId);
-              console.log('userData ID', userData);
               if (userData._id === ownerId) {
                 setIsMovieSaved(isChecked);
               }
@@ -92,7 +84,7 @@ function MoviesCard({ card, isRemovable, isSaved = false, renewCards }) {
   return (
     <article className="card">
       <figure className="card__figure">
-        <a href={card.trailerLink}>
+        <a className="card__link" href={card.trailerLink} target="_blank" rel="noopener noreferrer">
           <img className="card__pic" src={imageUrl} alt={`Заставка ролика ${card.nameRU}`} />
         </a>
         <figcaption className="card__caption">{card.nameRU}</figcaption>

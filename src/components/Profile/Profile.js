@@ -8,7 +8,6 @@ import CurrentUserContext from "../../contexts/CurrentUserContext";
 function Profile({ onUpdateProfile, signOut, serverError, setServerError, isLoading, isEditing, setIsEditing }) {
   const currentUser = useContext(CurrentUserContext);
   const [isDataChanged, setIsDataChanged] = useState(false);
-  //const [isEditing, setIsEditing] = useState(false);
 
   const navigate = useNavigate();
 
@@ -48,7 +47,6 @@ function Profile({ onUpdateProfile, signOut, serverError, setServerError, isLoad
     if (validateForm()) {
       const { email, name } = values;
       onUpdateProfile({ email, name });
-      console.log('isEditing', isEditing);
     }
   };
 
@@ -64,7 +62,6 @@ function Profile({ onUpdateProfile, signOut, serverError, setServerError, isLoad
 
         <form className="profile__form"
           onSubmit={handleSubmit}
-
         >
           <fieldset className="profile__input-text">Имя
             <label className="profile__label" htmlFor="name"></label>
@@ -77,7 +74,6 @@ function Profile({ onUpdateProfile, signOut, serverError, setServerError, isLoad
               maxLength="40"
               value={values.name}
               onChange={handleChange}
-
               {...getInputProps('name')}
               disabled={!isEditing}
               placeholder="Введите имя"
@@ -106,49 +102,16 @@ function Profile({ onUpdateProfile, signOut, serverError, setServerError, isLoad
               id="email-error">{errors.email}
             </span>
           </fieldset>
-
-          {/* Как должна выглядеть страница после того как пришла ошибка от сервера? */}
-          {/* 1. Показываем текст ошибки (от сервера) */}
-          {/* 2. Неактивная кнопка сохранить */}
-
-
-          {/* Что происходит после начала редактирования? */}
-          {/* Как узнать что у нас началось начало редактирования? - редактирование началось когда поменялись "values, values.name, values.email" */}
-          {/* 0. Скрываем текст ошибки (от сервера) - serverError переводим в состояние false */}
-          {/* 1. Кнопка сохранить становится активной (убираем disabled) */}
-
-
-          {/* Для того чтобы начать редактировать, нужно войти в режим редактирования (isEditing == true) */}
-
-          {/* Как войти в режим редактирования? */}
-          {/* 1. Обычный способ - нажать кнопку редактировать */}
-          {/* 2. Никак, только способ 1 */}
-
-          {/* Как ВЫЙТИ из режима редактирования? */}
-          {/*  1. Обычный способ - нажать СОХРАНИТЬ и при этом НЕ получить ошибку сервера */}
-
-          {/* Как разблокировать кнопку сохранить? */}
-          {/* 1. (После того как сервер прислал ошибку,) начинаем менять имя или почту в полях ввода  */}
-
-
-          {/* После отправки данных на сервер, мы должны выйти из режима редактирвоания, НО
-          мы вернемся в его если есть ошибка от сервера */}
-
-          {/* После отправки данных  на сервере, мы выходим из режима редактирвоания ТОЛЬКО ЕСЛИ ошибки нет */}
-
           <span className={`profile__server-error ${serverError ? 'profile__server-error_active' : ''}`}>
             {serverError}
           </span>
-
           {isEditing || serverError ? (
             <button
               type="submit"
               disabled={!isDataChanged || errors.name || errors.email || serverError}
               className={`profile__submit ${!isDataChanged || errors.name || errors.email || serverError ? 'profile__submit_disabled' : ''}`}
               onClick={() => {
-
                 setIsEditing(false);
-
               }}
             >
               {isLoading ? 'Сохранение...' : 'Сохранить'}

@@ -10,7 +10,6 @@ function SavedMovies({ cards, isLoading, isRemovable, renewCards, currentUser })
     const [onlyShortMovies, setOnlyShortMovies] = useState(false);
     const [movies, setMovies] = useState(cards);
 
-
     useEffect(function () {
         const onlyShortMovies = localStorage.getItem('onlyShortMovies');
         if (onlyShortMovies === "true") {
@@ -20,15 +19,11 @@ function SavedMovies({ cards, isLoading, isRemovable, renewCards, currentUser })
         if (moviesSearchQuery) setSearchQuery(moviesSearchQuery)
     }, [])
 
-
     useEffect(function () {
         localStorage.setItem('savedMoviesSearchQuery', searchQuery);
     }, [searchQuery, setSearchQuery])
 
-
-
     const globalCardFilter = (e) => {
-        console.log('FILTER GLOBAL');
         e.preventDefault();
         const fixedCards = cards.map(card => {
             const imageUrl = typeof card.image === 'string'
@@ -41,11 +36,9 @@ function SavedMovies({ cards, isLoading, isRemovable, renewCards, currentUser })
 
             return newCard;
         });
-        console.log(fixedCards);
 
         const regex = new RegExp(searchQuery, 'gi');
         let filteredMovies = fixedCards.filter(movie => movie.nameRU.match(regex));
-        console.log(filteredMovies);
 
         if (onlyShortMovies) {
             filteredMovies = filteredMovies.filter(movie => movie.duration <= 40);

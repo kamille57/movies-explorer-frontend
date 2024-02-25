@@ -1,29 +1,26 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import SearchForm from "../SearchForm/SearchForm.js";
 import MoviesCardList from "../MoviesCardList/MoviesCardList.js";
 import Header from '../Header/Header.js';
 import Footer from "../Footer/Footer.js";
-import { useState } from 'react';
 import Preloader from '../Preloader/Preloader.js';
 
-function Movies({ cards, savedMovies, isLoading, isRemovable,  renewCards }) {
+function Movies({ cards, savedMovies, isLoading, isRemovable, renewCards }) {
   const [searchQuery, setSearchQuery] = useState('');
   const [onlyShortMovies, setOnlyShortMovies] = useState(false);
   const [movies, setMovies] = useState([]);
 
-  useEffect(function() {
+  useEffect(function () {
     const onlyShortMovies = localStorage.getItem('onlyShortMovies');
     if (onlyShortMovies === "true") {
       setOnlyShortMovies(true)
-    } 
+    }
     const moviesSearchQuery = localStorage.getItem('moviesSearchQuery');
-    if(moviesSearchQuery) setSearchQuery(moviesSearchQuery)
-
-
+    if (moviesSearchQuery) setSearchQuery(moviesSearchQuery)
   }, [cards, savedMovies])
 
 
-  useEffect(function() {
+  useEffect(function () {
     setMovies([]);
     localStorage.setItem('moviesSearchQuery', searchQuery);
   }, [searchQuery, setSearchQuery])
@@ -42,7 +39,7 @@ function Movies({ cards, savedMovies, isLoading, isRemovable,  renewCards }) {
 
       return newCard;
     });
-    
+
     const regex = new RegExp(searchQuery, 'gi');
     let filteredMovies = fixedCards.filter(movie => movie.nameRU.match(regex));
 
@@ -50,12 +47,12 @@ function Movies({ cards, savedMovies, isLoading, isRemovable,  renewCards }) {
       filteredMovies = filteredMovies.filter(movie => movie.duration <= 40);
     }
 
-     // Даны два массива - найти в бОльшом элементы из меньшего и ЗАМЕНИТЬ
-     filteredMovies = filteredMovies.map(function(movie) {
+    filteredMovies = filteredMovies.map(function (movie) {
       const findedSavedMovie = savedMovies.find(sm => sm.id === movie.id);
-      if(findedSavedMovie){
+      if (findedSavedMovie) {
         movie.saved = true;
       }
+      
       return movie
     })
 
@@ -78,17 +75,17 @@ function Movies({ cards, savedMovies, isLoading, isRemovable,  renewCards }) {
             setOnlyShortMovies={setOnlyShortMovies}
             onlyShortMovies={onlyShortMovies}
           />
-            {isLoading ? 
-                <Preloader /> 
-              : <MoviesCardList
-                  searchQuery={searchQuery}
-                  cards={movies}
-                  renewCards={renewCards}
-                  isRemovable={isRemovable}
-                  onlyShortMovies={onlyShortMovies}
-                  showMoviesWhileEmptySearch={false}
-                /> 
-            }
+          {isLoading ?
+            <Preloader />
+            : <MoviesCardList
+              searchQuery={searchQuery}
+              cards={movies}
+              renewCards={renewCards}
+              isRemovable={isRemovable}
+              onlyShortMovies={onlyShortMovies}
+              showMoviesWhileEmptySearch={false}
+            />
+          }
         </section>
       </main>
       <Footer />

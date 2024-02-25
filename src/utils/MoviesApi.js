@@ -1,7 +1,7 @@
 class MoviesApi {
     constructor() {
         this.baseUrl = 'https://api.nomoreparties.co/beatfilm-movies';
-        this.localUrl = 'http://localhost:3001';
+        this.localUrl = 'https://api.movie.nomoredomainsmonster.ru';
         this.credentials = 'include';
         this.headers = {
             'Content-Type': 'application/json'
@@ -46,7 +46,6 @@ class MoviesApi {
     }
 
     async deleteMovie(movieId) {
-        console.log(movieId);
         return fetch(`${this.localUrl}/movies/${movieId}`, {
             method: 'DELETE',
             credentials: this.credentials,

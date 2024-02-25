@@ -17,6 +17,7 @@ function MoviesCardList({ cards, searchQuery, onlyShortMovies, isRemovable, show
     return () => {
       window.removeEventListener('resize', handleResize);
     };
+    
   }, []);
 
   useEffect(() => {

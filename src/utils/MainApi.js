@@ -1,6 +1,6 @@
 class MainApi {
   constructor() {
-    this.baseUrl = 'http://localhost:3001';
+    this.baseUrl = 'https://api.movie.nomoredomainsmonster.ru';
     this.credentials = 'include';
   }
 
@@ -37,19 +37,6 @@ class MainApi {
     })
       .then(response => this._checkResponse(response));
   }
-
-  // // TODO: кажется это нужно доделать
-  // checkToken() {
-  //   return fetch(`${this.baseUrl}/users/me`, {
-  //     method: 'GET',
-  //     credentials: this.credentials,
-  //     headers: {
-  //       "Accept": "application/json",
-  //       "Content-Type": "application/json",
-  //     }
-  //   })
-  //     .then(response => this._checkResponse(response));
-  // }
 
   getUserInfo() {
     return fetch(`${this.baseUrl}/users/me`, {
