@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import MoviesApi from "../../utils/MoviesApi";
 import MainApi from '../../utils/MainApi.js';
 
-function MoviesCard({ card, isRemovable, isSaved = false, renewCards, handleRemove }) {
+function MoviesCard({ card, isRemovable, isSaved = false, handleRemove }) {
   const imageUrl = typeof card.image === "string" ? card.image : "https://api.nomoreparties.co" + card.image.url;
 
   const moviesApi = new MoviesApi();
@@ -20,11 +20,9 @@ function MoviesCard({ card, isRemovable, isSaved = false, renewCards, handleRemo
   }, [isSaved]);
 
   const movieRemove = () => {
-    setIsMovieChecked(false);
-    setIsMovieSaved(false);
-    renewCards(); // Обновляем список карточек
     handleRemove(card._id);
-}
+
+  };
 
   function handleChange(e) {
     const isChecked = e.target.checked;
@@ -38,16 +36,13 @@ function MoviesCard({ card, isRemovable, isSaved = false, renewCards, handleRemo
     delete updatedCard.created_at;
     delete updatedCard.updated_at;
 
-    if (isChecked) { // если чекнуто, добавляем фильм на сервер   
-
+    if (isChecked) {
       moviesApi.createMovie(updatedCard);
-      renewCards();
-
-      moviesApi.getSavedMovies() // Получаем ownerId    
+      moviesApi.getSavedMovies()
         .then(savedMovies => {
           const ownerId = savedMovies.find(movie => movie.id === card.id).owner;
 
-          api.getUserInfo() // получаем id юзера, чтобы сравнить с id овнера карточки     
+          api.getUserInfo()
             .then((userData) => {
               if (userData._id === ownerId) {
                 setIsMovieSaved(isChecked);
@@ -57,9 +52,22 @@ function MoviesCard({ card, isRemovable, isSaved = false, renewCards, handleRemo
               console.log(err);
             });
         })
-        .catch(error => {
-          console.log('Ошибка при получении сохраненных фильмов: ', error);
-        });
+        .catch(error => console.log('Error getting saved movies: ', error));
+
+    } else {
+      moviesApi.getSavedMovies()
+        .then(savedMovies => {
+          const movieToBeDeleted = savedMovies.find(movie => movie.id === card.id);
+          console.log(movieToBeDeleted);
+          if (movieToBeDeleted) {
+            moviesApi.deleteMovie(movieToBeDeleted._id);
+            setIsMovieSaved(false);
+            setIsMovieChecked(false);
+
+        
+          }
+        })
+        .catch(error => console.log(error));
     }
   }
 

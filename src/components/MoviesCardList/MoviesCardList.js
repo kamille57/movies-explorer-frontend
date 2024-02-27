@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import MoviesCard from '../MoviesCard/MoviesCard.js';
 
-function MoviesCardList({ cards, searchQuery, isRemovable, showMoviesWhileEmptySearch, renewCards, handleRemove }) {
+function MoviesCardList({ cards, searchQuery, isRemovable, showMoviesWhileEmptySearch, renewCards, handleRemove, setSavedMovies, setMovies }) {
   const [isLoadedMore, setIsLoadedMore] = useState(false);
   const [chunkSize, setChunkSize] = useState(2); // 2 - 2 - 4
   const [cardsLimit, setCardsLimit] = useState(5); // 5 - 8 - 16
@@ -52,6 +52,8 @@ function MoviesCardList({ cards, searchQuery, isRemovable, showMoviesWhileEmptyS
           {cards && cards.slice(0, cardsLimit).map((newCard, index) => (
             <li key={index}>
               <MoviesCard
+                setSavedMovies={setSavedMovies}
+                setMovies={setMovies}
                 handleRemove={handleRemove}
                 card={newCard}
                 isRemovable={isRemovable}

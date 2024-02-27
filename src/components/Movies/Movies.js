@@ -8,7 +8,7 @@ import Preloader from '../Preloader/Preloader.js';
 function Movies({ cards, savedMovies, isLoading, isRemovable, renewCards }) {
   const [searchQuery, setSearchQuery] = useState('');
   const [onlyShortMovies, setOnlyShortMovies] = useState(false);
-  const [movies, setMovies] = useState([]);
+  const [movies, setMovies] = useState(cards);
 
   useEffect(function () {
     const onlyShortMovies = localStorage.getItem('onlyShortMovies');
@@ -85,6 +85,7 @@ function Movies({ cards, savedMovies, isLoading, isRemovable, renewCards }) {
                 isRemovable={isRemovable} 
                 onlyShortMovies={onlyShortMovies} 
                 showMoviesWhileEmptySearch={false} 
+                setMovies={setMovies}
               />
             ) 
           } 

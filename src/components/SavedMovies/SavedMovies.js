@@ -6,7 +6,7 @@ import Footer from "../Footer/Footer.js"
 import Preloader from '../Preloader/Preloader.js';
 import MoviesApi from "../../utils/MoviesApi";
 
-function SavedMovies({ cards, isLoading, isRemovable, renewCards, currentUser }) {
+function SavedMovies({ cards, isLoading, isRemovable, currentUser, renewCards }) {
     const [searchQuery, setSearchQuery] = useState('');
     const [onlyShortMovies, setOnlyShortMovies] = useState(false);
     const [movies, setSavedMovies] = useState(cards);
@@ -48,15 +48,15 @@ function SavedMovies({ cards, isLoading, isRemovable, renewCards, currentUser })
         setSavedMovies(filteredMovies);
     };
 
-    function handleRemove(movieId) {
-        moviesApi.deleteMovie(movieId)
+    const handleRemove = (id) => {
+        moviesApi.deleteMovie(id)
             .then(() => {
-                moviesApi.getSavedMovies().then(setSavedMovies);
+                const updatedMovies = movies.filter(movie => movie._id !== id);
+                setSavedMovies(updatedMovies);
+                renewCards();
             })
-            .catch((err) => {
-                console.log(err);
-            });
-    }
+            .catch((err) => console.log(err));
+    };
 
     return (
         <>
@@ -77,6 +77,7 @@ function SavedMovies({ cards, isLoading, isRemovable, renewCards, currentUser })
                     {isLoading ?
                         <Preloader />
                         : <MoviesCardList
+                            setSavedMovies={setSavedMovies}
                             handleRemove={handleRemove}
                             cards={movies}
                             currentUser={currentUser}
