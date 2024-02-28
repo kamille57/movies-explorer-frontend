@@ -55,19 +55,21 @@ function MoviesCard({ card, isRemovable, isSaved = false, handleRemove }) {
         .catch(error => console.log('Error getting saved movies: ', error));
 
     } else {
-      moviesApi.getSavedMovies()
-        .then(savedMovies => {
-          const movieToBeDeleted = savedMovies.find(movie => movie.id === card.id);
-          console.log(movieToBeDeleted);
-          if (movieToBeDeleted) {
-            moviesApi.deleteMovie(movieToBeDeleted._id);
-            setIsMovieSaved(false);
-            setIsMovieChecked(false);
+      // handleRemove(card._id);
+      // moviesApi.getSavedMovies()
+      //   .then(savedMovies => {
+      //     const movieToBeDeleted = savedMovies.find(movie => movie.id === card.id);
+      //     console.log("movieToBeDeleted", movieToBeDeleted);
+      //     console.log('movieToBeDeleted_id', movieToBeDeleted._id);
+      //     if (movieToBeDeleted) {
+      //       moviesApi.deleteMovie(movieToBeDeleted._id);
+      //       setIsMovieSaved(false);
+      //       setIsMovieChecked(false);
+      //       console.log('im here');
 
-        
-          }
-        })
-        .catch(error => console.log(error));
+      //     }
+      //   })
+      //   .catch(error => console.log(error));
     }
   }
 

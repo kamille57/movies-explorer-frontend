@@ -71,6 +71,19 @@ function App() {
         checkToken();
     }, []);
 
+    useEffect(function () {
+        (async function () {
+            if (currentUser) {
+                const initialMovies = await moviesApi.getInitialMovies();
+                setMovies(initialMovies);
+                const savedMovies = await moviesApi.getSavedMovies()
+                setSavedMovies(savedMovies)
+                setIsLoading(false);
+            } 
+        })();
+
+    }, [currentUser])
+
     if (isCheckingAuth) {
         return <Preloader />;
     }
