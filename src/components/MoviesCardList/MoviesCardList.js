@@ -7,7 +7,8 @@ function MoviesCardList({ cards }) {
   const [cardsLimit, setCardsLimit] = useState(5); // 5 - 8 - 16
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
 
-  const searchQuery = localStorage.getItem('searchQuery'); 
+  const searchQuery = localStorage.getItem('searchQuery');  
+  const isSearchQueryPresent = searchQuery !== null; // Check if searchQuery is present in localStorage
     
 
   useEffect(() => {
@@ -51,7 +52,7 @@ function MoviesCardList({ cards }) {
 
   return (
     <>
-      {cards.length === 0 || searchQuery === "" ? (
+      {cards.length === 0 || searchQuery === "" || !isSearchQueryPresent ? (
         <h3 className='movies__empty-request'>Ничего не найдено</h3>
       ) : (
         <section className="cards">

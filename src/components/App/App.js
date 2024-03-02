@@ -170,9 +170,7 @@ console.log(movies);
     function signOut() {
         api.signOut()
             .then(() => {
-                localStorage.removeItem('jwt');
-                localStorage.removeItem('moviesSearchQuery');
-                localStorage.removeItem('searchQuery');
+                localStorage.clear();
                 setCurrentUser(null);
                 setIsLoggedIn(false);
                 navigate("/");
