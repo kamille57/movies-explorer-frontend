@@ -7,7 +7,7 @@ import CurrentUserContext from "../../contexts/CurrentUserContext";
 
 import Main from "../Main/Main.js";
 import Movies from "../Movies/Movies.js";
-// import SavedMovies from "../SavedMovies/SavedMovies.js";
+import SavedMovies from "../SavedMovies/SavedMovies.js";
 import Auth from "../Auth/Auth.js"
 import Profile from "../Profile/Profile.js";
 import NotFound from "../NotFound/NotFound.js";
@@ -79,10 +79,6 @@ function App() {
 
         checkToken();
     }, [isLoggedIn]);
-
-
-
-console.log(movies);
 
     if (isCheckingAuth) {
         return <Preloader />;
@@ -166,6 +162,17 @@ console.log(movies);
     };
 
 
+    const handleLike = (movie) => {  
+        console.log("Try to like"); 
+        console.log('movies from app', movies); 
+        moviesApi.createMovie(movie)  
+          .then((newMovie) => {  
+            const updatedSavedMovies = [...savedMovies, newMovie]; 
+            setSavedMovies(updatedSavedMovies); 
+          })  
+          .catch((err) => console.log(err));  
+      };
+
 
     function signOut() {
         api.signOut()
@@ -221,23 +228,22 @@ console.log(movies);
                             cards={movies}
                             isLoading={isLoading}
                             isLoggedIn={isLoggedIn}
+                            handleLike={handleLike}
                             
                         />}
                     />
-
-                  {/*   <Route
+{console.log('savedMovies', savedMovies)}
+                    <Route
                         path="/saved-movies"
                         element={<ProtectedRoute
                             Element={SavedMovies}
-                            cards={savedMovies}
                             currentUser={currentUser}
+                            savedCards={savedMovies}
                             setSavedMovies={setSavedMovies}
                             isLoggedIn={isLoggedIn}
                             isLoading={isLoading}
-                            handleDelete={handleDelete}
-                            isRemovable={true}
                         />}
-                    /> */}
+                    />
 
                     <Route path="/profile"
                         element={<Profile

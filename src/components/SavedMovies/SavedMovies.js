@@ -6,7 +6,14 @@ import Header from "../Header/Header.js";
 import Footer from "../Footer/Footer.js";
 import Preloader from "../Preloader/Preloader.js";
 
-function SavedMovies() {
+function SavedMovies({  savedCards }) {
+
+    const [filteredMovies, setFilteredMovies] = useState(savedCards); 
+
+    const handleFilteredMovies = (filteredCards) => { 
+      setFilteredMovies(filteredCards); 
+    } 
+
   return (
     <>
       <Header
@@ -16,8 +23,11 @@ function SavedMovies() {
       />
       <main className="saved-movies">
         <section className="saved-movies-page">
-          <SearchForm />
-          <MoviesCardList />
+          <SearchForm 
+          cards={savedCards}
+             handleSearch={handleFilteredMovies} />
+          <MoviesCardList 
+          cards={filteredMovies} />
         </section>
       </main>
       <Footer />
