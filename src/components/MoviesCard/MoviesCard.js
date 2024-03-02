@@ -1,7 +1,13 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
-function MoviesCard({ card, handleLike }) {
+function MoviesCard({ card, handleLike, handleDelete }) {
   const [isChecked, setIsChecked] = useState(false);
+
+  useEffect(() => {
+    const storedLikedMovies = JSON.parse(localStorage.getItem('likedMovies'));
+    const isLiked = storedLikedMovies.some(movie => movie.id === card.id);
+    setIsChecked(isLiked);
+  }, [card]);
 
   const imageUrl = typeof card.image === "string" ? card.image : "https://api.nomoreparties.co" + card.image.url;
 
@@ -17,23 +23,29 @@ function MoviesCard({ card, handleLike }) {
     }
   }
 
-  const handleCheckboxChange = () => {
-    setIsChecked(!isChecked);
-    if (!isChecked) {
-      const updatedCard = {
-              ...card,
-              image: imageUrl,
-              director: card.director.slice(0, 30),
-              createdAt: card.created_at,
-              updatedAt: card.updated_at,
-            };
-            delete updatedCard.created_at;
-            delete updatedCard.updated_at;
-            // delete updatedCard.saved;
-            // delete updatedCard._id;
-      handleLike(updatedCard); // Вызываем функцию handleLike при установке флажка
+  const handleCheckboxChange = () => { 
+    setIsChecked(!isChecked); 
+    console.log(card);
+    if (!isChecked) { 
+      const updatedCard = { 
+              ...card, 
+              image: imageUrl, 
+              director: card.director.slice(0, 30), 
+              createdAt: card.created_at, 
+              updatedAt: card.updated_at, 
+            }; 
+            delete updatedCard.created_at; 
+            delete updatedCard.updated_at; 
+            // delete updatedCard.saved; 
+            // delete updatedCard._id; 
+      handleLike(updatedCard);  
+      console.log(card);
+      console.log(updatedCard);
+    } else {
+      console.log(card);
+      handleDelete(card.id);
     }
-  };
+  }; 
 
   return (
     <article className="card">

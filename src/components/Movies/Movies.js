@@ -5,7 +5,7 @@ import Header from '../Header/Header.js';
 import Footer from "../Footer/Footer.js"; 
 import Preloader from '../Preloader/Preloader.js'; 
 
-function Movies({ cards, handleLike }) { 
+function Movies({ cards, handleLike, handleDelete }) { 
   const [filteredMovies, setFilteredMovies] = useState(cards); 
 
   const handleFilteredMovies = (filteredCards) => { 
@@ -30,6 +30,7 @@ function Movies({ cards, handleLike }) {
           <MoviesCardList 
             cards={filteredMovies}
             handleLike={handleLike} 
+            handleDelete={handleDelete}
           /> 
         </section> 
       </main> 

@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import MoviesCard from '../MoviesCard/MoviesCard.js';
 
-function MoviesCardList({ cards, handleLike }) {
+function MoviesCardList({ cards, handleLike, handleDelete }) {
   const [isLoadedMore, setIsLoadedMore] = useState(false);
   const [chunkSize, setChunkSize] = useState(2); // 2 - 2 - 4
   const [cardsLimit, setCardsLimit] = useState(5); // 5 - 8 - 16
@@ -62,6 +62,7 @@ function MoviesCardList({ cards, handleLike }) {
                 <MoviesCard
                   card={newCard}
                   handleLike={handleLike}
+                  handleDelete={handleDelete}
                 />
               </li>
             ))}

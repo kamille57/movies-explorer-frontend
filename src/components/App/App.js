@@ -26,13 +26,15 @@ function App() {
     const [isLoading, setIsLoading] = useState(false);
     // 
     const [isLoggedIn, setIsLoggedIn] = useState(false);
-    const [movies, setMovies] = useState([]);
     const [isToolTipSuccessOpen, setIsToolTipSuccessOpen] = useState(false);
     const [isToolTipFailOpen, setIsToolTipFailOpen] = useState(false);
     const [isCheckingAuth, setIsCheckingAuth] = useState(true);
     const [serverError, setServerError] = useState('');
     const [isEditing, setIsEditing] = useState(false);
+
+    const [movies, setMovies] = useState([]);
     const [savedMovies, setSavedMovies] = useState([]);
+    const [likedMovies, setLikedMovies] = useState([]);
 
     const navigate = useNavigate();
     const api = new MainApi();
@@ -52,14 +54,16 @@ function App() {
             }
             try {
                 const userData = await api.getUserInfo(token);
-                console.log('App - useEffect - setCurrentUser');
                 setCurrentUser(userData);
                 console.log("userData", userData);
                 const initialMovies = await moviesApi.getInitialMovies(movies);
             setMovies(initialMovies);
     
-            const likedMovies = await moviesApi.getSavedMovies(savedMovies);
-            setSavedMovies(likedMovies);
+            const savedMovies = await moviesApi.getSavedMovies()
+                
+                console.log('App - useEffect - setSavedMovies');
+                setSavedMovies(savedMovies);
+                localStorage.setItem('likedMovies', JSON.stringify(savedMovies));
 
                 setIsLoggedIn(true);
                 setIsLoading(false);
@@ -67,9 +71,7 @@ function App() {
                 onError();
                 const errorMessage = handleError(err, serverErrors);
                 setServerError(errorMessage);
-                localStorage.removeItem('jwt');
-                localStorage.removeItem('moviesSearchQuery');
-                localStorage.removeItem('searchQuery');
+                localStorage.clear();
                 setIsLoggedIn(false);
             } finally {
                 setIsLoading(false);
@@ -162,17 +164,55 @@ function App() {
     };
 
 
-    const handleLike = (movie) => {  
-        console.log("Try to like"); 
-        console.log('movies from app', movies); 
-        moviesApi.createMovie(movie)  
-          .then((newMovie) => {  
-            const updatedSavedMovies = [...savedMovies, newMovie]; 
-            setSavedMovies(updatedSavedMovies); 
-          })  
-          .catch((err) => console.log(err));  
-      };
+    const handleLike = (movie) => {
+        console.log("Try to like");
+        console.log('movies from app', movies);
+    
+        moviesApi.createMovie(movie)
+            .then((newMovie) => {
+                const updatedSavedMovies = [...savedMovies, newMovie];
+                setSavedMovies(updatedSavedMovies);
+    
+                const updatedMovies = movies.map(m => m.id === newMovie.id ? newMovie : m);
+                setMovies(updatedMovies);
+    
+                // Добавляем новый лайкнутый фильм к текущему списку лайкнутых фильмов
+                if (!likedMovies.find(m => m._id === newMovie._id)) {
+                    const updatedLikedMovies = [...likedMovies, newMovie];
+                    setLikedMovies(updatedLikedMovies);
+    
+                    // Сохраняем обновленный список лайкнутых фильмов в локальное хранилище
+                    localStorage.setItem('likedMovies', JSON.stringify(updatedLikedMovies));
+                }
+            })
+            .catch((err) => console.log(err));
+    };
 
+    const handleDelete = (movieId) => {
+        console.log("Try to delete like");
+        console.log('movies from app', movies);
+    
+        // Удаляем фильм из списка savedMovies
+        const updatedSavedMovies = savedMovies.filter(movie => movie.id !== movieId);
+        setSavedMovies(updatedSavedMovies);
+    
+        // Удаляем фильм из базы данных
+        const movieToDelete = savedMovies.find(movie => movie.id === movieId);
+        if (movieToDelete) {
+            moviesApi.deleteMovie(movieToDelete._id)
+                .then(() => {
+                    console.log(`Movie with id ${movieToDelete._id} has been deleted from the database`);
+                })
+                .catch((err) => console.log(err));
+        }
+    
+        // Удаляем фильм из списка лайкнутых фильмов
+        const updatedLikedMovies = likedMovies.filter(movie => movie._id !== movieToDelete._id);
+        setLikedMovies(updatedLikedMovies);
+    
+        // Обновляем локальное хранилище
+        localStorage.setItem('likedMovies', JSON.stringify(updatedLikedMovies));
+    };
 
     function signOut() {
         api.signOut()
@@ -229,7 +269,7 @@ function App() {
                             isLoading={isLoading}
                             isLoggedIn={isLoggedIn}
                             handleLike={handleLike}
-                            
+                            handleDelete={handleDelete}
                         />}
                     />
 {console.log('savedMovies', savedMovies)}
