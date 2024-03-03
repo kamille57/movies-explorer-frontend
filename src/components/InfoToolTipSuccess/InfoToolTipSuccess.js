@@ -2,10 +2,10 @@ import React from "react";
 import InfoToolTips from "../InfoToolTips/InfoToolTips.js";
 import success from "../../images/Success.svg";
 
-function InfoToolTipSuccess({ isOpen, onClose, serverMessage }) {
+function InfoToolTipSuccess({ isOpen, onClose, serverMessageSuccess }) {
   return (
     <InfoToolTips
-      title={serverMessage}
+      title={serverMessageSuccess}
       tooltipImg={success}
       name="toolTipSuccess"
       isOpen={isOpen}

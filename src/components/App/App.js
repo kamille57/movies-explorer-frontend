@@ -34,6 +34,7 @@ function App() {
   const [isToolTipFailOpen, setIsToolTipFailOpen] = useState(false);
   const [isCheckingAuth, setIsCheckingAuth] = useState(true);
   const [serverMessage, setServerMessage] = useState("");
+  const [serverMessageSuccess, setServerMessageSuccess] = useState("");
   const [isEditing, setIsEditing] = useState(false);
 
   const [movies, setMovies] = useState([]);
@@ -110,9 +111,6 @@ function App() {
       .setUserInfo(updatedUser)
       .then(({ email, name }) => {
         setCurrentUser({ email, name });
-        onSuccess();
-        const successMessage = "Данные профиля успешно изменены.";
-        setServerMessage(successMessage);
       })
       .catch((error) => {
         onError();
@@ -140,7 +138,7 @@ function App() {
         navigate("/");
         onSuccess();
         const successMessage = "Успешный вход в систему.";
-        setServerMessage(successMessage);
+        setServerMessageSuccess(successMessage);
       })
       .catch((err) => {
         onError();
@@ -166,7 +164,7 @@ function App() {
         navigate("/");
         onSuccess();
         const successMessage = "Вы успешно зарегистрировались!";
-        setServerMessage(successMessage);
+        setServerMessageSuccess(successMessage);
       })
       .catch((err) => {
         onError();
@@ -203,7 +201,7 @@ function App() {
             JSON.stringify(updatedLikedMovies)
           );
           const successMessage = "Фильм добавлен в избранное.";
-          setServerMessage(successMessage);
+          setServerMessageSuccess(successMessage);
           onSuccess();
         }
       })
@@ -224,7 +222,6 @@ function App() {
       moviesApi
         .deleteMovie(movieToDelete._id)
         .then(() => {
-
           const updatedLikedMovies = likedMovies.filter(
             (movie) => movie._id !== movieToDelete._id
           );
@@ -239,8 +236,8 @@ function App() {
             (movie) => movie.id !== movieId
           );
           setSavedMovies(updatedSavedMovies);
-          const successMessage = "Фильм успешно удален избранного.";
-          setServerMessage(successMessage);
+          const successMessage = "Фильм успешно удален из избранного.";
+          setServerMessageSuccess(successMessage);
           onSuccess();
         })
         .catch((error) => {
@@ -263,6 +260,9 @@ function App() {
         setCurrentUser(null);
         setIsLoggedIn(false);
         navigate("/");
+        const successMessage = "До новых встреч!";
+        setServerMessageSuccess(successMessage);
+        onSuccess();
       })
       .catch((err) => {
         onError();
@@ -356,7 +356,7 @@ function App() {
         <InfoToolTipSuccess
           isOpen={isToolTipSuccessOpen}
           onClose={closeAllPopups}
-          serverMessage={serverMessage}
+          serverMessageSuccess={serverMessageSuccess}
         />
         <InfoToolTipFail
           isOpen={isToolTipFailOpen}

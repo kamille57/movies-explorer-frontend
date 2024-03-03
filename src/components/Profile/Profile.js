@@ -44,6 +44,8 @@ function Profile({
       if (isValuesChanged) {
         setIsDataChanged(true);
         setServerMessage(null);
+      } else {
+        setIsDataChanged(false);
       }
     },
     [
