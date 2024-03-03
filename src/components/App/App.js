@@ -33,7 +33,7 @@ function App() {
   const [isToolTipSuccessOpen, setIsToolTipSuccessOpen] = useState(false);
   const [isToolTipFailOpen, setIsToolTipFailOpen] = useState(false);
   const [isCheckingAuth, setIsCheckingAuth] = useState(true);
-  const [serverError, setServerError] = useState("");
+  const [serverMessage, setServerMessage] = useState("");
   const [isEditing, setIsEditing] = useState(false);
 
   const [movies, setMovies] = useState([]);
@@ -59,12 +59,13 @@ function App() {
       try {
         const userData = await api.getUserInfo(token);
         setCurrentUser(userData);
+
         const initialMovies = await moviesApi.getInitialMovies(movies);
         setMovies(initialMovies);
 
         const savedMovies = await moviesApi.getSavedMovies();
-
         setSavedMovies(savedMovies);
+
         localStorage.setItem("likedMovies", JSON.stringify(savedMovies));
 
         setIsLoggedIn(true);
@@ -72,7 +73,8 @@ function App() {
       } catch (err) {
         onError();
         const errorMessage = handleError(err, serverErrors);
-        setServerError(errorMessage);
+        setServerMessage(errorMessage);
+
         localStorage.clear();
         setIsLoggedIn(false);
       } finally {
@@ -93,7 +95,7 @@ function App() {
     setIsToolTipFailOpen(false);
   }
 
-  function onRegister() {
+  function onSuccess() {
     setIsToolTipSuccessOpen(true);
   }
 
@@ -108,11 +110,14 @@ function App() {
       .setUserInfo(updatedUser)
       .then(({ email, name }) => {
         setCurrentUser({ email, name });
+        onSuccess();
+        const successMessage = "Данные профиля успешно изменены.";
+        setServerMessage(successMessage);
       })
       .catch((error) => {
         onError();
         const errorMessage = handleError(error, profileErrors);
-        setServerError(errorMessage);
+        setServerMessage(errorMessage);
         setIsEditing(true);
       })
       .finally(() => {
@@ -129,15 +134,18 @@ function App() {
         return api.getUserInfo(authData.token);
       })
       .then((userData) => {
+        console.log(userData);
         setCurrentUser(userData);
         setIsLoggedIn(true);
         navigate("/");
-        onRegister();
+        onSuccess();
+        const successMessage = "Успешный вход в систему.";
+        setServerMessage(successMessage);
       })
       .catch((err) => {
         onError();
         const errorMessage = handleError(err, loginErrors);
-        setServerError(errorMessage);
+        setServerMessage(errorMessage);
       })
       .finally(() => {
         setIsLoading(false);
@@ -156,12 +164,14 @@ function App() {
         setCurrentUser({ email, name });
         setIsLoggedIn(true);
         navigate("/");
-        onRegister();
+        onSuccess();
+        const successMessage = "Вы успешно зарегистрировались!";
+        setServerMessage(successMessage);
       })
       .catch((err) => {
         onError();
         const errorMessage = handleError(err, registerErrors);
-        setServerError(errorMessage);
+        setServerMessage(errorMessage);
       })
       .finally(() => setIsLoading(false));
   };
@@ -192,12 +202,15 @@ function App() {
             "likedMovies",
             JSON.stringify(updatedLikedMovies)
           );
+          const successMessage = "Фильм добавлен в избранное.";
+          setServerMessage(successMessage);
+          onSuccess();
         }
       })
       .catch((error) => {
         onError();
         const errorMessage = handleError(error, likedMoviesErrors);
-        setServerError(errorMessage);
+        setServerMessage(errorMessage);
         setIsEditing(true);
       })
       .finally(() => {
@@ -211,9 +224,6 @@ function App() {
       moviesApi
         .deleteMovie(movieToDelete._id)
         .then(() => {
-          console.log(
-            `Movie with id ${movieToDelete._id} has been deleted from the database`
-          );
 
           const updatedLikedMovies = likedMovies.filter(
             (movie) => movie._id !== movieToDelete._id
@@ -229,11 +239,14 @@ function App() {
             (movie) => movie.id !== movieId
           );
           setSavedMovies(updatedSavedMovies);
+          const successMessage = "Фильм успешно удален избранного.";
+          setServerMessage(successMessage);
+          onSuccess();
         })
         .catch((error) => {
           onError();
           const errorMessage = handleError(error, likedMoviesErrors);
-          setServerError(errorMessage);
+          setServerMessage(errorMessage);
           setIsEditing(true);
         })
         .finally(() => {
@@ -254,7 +267,7 @@ function App() {
       .catch((err) => {
         onError();
         const errorMessage = handleError(err, signOutErrors);
-        setServerError(errorMessage);
+        setServerMessage(errorMessage);
       })
       .finally(() => {
         setIsLoading(false);
@@ -274,8 +287,8 @@ function App() {
                 onRegister={handleRegister}
                 isLoading={isLoading}
                 isRegistration={true}
-                serverError={serverError}
-                setServerError={setServerError}
+                serverMessage={serverMessage}
+                setServerMessage={setServerMessage}
               />
             }
           />
@@ -288,8 +301,8 @@ function App() {
                 setCurrentUser={setCurrentUser}
                 isLoading={isLoading}
                 isRegistration={false}
-                serverError={serverError}
-                setServerError={setServerError}
+                serverMessage={serverMessage}
+                setServerMessage={setServerMessage}
               />
             }
           />
@@ -329,8 +342,8 @@ function App() {
               <Profile
                 onUpdateProfile={handleUpdateProfile}
                 signOut={signOut}
-                serverError={serverError}
-                setServerError={setServerError}
+                setServerMessage={setServerMessage}
+                serverMessage={serverMessage}
                 isLoading={isLoading}
                 setIsEditing={setIsEditing}
                 isEditing={isEditing}
@@ -343,11 +356,12 @@ function App() {
         <InfoToolTipSuccess
           isOpen={isToolTipSuccessOpen}
           onClose={closeAllPopups}
+          serverMessage={serverMessage}
         />
         <InfoToolTipFail
           isOpen={isToolTipFailOpen}
           onClose={closeAllPopups}
-          serverError={serverError}
+          serverMessage={serverMessage}
         />
       </div>
     </CurrentUserContext.Provider>

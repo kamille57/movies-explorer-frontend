@@ -1,11 +1,19 @@
-import React, { useState, useContext, useEffect } from 'react';
-import { useForm } from '../../hooks/useForm';
-import Header from '../Header/Header';
-import { NavLink, useNavigate } from 'react-router-dom';
+import React, { useState, useContext, useEffect } from "react";
+import { useForm } from "../../hooks/useForm";
+import Header from "../Header/Header";
+import { NavLink, useNavigate } from "react-router-dom";
 import profileDark from "../../images/profileDark.svg";
 import CurrentUserContext from "../../contexts/CurrentUserContext";
 
-function Profile({ onUpdateProfile, signOut, serverError, setServerError, isLoading, isEditing, setIsEditing }) {
+function Profile({
+  onUpdateProfile,
+  signOut,
+  serverMessage,
+  setServerMessage,
+  isLoading,
+  isEditing,
+  setIsEditing,
+}) {
   const currentUser = useContext(CurrentUserContext);
   const [isDataChanged, setIsDataChanged] = useState(false);
 
@@ -16,31 +24,37 @@ function Profile({ onUpdateProfile, signOut, serverError, setServerError, isLoad
     email: currentUser?.email,
   };
 
-  const {
-    values,
-    errors,
-    handleChange,
-    validateForm,
-    getInputProps,
-  } = useForm(
-    initialValues,
+  const { values, errors, handleChange, validateForm, getInputProps } =
+    useForm(initialValues);
+
+  useEffect(
+    function () {
+      if (!currentUser) {
+        navigate("/signup");
+      }
+    },
+    [currentUser, isEditing, navigate]
   );
 
-  useEffect(function () {
-    if (!currentUser) {
-      navigate("/signup");
-    }
-
-  }, [currentUser, isEditing, navigate]);
-
-  useEffect(function () {
-    const isValuesChanged = values.name !== currentUser?.name || values.email !== currentUser?.email;
-    if (isValuesChanged) {
-      setIsDataChanged(true);
-      setServerError(null);
-    }
-  }, [values, values.name, values.email, setServerError, currentUser?.name, currentUser?.email])
-
+  useEffect(
+    function () {
+      const isValuesChanged =
+        values.name !== currentUser?.name ||
+        values.email !== currentUser?.email;
+      if (isValuesChanged) {
+        setIsDataChanged(true);
+        setServerMessage(null);
+      }
+    },
+    [
+      values,
+      values.name,
+      values.email,
+      setServerMessage,
+      currentUser?.name,
+      currentUser?.email,
+    ]
+  );
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -60,10 +74,9 @@ function Profile({ onUpdateProfile, signOut, serverError, setServerError, isLoad
       <main className="profile">
         <h1 className="profile__title">Привет, {values.name}</h1>
 
-        <form className="profile__form"
-          onSubmit={handleSubmit}
-        >
-          <fieldset className="profile__input-text">Имя
+        <form className="profile__form" onSubmit={handleSubmit}>
+          <fieldset className="profile__input-text">
+            Имя
             <label className="profile__label" htmlFor="name"></label>
             <input
               type="text"
@@ -74,15 +87,21 @@ function Profile({ onUpdateProfile, signOut, serverError, setServerError, isLoad
               maxLength="40"
               value={values.name}
               onChange={handleChange}
-              {...getInputProps('name')}
+              {...getInputProps("name")}
               disabled={!isEditing}
               placeholder="Введите имя"
             />
-            <span className={`profile__error ${errors.name ? 'profile__error_active' : ''}`}
-              id="name-error">{errors.name}
+            <span
+              className={`profile__error ${
+                errors.name ? "profile__error_active" : ""
+              }`}
+              id="name-error"
+            >
+              {errors.name}
             </span>
           </fieldset>
-          <fieldset className="profile__input-text">E-mail
+          <fieldset className="profile__input-text">
+            E-mail
             <label className="profile__label" htmlFor="email"></label>
             <input
               className="profile__input"
@@ -93,28 +112,43 @@ function Profile({ onUpdateProfile, signOut, serverError, setServerError, isLoad
               minLength="2"
               maxLength="40"
               value={values.email}
-              {...getInputProps('email')}
+              {...getInputProps("email")}
               disabled={!isEditing}
               onChange={handleChange}
               placeholder="Введите email"
             />
-            <span className={`profile__error ${errors.email ? 'profile__error_active' : ''}`}
-              id="email-error">{errors.email}
+            <span
+              className={`profile__error ${
+                errors.email ? "profile__error_active" : ""
+              }`}
+              id="email-error"
+            >
+              {errors.email}
             </span>
           </fieldset>
-          <span className={`profile__server-error ${serverError ? 'profile__server-error_active' : ''}`}>
-            {serverError}
+          <span
+            className={`profile__server-error ${
+              serverMessage ? "profile__server-error_active" : ""
+            }`}
+          >
+            {serverMessage}
           </span>
-          {isEditing || serverError ? (
+          {isEditing || serverMessage ? (
             <button
               type="submit"
-              disabled={!isDataChanged || errors.name || errors.email || serverError}
-              className={`profile__submit ${!isDataChanged || errors.name || errors.email || serverError ? 'profile__submit_disabled' : ''}`}
+              disabled={
+                !isDataChanged || errors.name || errors.email || serverMessage
+              }
+              className={`profile__submit ${
+                !isDataChanged || errors.name || errors.email || serverMessage
+                  ? "profile__submit_disabled"
+                  : ""
+              }`}
               onClick={() => {
                 setIsEditing(false);
               }}
             >
-              {isLoading ? 'Сохранение...' : 'Сохранить'}
+              {isLoading ? "Сохранение..." : "Сохранить"}
             </button>
           ) : (
             <button
@@ -126,12 +160,12 @@ function Profile({ onUpdateProfile, signOut, serverError, setServerError, isLoad
             </button>
           )}
         </form>
-        {!isEditing && !serverError && (
+        {!isEditing && !serverMessage && (
           <NavLink to="/" className="profile__link" onClick={signOut}>
             Выйти из аккаунта
           </NavLink>
         )}
-      </main >
+      </main>
     </>
   );
 }

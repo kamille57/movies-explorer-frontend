@@ -3,7 +3,7 @@ import { useForm } from '../../hooks/useForm';
 import logo from '../../images/logo.svg';
 import { NavLink, useNavigate } from 'react-router-dom';
 
-function Auth({ name, isRegistration, onRegister, onLogin, serverError, setServerError }) {
+function Auth({ name, isRegistration, onRegister, onLogin, serverMessage, setServerMessage }) {
     const navigate = useNavigate();
     const [isDataChanged, setIsDataChanged] = useState(false);
 
@@ -29,10 +29,10 @@ function Auth({ name, isRegistration, onRegister, onLogin, serverError, setServe
 
         if (!isRegistration && isValuesChanged) {
             setIsDataChanged(true);
-            setServerError(null);
+            setServerMessage(null);
         } else if (isRegistration && isValuesChanged && isNameChanged) {
             setIsDataChanged(true);
-            setServerError(null);
+            setServerMessage(null);
         }
 
     }, [values, values.name, values.email, values.password, initialValues.name, initialValues.email, initialValues.password])
@@ -125,9 +125,9 @@ function Auth({ name, isRegistration, onRegister, onLogin, serverError, setServe
                         <>
                             <button
                                 type="submit"
-                                disabled={!isDataChanged || errors.name || errors.email || errors.password || serverError}
+                                disabled={!isDataChanged || errors.name || errors.email || errors.password || serverMessage}
                                 aria-label={`кнопка сохранения ${name}`}
-                                className={`auth__confirm-btn ${!isDataChanged || errors.name || errors.email || errors.password || serverError ? 'profile__submit_disabled' : ''}`}
+                                className={`auth__confirm-btn ${!isDataChanged || errors.name || errors.email || errors.password || serverMessage ? 'profile__submit_disabled' : ''}`}
                             >
                                 Регистрация
                             </button>
@@ -142,9 +142,9 @@ function Auth({ name, isRegistration, onRegister, onLogin, serverError, setServe
                         <>
                             <button
                                 type="submit"
-                                disabled={!isDataChanged || errors.email || errors.password || serverError}
+                                disabled={!isDataChanged || errors.email || errors.password || serverMessage}
                                 aria-label={`кнопка сохранения ${name}`}
-                                className={`auth__confirm-btn ${!isDataChanged || errors.email || errors.password || serverError ? 'profile__submit_disabled' : ''}`}
+                                className={`auth__confirm-btn ${!isDataChanged || errors.email || errors.password || serverMessage ? 'profile__submit_disabled' : ''}`}
                             >
                                 Войти
                             </button>

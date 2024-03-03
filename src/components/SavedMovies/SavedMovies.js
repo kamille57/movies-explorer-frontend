@@ -10,7 +10,7 @@ function SavedMovies({ savedCards, isLoading, handleDelete }) {
 
   useEffect(() => {
     setFilteredMovies(savedCards);
-  }, [savedCards]);
+  }, []);
 
   const updateSavedMovies = () => {
     setFilteredMovies(savedCards);

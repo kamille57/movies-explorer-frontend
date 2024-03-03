@@ -1,19 +1,17 @@
 import React from "react";
-import InfoToolTips from "../InfoToolTips/InfoToolTips.js"
-import success from '../../images/Success.svg';
+import InfoToolTips from "../InfoToolTips/InfoToolTips.js";
+import success from "../../images/Success.svg";
 
-function InfoToolTipSuccess({ isOpen, onClose }) {
-    
-    return (
-        <InfoToolTips
-            title="Вход выполнен успешно!"
-            tooltipImg={success}
-            name="toolTipSuccess"
-            isOpen={isOpen}
-            onClose={onClose}
-        >
-        </InfoToolTips>
-    )
+function InfoToolTipSuccess({ isOpen, onClose, serverMessage }) {
+  return (
+    <InfoToolTips
+      title={serverMessage}
+      tooltipImg={success}
+      name="toolTipSuccess"
+      isOpen={isOpen}
+      onClose={onClose}
+    ></InfoToolTips>
+  );
 }
 
 export default InfoToolTipSuccess;
