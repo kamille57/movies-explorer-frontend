@@ -5,7 +5,7 @@ import Preloader from "../Preloader/Preloader";
 function ProtectedRoute({ isLoggedIn, isLoading, Element, ...props }) {
 
     return (
-        isLoading ? <Preloader /> : (isLoggedIn ? <Element {...props} /> : <Navigate to="/signin" />)
+        isLoading ? <Preloader /> : (isLoggedIn ? <Element {...props} /> : <Navigate to="/" />)
     );
 }
 

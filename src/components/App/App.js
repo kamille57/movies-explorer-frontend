@@ -111,6 +111,9 @@ function App() {
       .setUserInfo(updatedUser)
       .then(({ email, name }) => {
         setCurrentUser({ email, name });
+        const successMessage = "Данные профиля успешно обновлены.";
+        setServerMessageSuccess(successMessage);
+        onSuccess();
       })
       .catch((error) => {
         onError();
@@ -135,7 +138,7 @@ function App() {
         console.log(userData);
         setCurrentUser(userData);
         setIsLoggedIn(true);
-        navigate("/");
+        navigate("/movies");
         onSuccess();
         const successMessage = "Успешный вход в систему.";
         setServerMessageSuccess(successMessage);
@@ -161,7 +164,7 @@ function App() {
         localStorage.setItem("jwt", data.token);
         setCurrentUser({ email, name });
         setIsLoggedIn(true);
-        navigate("/");
+        navigate("/movies");
         onSuccess();
         const successMessage = "Вы успешно зарегистрировались!";
         setServerMessageSuccess(successMessage);
@@ -200,9 +203,6 @@ function App() {
             "likedMovies",
             JSON.stringify(updatedLikedMovies)
           );
-          const successMessage = "Фильм добавлен в избранное.";
-          setServerMessageSuccess(successMessage);
-          onSuccess();
         }
       })
       .catch((error) => {
@@ -236,9 +236,6 @@ function App() {
             (movie) => movie.id !== movieId
           );
           setSavedMovies(updatedSavedMovies);
-          const successMessage = "Фильм успешно удален из избранного.";
-          setServerMessageSuccess(successMessage);
-          onSuccess();
         })
         .catch((error) => {
           onError();
