@@ -25,8 +25,12 @@ function SavedMovies({ savedCards, isLoading, handleDelete }) {
       <Header backgroundColor="#202020" iconColor="#313131" isLoggedIn={true} />
       <main className="saved-movies">
         <section className="saved-movies-page">
-          <SearchForm cards={savedCards} handleSearch={handleFilteredMovies} />
-          {isLoading ? (
+          <SearchForm
+            cards={savedCards}
+            handleSearch={handleFilteredMovies}
+            isSaved={true}
+          />
+          {isLoading && console.log(isLoading) ? (
             <Preloader />
           ) : (
             <MoviesCardList

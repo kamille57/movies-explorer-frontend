@@ -17,7 +17,11 @@ function Movies({ cards, handleLike, handleDelete, isLoading }) {
       <Header backgroundColor="#202020" iconColor="#313131" isLoggedIn={true} />
       <main className="movies">
         <section className="movies-page">
-          <SearchForm cards={cards} handleSearch={handleFilteredMovies} />
+          <SearchForm
+            cards={cards}
+            handleSearch={handleFilteredMovies}
+            isSaved={false}
+          />
           {isLoading ? (
             <Preloader />
           ) : (
