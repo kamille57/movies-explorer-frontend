@@ -37,9 +37,9 @@ function App() {
   const [serverMessageSuccess, setServerMessageSuccess] = useState("");
   const [isEditing, setIsEditing] = useState(false);
 
-  const [movies, setMovies] = useState([]);
-  const [savedMovies, setSavedMovies] = useState([]);
-  const [likedMovies, setLikedMovies] = useState([]);
+  // const [movies, setMovies] = useState([]);
+  // const [savedMovies, setSavedMovies] = useState([]);
+  // const [likedMovies, setLikedMovies] = useState([]);
 
   const navigate = useNavigate();
   const api = new MainApi();
@@ -61,13 +61,13 @@ function App() {
         const userData = await api.getUserInfo(token);
         setCurrentUser(userData);
 
-        const initialMovies = await moviesApi.getInitialMovies(movies);
-        setMovies(initialMovies);
+        // const initialMovies = await moviesApi.getInitialMovies(movies);
+        // setMovies(initialMovies);
 
-        const savedMovies = await moviesApi.getSavedMovies();
-        setSavedMovies(savedMovies);
+        // const savedMovies = await moviesApi.getSavedMovies();
+        // setSavedMovies(savedMovies);
 
-        localStorage.setItem("likedMovies", JSON.stringify(savedMovies));
+        // localStorage.setItem("likedMovies", JSON.stringify(savedMovies));
 
         setIsLoggedIn(true);
         setIsLoading(false);
@@ -177,77 +177,77 @@ function App() {
       .finally(() => setIsLoading(false));
   };
 
-  function renewCards() {
-    moviesApi.getInitialMovies().then(setMovies);
-    moviesApi.getSavedMovies().then(setSavedMovies);
-  }
+  // function renewCards() {
+  //   moviesApi.getInitialMovies().then(setMovies);
+  //   moviesApi.getSavedMovies().then(setSavedMovies);
+  // }
 
-  const handleLike = (movie) => {
-    renewCards();
-    moviesApi
-      .createMovie(movie)
-      .then((newMovie) => {
-        const updatedSavedMovies = [...savedMovies, newMovie];
-        setSavedMovies(updatedSavedMovies);
+  // const handleLike = (movie) => {
+  //   renewCards();
+  //   moviesApi
+  //     .createMovie(movie)
+  //     .then((newMovie) => {
+  //       const updatedSavedMovies = [...savedMovies, newMovie];
+  //       setSavedMovies(updatedSavedMovies);
 
-        const updatedMovies = movies.map((m) =>
-          m.id === newMovie.id ? newMovie : m
-        );
-        setMovies(updatedMovies);
+  //       const updatedMovies = movies.map((m) =>
+  //         m.id === newMovie.id ? newMovie : m
+  //       );
+  //       setMovies(updatedMovies);
 
-        if (!likedMovies.find((m) => m._id === newMovie._id)) {
-          const updatedLikedMovies = [...likedMovies, newMovie];
-          setLikedMovies(updatedLikedMovies);
+  //       if (!likedMovies.find((m) => m._id === newMovie._id)) {
+  //         const updatedLikedMovies = [...likedMovies, newMovie];
+  //         setLikedMovies(updatedLikedMovies);
 
-          localStorage.setItem(
-            "likedMovies",
-            JSON.stringify(updatedLikedMovies)
-          );
-        }
-      })
-      .catch((error) => {
-        onError();
-        const errorMessage = handleError(error, likedMoviesErrors);
-        setServerMessage(errorMessage);
-        setIsEditing(true);
-      })
-      .finally(() => {
-        setIsLoading(false);
-      });
-  };
+  //         localStorage.setItem(
+  //           "likedMovies",
+  //           JSON.stringify(updatedLikedMovies)
+  //         );
+  //       }
+  //     })
+  //     .catch((error) => {
+  //       onError();
+  //       const errorMessage = handleError(error, likedMoviesErrors);
+  //       setServerMessage(errorMessage);
+  //       setIsEditing(true);
+  //     })
+  //     .finally(() => {
+  //       setIsLoading(false);
+  //     });
+  // };
 
-  const handleDelete = (movieId) => {
-    const movieToDelete = savedMovies.find((movie) => movie.id === movieId);
-    if (movieToDelete) {
-      moviesApi
-        .deleteMovie(movieToDelete._id)
-        .then(() => {
-          const updatedLikedMovies = likedMovies.filter(
-            (movie) => movie._id !== movieToDelete._id
-          );
-          setLikedMovies(updatedLikedMovies);
+  // const handleDelete = (movieId) => {
+  //   const movieToDelete = savedMovies.find((movie) => movie.id === movieId);
+  //   if (movieToDelete) {
+  //     moviesApi
+  //       .deleteMovie(movieToDelete._id)
+  //       .then(() => {
+  //         const updatedLikedMovies = likedMovies.filter(
+  //           (movie) => movie._id !== movieToDelete._id
+  //         );
+  //         setLikedMovies(updatedLikedMovies);
 
-          localStorage.setItem(
-            "likedMovies",
-            JSON.stringify(updatedLikedMovies)
-          );
+  //         localStorage.setItem(
+  //           "likedMovies",
+  //           JSON.stringify(updatedLikedMovies)
+  //         );
 
-          const updatedSavedMovies = savedMovies.filter(
-            (movie) => movie.id !== movieId
-          );
-          setSavedMovies(updatedSavedMovies);
-        })
-        .catch((error) => {
-          onError();
-          const errorMessage = handleError(error, likedMoviesErrors);
-          setServerMessage(errorMessage);
-          setIsEditing(true);
-        })
-        .finally(() => {
-          setIsLoading(false);
-        });
-    }
-  };
+  //         const updatedSavedMovies = savedMovies.filter(
+  //           (movie) => movie.id !== movieId
+  //         );
+  //         setSavedMovies(updatedSavedMovies);
+  //       })
+  //       .catch((error) => {
+  //         onError();
+  //         const errorMessage = handleError(error, likedMoviesErrors);
+  //         setServerMessage(errorMessage);
+  //         setIsEditing(true);
+  //       })
+  //       .finally(() => {
+  //         setIsLoading(false);
+  //       });
+  //   }
+  // };
 
   const signOut = () => {
     api
@@ -309,11 +309,11 @@ function App() {
             element={
               <ProtectedRoute
                 Element={Movies}
-                cards={movies}
+                // cards={movies}
                 isLoading={isLoading}
                 isLoggedIn={isLoggedIn}
-                handleLike={handleLike}
-                handleDelete={handleDelete}
+                // handleLike={handleLike}
+                // handleDelete={handleDelete}
               />
             }
           />
@@ -324,11 +324,11 @@ function App() {
               <ProtectedRoute
                 Element={SavedMovies}
                 currentUser={currentUser}
-                savedCards={savedMovies}
-                setSavedMovies={setSavedMovies}
+                // savedCards={savedMovies}
+                // setSavedMovies={setSavedMovies}
                 isLoggedIn={isLoggedIn}
                 isLoading={isLoading}
-                handleDelete={handleDelete}
+                // handleDelete={handleDelete}
               />
             }
           />

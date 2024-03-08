@@ -4,12 +4,26 @@ import MoviesCardList from "../MoviesCardList/MoviesCardList.js";
 import Header from "../Header/Header.js";
 import Footer from "../Footer/Footer.js";
 import Preloader from "../Preloader/Preloader.js";
+import MoviesApi from "../../utils/MoviesApi.js";
 
-function Movies({ cards, handleLike, handleDelete, isLoading }) {
-  const [filteredMovies, setFilteredMovies] = useState(cards);
+function Movies({ handleLike, handleDelete, isLoading }) {
+  const [movies, setMovies] = useState([]);
+  const moviesApi = new MoviesApi();
 
-  const handleFilteredMovies = (filteredCards) => {
-    setFilteredMovies(filteredCards);
+  const getInitialMovies = () => {
+    moviesApi
+      .getInitialMovies()
+      .then((data) => {
+        setMovies(data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+ // эта функция возвращает отфильтрованные фильмы в Movies
+  const handleFilteredMovies = (movies) => {
+    setMovies(movies);
   };
 
   return (
@@ -18,17 +32,18 @@ function Movies({ cards, handleLike, handleDelete, isLoading }) {
       <main className="movies">
         <section className="movies-page">
           <SearchForm
-            cards={cards}
+            cards={movies}
             handleSearch={handleFilteredMovies}
+            getInitialMovies={getInitialMovies}
             isSaved={false}
           />
           {isLoading ? (
             <Preloader />
           ) : (
             <MoviesCardList
-              cards={filteredMovies}
-              handleLike={handleLike}
-              handleDelete={handleDelete}
+              cards={movies}
+              // handleLike={handleLike}
+              // handleDelete={handleDelete}
             />
           )}
         </section>

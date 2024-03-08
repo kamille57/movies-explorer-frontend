@@ -4,21 +4,37 @@ import MoviesCardList from "../MoviesCardList/MoviesCardList.js";
 import Header from "../Header/Header.js";
 import Footer from "../Footer/Footer.js";
 import Preloader from "../Preloader/Preloader.js";
+import MoviesApi from "../../utils/MoviesApi.js";
 
-function SavedMovies({ savedCards, isLoading, handleDelete }) {
-  const [filteredMovies, setFilteredMovies] = useState(savedCards);
+function SavedMovies({ isLoading, handleDelete }) {
+  const [savedMovies, setSavedMovies] = useState([]);
 
-  useEffect(() => {
-    setFilteredMovies(savedCards);
-  }, []);
+  const moviesApi = new MoviesApi();
 
-  const updateSavedMovies = () => {
-    setFilteredMovies(savedCards);
+  useEffect(() => {  
+    moviesApi  
+    .getSavedMovies()  
+    .then((data) => {  
+      console.log('savedMovies', data);  
+      setSavedMovies(data);  
+      localStorage.setItem("likedMovies", JSON.stringify(data));  
+    })  
+}, []);
+
+console.log(savedMovies);
+
+  const handleFilteredMovies = (savedMovies) => {
+    setSavedMovies(savedMovies);
   };
 
-  const handleFilteredMovies = (filteredCards) => {
-    setFilteredMovies(filteredCards);
-  };
+
+  // const updateSavedMovies = () => {
+  //   setFilteredMovies(savedCards);
+  // };
+
+  // const handleFilteredMovies = (filteredCards) => {
+  //   setFilteredMovies(filteredCards);
+  // };
 
   return (
     <>
@@ -26,7 +42,7 @@ function SavedMovies({ savedCards, isLoading, handleDelete }) {
       <main className="saved-movies">
         <section className="saved-movies-page">
           <SearchForm
-            cards={savedCards}
+            cards={savedMovies}
             handleSearch={handleFilteredMovies}
             isSaved={true}
           />
@@ -34,10 +50,10 @@ function SavedMovies({ savedCards, isLoading, handleDelete }) {
             <Preloader />
           ) : (
             <MoviesCardList
-              cards={filteredMovies}
-              handleDelete={handleDelete}
+              cards={savedMovies}
+              // handleDelete={handleDelete}
               isSaved={true}
-              updateSavedMovies={updateSavedMovies}
+              // updateSavedMovies={updateSavedMovies}
             />
           )}
         </section>
