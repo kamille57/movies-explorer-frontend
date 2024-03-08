@@ -12,7 +12,6 @@ import Auth from "../Auth/Auth.js";
 import Profile from "../Profile/Profile.js";
 import NotFound from "../NotFound/NotFound.js";
 import MainApi from "../../utils/MainApi.js";
-import MoviesApi from "../../utils/MoviesApi.js";
 import InfoToolTipSuccess from "../InfoToolTipSuccess/InfoToolTipSuccess.js";
 import InfoToolTipFail from "../InfoToolTipFail/InfoToolTipFail.js";
 import Preloader from "../Preloader/Preloader";
@@ -37,13 +36,11 @@ function App() {
   const [serverMessageSuccess, setServerMessageSuccess] = useState("");
   const [isEditing, setIsEditing] = useState(false);
 
-  // const [movies, setMovies] = useState([]);
-  // const [savedMovies, setSavedMovies] = useState([]);
+  
   // const [likedMovies, setLikedMovies] = useState([]);
 
   const navigate = useNavigate();
   const api = new MainApi();
-  const moviesApi = new MoviesApi();
 
   useEffect(() => {
     if (isLoading) return;
@@ -60,14 +57,6 @@ function App() {
       try {
         const userData = await api.getUserInfo(token);
         setCurrentUser(userData);
-
-        // const initialMovies = await moviesApi.getInitialMovies(movies);
-        // setMovies(initialMovies);
-
-        // const savedMovies = await moviesApi.getSavedMovies();
-        // setSavedMovies(savedMovies);
-
-        // localStorage.setItem("likedMovies", JSON.stringify(savedMovies));
 
         setIsLoggedIn(true);
         setIsLoading(false);
@@ -177,13 +166,7 @@ function App() {
       .finally(() => setIsLoading(false));
   };
 
-  // function renewCards() {
-  //   moviesApi.getInitialMovies().then(setMovies);
-  //   moviesApi.getSavedMovies().then(setSavedMovies);
-  // }
-
   // const handleLike = (movie) => {
-  //   renewCards();
   //   moviesApi
   //     .createMovie(movie)
   //     .then((newMovie) => {
@@ -309,11 +292,8 @@ function App() {
             element={
               <ProtectedRoute
                 Element={Movies}
-                // cards={movies}
                 isLoading={isLoading}
                 isLoggedIn={isLoggedIn}
-                // handleLike={handleLike}
-                // handleDelete={handleDelete}
               />
             }
           />

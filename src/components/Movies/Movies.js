@@ -6,7 +6,7 @@ import Footer from "../Footer/Footer.js";
 import Preloader from "../Preloader/Preloader.js";
 import MoviesApi from "../../utils/MoviesApi.js";
 
-function Movies({ handleLike, handleDelete, isLoading }) {
+function Movies({ isLoading }) {
   const [movies, setMovies] = useState([]);
   const moviesApi = new MoviesApi();
 
@@ -21,10 +21,33 @@ function Movies({ handleLike, handleDelete, isLoading }) {
       });
   };
 
- // эта функция возвращает отфильтрованные фильмы в Movies
+  // эта функция возвращает отфильтрованные фильмы в Movies
   const handleFilteredMovies = (movies) => {
     setMovies(movies);
   };
+
+  function handleLike(movie) {
+    moviesApi
+      .createMovie(movie)
+      .then((newMovie) => {
+        const likedMovies =
+          JSON.parse(localStorage.getItem("likedmovies")) || [];
+        const isLiked = likedMovies.some((item) => item.id === newMovie.id);
+
+        if (!isLiked) {
+          likedMovies.push(newMovie);
+          localStorage.setItem("likedmovies", JSON.stringify(likedMovies));
+
+          const savedMovies =
+            JSON.parse(localStorage.getItem("savedmovies")) || [];
+          savedMovies.push(newMovie);
+          localStorage.setItem("savedmovies", JSON.stringify(savedMovies));
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
 
   return (
     <>
@@ -42,7 +65,7 @@ function Movies({ handleLike, handleDelete, isLoading }) {
           ) : (
             <MoviesCardList
               cards={movies}
-              // handleLike={handleLike}
+              handleLike={handleLike}
               // handleDelete={handleDelete}
             />
           )}
