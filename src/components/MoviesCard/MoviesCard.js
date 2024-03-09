@@ -9,11 +9,11 @@ function MoviesCard({
 }) {
   const [isChecked, setIsChecked] = useState(false);
 
-  useEffect(() => {
-    const storedLikedMovies = JSON.parse(localStorage.getItem("likedMovies"));
-    const isLiked = storedLikedMovies.some((movie) => movie.id === card.id);
-    setIsChecked(isLiked);
-  }, [card]);
+  // useEffect(() => {
+  //   const storedLikedMovies = JSON.parse(localStorage.getItem("likedMovies"));
+  //   const isLiked = storedLikedMovies.some((movie) => movie.id === card.id);
+  //   setIsChecked(isLiked);
+  // }, [card]);
 
   const imageUrl =
     typeof card.image === "string"

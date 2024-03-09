@@ -12,6 +12,8 @@ import Auth from "../Auth/Auth.js";
 import Profile from "../Profile/Profile.js";
 import NotFound from "../NotFound/NotFound.js";
 import MainApi from "../../utils/MainApi.js";
+import MoviesApi from "../../utils/MoviesApi.js";
+
 import InfoToolTipSuccess from "../InfoToolTipSuccess/InfoToolTipSuccess.js";
 import InfoToolTipFail from "../InfoToolTipFail/InfoToolTipFail.js";
 import Preloader from "../Preloader/Preloader";
@@ -35,12 +37,15 @@ function App() {
   const [serverMessage, setServerMessage] = useState("");
   const [serverMessageSuccess, setServerMessageSuccess] = useState("");
   const [isEditing, setIsEditing] = useState(false);
+  const [savedMovies, setSavedMovies] = useState([]);
+  const [movies, setMovies] = useState([]);
 
   
   // const [likedMovies, setLikedMovies] = useState([]);
 
   const navigate = useNavigate();
   const api = new MainApi();
+  const moviesApi = new MoviesApi();
 
   useEffect(() => {
     if (isLoading) return;
@@ -92,6 +97,22 @@ function App() {
   function onError() {
     setIsToolTipFailOpen(true);
   }
+
+  const getAllMovies = async () => {
+    try {
+      const initialMovies = await moviesApi.getInitialMovies();
+      setMovies(initialMovies);
+  
+      const savedMovies = await moviesApi.getSavedMovies();
+      setSavedMovies(savedMovies);
+  
+      localStorage.setItem("likedMovies", JSON.stringify(savedMovies));
+      console.log('получили фильмы');
+    } catch (error) {
+      console.error("Error fetching movies from the server", error);
+    }
+  };
+
 
   function handleUpdateProfile({ email, name }) {
     setIsLoading(true);
@@ -294,6 +315,9 @@ function App() {
                 Element={Movies}
                 isLoading={isLoading}
                 isLoggedIn={isLoggedIn}
+                getAllMovies={getAllMovies}
+                movies={movies}
+                setMovies={setMovies}
               />
             }
           />
@@ -308,6 +332,10 @@ function App() {
                 // setSavedMovies={setSavedMovies}
                 isLoggedIn={isLoggedIn}
                 isLoading={isLoading}
+                getAllMovies={getAllMovies}
+                savedMovies={savedMovies}
+                setSavedMovies={setSavedMovies}
+
                 // handleDelete={handleDelete}
               />
             }

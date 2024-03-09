@@ -1,8 +1,7 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import FilterCheckbox from "../FilterCheckbox/FilterCheckbox.js";
-import MoviesApi from "../../utils/MoviesApi.js";
 
-function SearchForm({ cards, handleSearch, isSaved, getInitialMovies }) {
+function SearchForm({ cards, handleSearch, isSaved, getAllMovies }) {
   const [searchQuery, setSearchQuery] = useState(
     () => localStorage.getItem("moviesSearchQuery") || ""
   );
@@ -13,39 +12,44 @@ function SearchForm({ cards, handleSearch, isSaved, getInitialMovies }) {
   );
   const [firstSearch, setFirstSearch] = useState(true); // Новое состояние
 
-  const moviesApi = new MoviesApi();
 
   const handleChange = (e) => {
     setSearchQuery(e.target.value);
   };
 
-  const handleFilteredResults = (searchQuery) => {
-    const regex = new RegExp(searchQuery, "gi");
-    let filtered = cards.filter((card) => card.nameRU.match(regex));
-  
-    if (onlyShortMovies) {
-      filtered = filtered.filter((card) => card.duration <= 40);
-    }
-  
-    handleSearch(filtered);
-    if (!isSaved) {
-      localStorage.setItem("moviesSearchQuery", searchQuery);
-    }
-  };
+  const handleFilteredResults = (searchQuery) => { 
+    if (firstSearch) { 
+      console.log("here");
+        getAllMovies();  
+    }  
+
+    const regex = new RegExp(searchQuery, "gi"); 
+    let filtered = cards.filter((card) => card.nameRU.match(regex)); 
+   
+    if (onlyShortMovies) { 
+        filtered = filtered.filter((card) => card.duration <= 40); 
+    } 
+    
+    handleSearch(filtered); 
+    
+    if (!isSaved) { 
+        localStorage.setItem("moviesSearchQuery", searchQuery); 
+    } 
+};
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (firstSearch) {
       try {
-        console.log("here");
-        getInitialMovies();
-        setFirstSearch(false); // Устанавливаем, что запрос уже был выполнен
         handleFilteredResults(searchQuery);
+        setFirstSearch(false); // Устанавливаем, что запрос уже был выполнен
+
       } catch (error) {
         console.error("Error fetching movies from the server", error);
       }
     } else {
+      console.log('ушли в элсе');
       handleFilteredResults(searchQuery);
     }
   };

@@ -6,20 +6,19 @@ import Footer from "../Footer/Footer.js";
 import Preloader from "../Preloader/Preloader.js";
 import MoviesApi from "../../utils/MoviesApi.js";
 
-function SavedMovies({ isLoading, handleDelete }) {
-  const [savedMovies, setSavedMovies] = useState([]);
-
+function SavedMovies({ isLoading, handleDelete, getAllMovies, setSavedMovies, savedMovies }) {
+console.log(savedMovies);
   const moviesApi = new MoviesApi();
 
-  useEffect(() => {  
-    moviesApi  
-    .getSavedMovies()  
-    .then((data) => {  
-      console.log('savedMovies', data);  
-      setSavedMovies(data);  
-      localStorage.setItem("likedMovies", JSON.stringify(data));  
-    })  
-}, []);
+//   useEffect(() => {  
+//     moviesApi  
+//     .getSavedMovies()  
+//     .then((data) => {  
+//       console.log('savedMovies', data);  
+//       setSavedMovies(data);  
+//       localStorage.setItem("likedMovies", JSON.stringify(data));  
+//     })  
+// }, []);
 
 console.log(savedMovies);
 
@@ -44,6 +43,7 @@ console.log(savedMovies);
           <SearchForm
             cards={savedMovies}
             handleSearch={handleFilteredMovies}
+            getAllMovies={getAllMovies}
             isSaved={true}
           />
           {isLoading && console.log(isLoading) ? (

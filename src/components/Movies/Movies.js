@@ -6,25 +6,16 @@ import Footer from "../Footer/Footer.js";
 import Preloader from "../Preloader/Preloader.js";
 import MoviesApi from "../../utils/MoviesApi.js";
 
-function Movies({ isLoading }) {
-  const [movies, setMovies] = useState([]);
+function Movies({ isLoading, getAllMovies, movies, setMovies }) {
   const moviesApi = new MoviesApi();
 
-  const getInitialMovies = () => {
-    moviesApi
-      .getInitialMovies()
-      .then((data) => {
-        setMovies(data);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  };
 
   // эта функция возвращает отфильтрованные фильмы в Movies
   const handleFilteredMovies = (movies) => {
     setMovies(movies);
   };
+
+console.log(movies);
 
   function handleLike(movie) {
     moviesApi
@@ -57,7 +48,7 @@ function Movies({ isLoading }) {
           <SearchForm
             cards={movies}
             handleSearch={handleFilteredMovies}
-            getInitialMovies={getInitialMovies}
+            getAllMovies={getAllMovies}
             isSaved={false}
           />
           {isLoading ? (
