@@ -1,29 +1,15 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import SearchForm from "../SearchForm/SearchForm.js";
 import MoviesCardList from "../MoviesCardList/MoviesCardList.js";
 import Header from "../Header/Header.js";
 import Footer from "../Footer/Footer.js";
 import Preloader from "../Preloader/Preloader.js";
-import MoviesApi from "../../utils/MoviesApi.js";
 
-function SavedMovies({ isLoading, handleDelete, getAllMovies, setSavedMovies, savedMovies }) {
-console.log(savedMovies);
-  const moviesApi = new MoviesApi();
-
-//   useEffect(() => {  
-//     moviesApi  
-//     .getSavedMovies()  
-//     .then((data) => {  
-//       console.log('savedMovies', data);  
-//       setSavedMovies(data);  
-//       localStorage.setItem("likedMovies", JSON.stringify(data));  
-//     })  
-// }, []);
-
-console.log(savedMovies);
+function SavedMovies({ isLoading, handleDelete, getAllMovies, savedMovies }) {
+  const [filteredMovies, setFilteredMovies] = useState([savedMovies]);
 
   const handleFilteredMovies = (savedMovies) => {
-    setSavedMovies(savedMovies);
+    setFilteredMovies(savedMovies);
   };
 
 
@@ -50,7 +36,7 @@ console.log(savedMovies);
             <Preloader />
           ) : (
             <MoviesCardList
-              cards={savedMovies}
+              cards={filteredMovies}
               // handleDelete={handleDelete}
               isSaved={true}
               // updateSavedMovies={updateSavedMovies}

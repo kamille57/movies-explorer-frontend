@@ -6,39 +6,18 @@ import Footer from "../Footer/Footer.js";
 import Preloader from "../Preloader/Preloader.js";
 import MoviesApi from "../../utils/MoviesApi.js";
 
-function Movies({ isLoading, getAllMovies, movies, setMovies }) {
+function Movies({ isLoading, getAllMovies, movies, handleLike }) {
   const moviesApi = new MoviesApi();
-
+const [filteredMovies, setFilteredMovies] = useState([movies]);
 
   // эта функция возвращает отфильтрованные фильмы в Movies
   const handleFilteredMovies = (movies) => {
-    setMovies(movies);
+    setFilteredMovies(movies);
   };
 
 console.log(movies);
 
-  function handleLike(movie) {
-    moviesApi
-      .createMovie(movie)
-      .then((newMovie) => {
-        const likedMovies =
-          JSON.parse(localStorage.getItem("likedmovies")) || [];
-        const isLiked = likedMovies.some((item) => item.id === newMovie.id);
-
-        if (!isLiked) {
-          likedMovies.push(newMovie);
-          localStorage.setItem("likedmovies", JSON.stringify(likedMovies));
-
-          const savedMovies =
-            JSON.parse(localStorage.getItem("savedmovies")) || [];
-          savedMovies.push(newMovie);
-          localStorage.setItem("savedmovies", JSON.stringify(savedMovies));
-        }
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }
+ 
 
   return (
     <>
@@ -55,7 +34,7 @@ console.log(movies);
             <Preloader />
           ) : (
             <MoviesCardList
-              cards={movies}
+              cards={filteredMovies}
               handleLike={handleLike}
               // handleDelete={handleDelete}
             />

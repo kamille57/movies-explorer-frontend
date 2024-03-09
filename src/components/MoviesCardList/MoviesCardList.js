@@ -55,7 +55,7 @@ function MoviesCardList({
 
   return (
     <>
-      {searchQuery === "" && !isSaved ? (
+      {(searchQuery === "" && !isSaved) || cards.length === 0 ? (
         <h3 className="movies__empty-request">Ничего не найдено</h3>
       ) : searchQuery === null ? (
         <div className="movies__empty-request"></div>

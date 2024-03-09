@@ -40,7 +40,6 @@ function SearchForm({ cards, handleSearch, isSaved, getAllMovies }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (firstSearch) {
       try {
         handleFilteredResults(searchQuery);
         setFirstSearch(false); // Устанавливаем, что запрос уже был выполнен
@@ -48,10 +47,7 @@ function SearchForm({ cards, handleSearch, isSaved, getAllMovies }) {
       } catch (error) {
         console.error("Error fetching movies from the server", error);
       }
-    } else {
-      console.log('ушли в элсе');
-      handleFilteredResults(searchQuery);
-    }
+    
   };
 
   return (

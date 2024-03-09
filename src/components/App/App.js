@@ -40,7 +40,6 @@ function App() {
   const [savedMovies, setSavedMovies] = useState([]);
   const [movies, setMovies] = useState([]);
 
-  
   // const [likedMovies, setLikedMovies] = useState([]);
 
   const navigate = useNavigate();
@@ -112,6 +111,43 @@ function App() {
       console.error("Error fetching movies from the server", error);
     }
   };
+
+  // const handleLike = (movie) => {
+  //   console.log('here');
+
+  //   moviesApi
+  //     .createMovie(movie)
+  //     .then(
+  //       (newMovie) => {
+  //       const updatedSavedMovies = [...savedMovies, newMovie];
+  //       setSavedMovies(updatedSavedMovies);
+
+  //       const updatedMovies = movies.map((m) =>
+  //         m.id === newMovie.id ? newMovie : m
+  //       );
+  //       setMovies(updatedMovies);
+
+  //       if (!likedMovies.find((m) => m._id === newMovie._id)) {
+  //         const updatedLikedMovies = [...likedMovies, newMovie];
+  //         setLikedMovies(updatedLikedMovies);
+
+  //         localStorage.setItem(
+  //           "likedMovies",
+  //           JSON.stringify(updatedLikedMovies)
+  //         );
+  //       }
+  //     })
+
+  //     .catch((error) => {
+  //       onError();
+  //       const errorMessage = handleError(error, likedMoviesErrors);
+  //       setServerMessage(errorMessage);
+  //       setIsEditing(true);
+  //     })
+  //     .finally(() => {
+  //       setIsLoading(false);
+  //     });
+  // };
 
 
   function handleUpdateProfile({ email, name }) {
@@ -317,7 +353,7 @@ function App() {
                 isLoggedIn={isLoggedIn}
                 getAllMovies={getAllMovies}
                 movies={movies}
-                setMovies={setMovies}
+                // handleLike={handleLike}
               />
             }
           />
@@ -334,7 +370,6 @@ function App() {
                 isLoading={isLoading}
                 getAllMovies={getAllMovies}
                 savedMovies={savedMovies}
-                setSavedMovies={setSavedMovies}
 
                 // handleDelete={handleDelete}
               />

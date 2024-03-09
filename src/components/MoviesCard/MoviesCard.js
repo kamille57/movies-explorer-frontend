@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 
 function MoviesCard({
   card,
@@ -38,7 +38,7 @@ function MoviesCard({
     if (!isChecked) {
       const updatedCard = {
         ...card,
-        image: imageUrl,
+        // image: imageUrl,
         director: card.director.slice(0, 30),
         createdAt: card.created_at,
         updatedAt: card.updated_at,
