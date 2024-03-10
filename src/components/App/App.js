@@ -98,17 +98,23 @@ function App() {
   }
 
   const getAllMovies = async () => {
+    setIsLoading(true);
+
     try {
-      const initialMovies = await moviesApi.getInitialMovies();
+      const [initialMovies, savedMovies] = await Promise.all([
+        moviesApi.getInitialMovies(),
+        moviesApi.getSavedMovies(),
+      ]);
+
       setMovies(initialMovies);
-  
-      const savedMovies = await moviesApi.getSavedMovies();
       setSavedMovies(savedMovies);
-  
+
       localStorage.setItem("likedMovies", JSON.stringify(savedMovies));
-      console.log('получили фильмы');
+      console.log("получили фильмы");
     } catch (error) {
       console.error("Error fetching movies from the server", error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -148,7 +154,6 @@ function App() {
   //       setIsLoading(false);
   //     });
   // };
-
 
   function handleUpdateProfile({ email, name }) {
     setIsLoading(true);

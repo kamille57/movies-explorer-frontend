@@ -1,17 +1,34 @@
-import React, { useState } from "react";
+import React, { useState, useEffect} from "react";
 import SearchForm from "../SearchForm/SearchForm.js";
 import MoviesCardList from "../MoviesCardList/MoviesCardList.js";
 import Header from "../Header/Header.js";
 import Footer from "../Footer/Footer.js";
 import Preloader from "../Preloader/Preloader.js";
+import MoviesApi from "../../utils/MoviesApi.js";
 
-function SavedMovies({ isLoading, handleDelete, getAllMovies, savedMovies }) {
-  const [filteredMovies, setFilteredMovies] = useState([savedMovies]);
+
+
+function SavedMovies({ isLoading, handleDelete, getAllMovies }) {
+
+  const moviesApi = new MoviesApi();
+  const [savedMovies, setSavedMovies] = useState([]);
+  const [filteredMovies, setFilteredMovies] = useState(savedMovies);
+
+  useEffect(() => {   
+    moviesApi   
+    .getSavedMovies()   
+    .then((savedMovies) => {   
+      console.log('savedMovies', savedMovies);   
+      setSavedMovies(savedMovies);   
+      localStorage.setItem("likedMovies", JSON.stringify(savedMovies));   
+    })   
+}, []); 
+
 
   const handleFilteredMovies = (savedMovies) => {
+    console.log(savedMovies);
     setFilteredMovies(savedMovies);
   };
-
 
   // const updateSavedMovies = () => {
   //   setFilteredMovies(savedCards);
@@ -36,7 +53,7 @@ function SavedMovies({ isLoading, handleDelete, getAllMovies, savedMovies }) {
             <Preloader />
           ) : (
             <MoviesCardList
-              cards={filteredMovies}
+              cards={savedMovies}
               // handleDelete={handleDelete}
               isSaved={true}
               // updateSavedMovies={updateSavedMovies}

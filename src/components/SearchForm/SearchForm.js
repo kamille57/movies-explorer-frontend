@@ -1,40 +1,41 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import FilterCheckbox from "../FilterCheckbox/FilterCheckbox.js";
 
 function SearchForm({ cards, handleSearch, isSaved, getAllMovies }) {
-  const [searchQuery, setSearchQuery] = useState(
-    () => localStorage.getItem("moviesSearchQuery") || ""
-  );
+  const [searchQuery, setSearchQuery] = useState('');
   const [onlyShortMovies, setOnlyShortMovies] = useState(
     localStorage.getItem(
       isSaved ? "savedOnlyShortMovies" : "moviesOnlyShortMovies"
     ) === "true" || false
   );
-  const [firstSearch, setFirstSearch] = useState(true); // Новое состояние
+  // const [firstSearch, setFirstSearch] = useState(true); // Новое состояние
 
 
   const handleChange = (e) => {
     setSearchQuery(e.target.value);
   };
 
-  const handleFilteredResults = (searchQuery) => { 
-    if (firstSearch) { 
-      console.log("here");
-        getAllMovies();  
-    }  
+  const handleFilteredResults = async () => {
+    console.log('handleFilteredResults');
+    if(cards.length === 0 && !isSaved) {
+      console.warn("Вы передаёте пустые фильмы, вам надо скачать их");
+      await getAllMovies();
+      return;
+    }
 
-    const regex = new RegExp(searchQuery, "gi"); 
-    let filtered = cards.filter((card) => card.nameRU.match(regex)); 
-   
-    if (onlyShortMovies) { 
-        filtered = filtered.filter((card) => card.duration <= 40); 
-    } 
-    
-    handleSearch(filtered); 
-    
-    if (!isSaved) { 
-        localStorage.setItem("moviesSearchQuery", searchQuery); 
-    } 
+    console.log(cards);
+    const regex = new RegExp(searchQuery, "gi");
+    let filtered = cards.filter((card) => card.nameRU.match(regex));
+
+    if (onlyShortMovies) {
+        filtered = filtered.filter((card) => card.duration <= 40);
+    }
+
+    handleSearch(filtered);
+
+    if (!isSaved) {
+        localStorage.setItem("moviesSearchQuery", searchQuery);
+    }
 };
 
   const handleSubmit = async (e) => {
@@ -42,13 +43,28 @@ function SearchForm({ cards, handleSearch, isSaved, getAllMovies }) {
 
       try {
         handleFilteredResults(searchQuery);
-        setFirstSearch(false); // Устанавливаем, что запрос уже был выполнен
 
       } catch (error) {
         console.error("Error fetching movies from the server", error);
       }
     
   };
+
+  useEffect(function() {
+    const localSQ = localStorage.getItem("moviesSearchQuery");
+    if(localSQ) setSearchQuery(localSQ)
+  }, [])
+
+  useEffect(() => {
+    console.log('Карточки поменялись');
+    console.log(cards.length);
+    if (cards.length === 0) {
+        return;
+    }
+    if (searchQuery) {
+        handleFilteredResults();
+    }
+}, [cards]);
 
   return (
     <section className="search">

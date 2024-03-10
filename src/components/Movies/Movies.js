@@ -8,7 +8,7 @@ import MoviesApi from "../../utils/MoviesApi.js";
 
 function Movies({ isLoading, getAllMovies, movies, handleLike }) {
   const moviesApi = new MoviesApi();
-const [filteredMovies, setFilteredMovies] = useState([movies]);
+const [filteredMovies, setFilteredMovies] = useState(movies);
 
   // эта функция возвращает отфильтрованные фильмы в Movies
   const handleFilteredMovies = (movies) => {
