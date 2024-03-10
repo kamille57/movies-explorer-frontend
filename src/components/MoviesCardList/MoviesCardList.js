@@ -13,8 +13,9 @@ function MoviesCardList({
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
 
   const searchQuery = localStorage.getItem("moviesSearchQuery");
-  const isSearchQueryPresent = searchQuery !== null;
+  
   console.log(cards);
+
   useEffect(() => {
     const handleResize = () => {
       setWindowWidth(window.innerWidth);
@@ -57,7 +58,7 @@ function MoviesCardList({
       {searchQuery === '' || (searchQuery === null && cards.length !== 0 && !isSaved) ? (
         <h3 className="movies__empty-request">Ничего не найдено</h3>
       ) : (searchQuery === null && cards.length === 0) ? (
-        <div className="movies__empty-request"></div>
+        <div className="movies__empty-request">Тут должно быть НИЧЕГО</div>
       ) : (
         <section className="cards">
           <ul className="cards__container">

@@ -25,9 +25,9 @@ function SavedMovies({ isLoading, handleDelete, getAllMovies }) {
 }, []); 
 
 
-  const handleFilteredMovies = (savedMovies) => {
-    console.log(savedMovies);
-    setFilteredMovies(savedMovies);
+  const handleFilteredMovies = (movies) => {
+    console.log(movies);
+    setFilteredMovies(movies);
   };
 
   // const updateSavedMovies = () => {
@@ -53,7 +53,7 @@ function SavedMovies({ isLoading, handleDelete, getAllMovies }) {
             <Preloader />
           ) : (
             <MoviesCardList
-              cards={savedMovies}
+            cards={filteredMovies.length > 0 ? filteredMovies : savedMovies}
               // handleDelete={handleDelete}
               isSaved={true}
             />
