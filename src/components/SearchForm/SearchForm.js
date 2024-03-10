@@ -8,7 +8,6 @@ function SearchForm({ cards, handleSearch, isSaved, getAllMovies }) {
       isSaved ? "savedOnlyShortMovies" : "moviesOnlyShortMovies"
     ) === "true" || false
   );
-  // const [firstSearch, setFirstSearch] = useState(true); // Новое состояние
 
 
   const handleChange = (e) => {
@@ -51,11 +50,6 @@ function SearchForm({ cards, handleSearch, isSaved, getAllMovies }) {
     
   };
 
-  // useEffect(function() {
-  //   const localSQ = localStorage.getItem("moviesSearchQuery");
-  //   if(localSQ) setSearchQuery(localSQ)
-  // }, [])
-
   useEffect(() => {
     console.log('Карточки поменялись');
     console.log(cards.length);
@@ -65,7 +59,7 @@ function SearchForm({ cards, handleSearch, isSaved, getAllMovies }) {
     if (searchQuery) {
         handleFilteredResults();
     }
-}, [cards]);
+}, [cards, onlyShortMovies]);
 
   return (
     <section className="search">
