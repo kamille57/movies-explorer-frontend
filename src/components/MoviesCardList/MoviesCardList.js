@@ -55,9 +55,9 @@ function MoviesCardList({
 
   return (
     <>
-      {(searchQuery === "" && !isSaved) || (console.log(cards.length)) ? (
+      {searchQuery === '' || (searchQuery === null && cards.length !== 0 && !isSaved) ? (
         <h3 className="movies__empty-request">Ничего не найдено</h3>
-      ) : (searchQuery === null && !isSaved) ? (
+      ) : (searchQuery === null && cards.length === 0) ? (
         <div className="movies__empty-request"></div>
       ) : (
         <section className="cards">
