@@ -9,7 +9,7 @@ function MoviesCardList({ cards, handleLike, handleDelete, isSaved }) {
 
   const searchQuery = localStorage.getItem("moviesSearchQuery");
 
-  console.log(cards);
+  console.log('cards from MoviesCardList', cards);
 
   useEffect(() => {
     if (!isSaved) {
@@ -56,7 +56,7 @@ function MoviesCardList({ cards, handleLike, handleDelete, isSaved }) {
 
   return (
     <>
-      {searchQuery === "" && cards.length !== 0 && !isSaved ? (
+      {(searchQuery === "" && cards.length !== 0 && !isSaved) || (cards.length === 0 && isSaved) ? (
         <h3 className="movies__empty-request">Ничего не найдено</h3>
       ) : (
         <section className="cards">

@@ -40,7 +40,7 @@ function App() {
   const [savedMovies, setSavedMovies] = useState([]);
   const [movies, setMovies] = useState([]);
 
-  // const [likedMovies, setLikedMovies] = useState([]);
+  const [likedMovies, setLikedMovies] = useState([]);
 
   const navigate = useNavigate();
   const api = new MainApi();
@@ -118,42 +118,75 @@ function App() {
     }
   };
 
-  // const handleLike = (movie) => {
-  //   console.log('here');
+  const handleLike = (movie) => {
+    console.log('here');
 
-  //   moviesApi
-  //     .createMovie(movie)
-  //     .then(
-  //       (newMovie) => {
-  //       const updatedSavedMovies = [...savedMovies, newMovie];
-  //       setSavedMovies(updatedSavedMovies);
+    moviesApi
+      .createMovie(movie)
+      .then(
+        (newMovie) => {
+        const updatedSavedMovies = [...savedMovies, newMovie];
+        setSavedMovies(updatedSavedMovies);
 
-  //       const updatedMovies = movies.map((m) =>
-  //         m.id === newMovie.id ? newMovie : m
-  //       );
-  //       setMovies(updatedMovies);
+        const updatedMovies = movies.map((m) =>
+          m.id === newMovie.id ? newMovie : m
+        );
+        setMovies(updatedMovies);
 
-  //       if (!likedMovies.find((m) => m._id === newMovie._id)) {
-  //         const updatedLikedMovies = [...likedMovies, newMovie];
-  //         setLikedMovies(updatedLikedMovies);
+        if (!likedMovies.find((m) => m._id === newMovie._id)) {
+          const updatedLikedMovies = [...likedMovies, newMovie];
+          setLikedMovies(updatedLikedMovies);
 
-  //         localStorage.setItem(
-  //           "likedMovies",
-  //           JSON.stringify(updatedLikedMovies)
-  //         );
-  //       }
-  //     })
+          localStorage.setItem(
+            "likedMovies",
+            JSON.stringify(updatedLikedMovies)
+          );
+        }
+      })
 
-  //     .catch((error) => {
-  //       onError();
-  //       const errorMessage = handleError(error, likedMoviesErrors);
-  //       setServerMessage(errorMessage);
-  //       setIsEditing(true);
-  //     })
-  //     .finally(() => {
-  //       setIsLoading(false);
-  //     });
-  // };
+      .catch((error) => {
+        onError();
+        const errorMessage = handleError(error, likedMoviesErrors);
+        setServerMessage(errorMessage);
+        setIsEditing(true);
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
+  };
+
+  const handleDelete = (movieId) => {
+    const movieToDelete = savedMovies.find((movie) => movie.id === movieId);
+    if (movieToDelete) {
+      moviesApi
+        .deleteMovie(movieToDelete._id)
+        .then(() => {
+          const updatedLikedMovies = likedMovies.filter(
+            (movie) => movie._id !== movieToDelete._id
+          );
+          setLikedMovies(updatedLikedMovies);
+
+          localStorage.setItem(
+            "likedMovies",
+            JSON.stringify(updatedLikedMovies)
+          );
+
+          const updatedSavedMovies = savedMovies.filter(
+            (movie) => movie.id !== movieId
+          );
+          setSavedMovies(updatedSavedMovies);
+        })
+        .catch((error) => {
+          onError();
+          const errorMessage = handleError(error, likedMoviesErrors);
+          setServerMessage(errorMessage);
+          setIsEditing(true);
+        })
+        .finally(() => {
+          setIsLoading(false);
+        });
+    }
+  };
 
   function handleUpdateProfile({ email, name }) {
     setIsLoading(true);
@@ -228,72 +261,6 @@ function App() {
       .finally(() => setIsLoading(false));
   };
 
-  // const handleLike = (movie) => {
-  //   moviesApi
-  //     .createMovie(movie)
-  //     .then((newMovie) => {
-  //       const updatedSavedMovies = [...savedMovies, newMovie];
-  //       setSavedMovies(updatedSavedMovies);
-
-  //       const updatedMovies = movies.map((m) =>
-  //         m.id === newMovie.id ? newMovie : m
-  //       );
-  //       setMovies(updatedMovies);
-
-  //       if (!likedMovies.find((m) => m._id === newMovie._id)) {
-  //         const updatedLikedMovies = [...likedMovies, newMovie];
-  //         setLikedMovies(updatedLikedMovies);
-
-  //         localStorage.setItem(
-  //           "likedMovies",
-  //           JSON.stringify(updatedLikedMovies)
-  //         );
-  //       }
-  //     })
-  //     .catch((error) => {
-  //       onError();
-  //       const errorMessage = handleError(error, likedMoviesErrors);
-  //       setServerMessage(errorMessage);
-  //       setIsEditing(true);
-  //     })
-  //     .finally(() => {
-  //       setIsLoading(false);
-  //     });
-  // };
-
-  // const handleDelete = (movieId) => {
-  //   const movieToDelete = savedMovies.find((movie) => movie.id === movieId);
-  //   if (movieToDelete) {
-  //     moviesApi
-  //       .deleteMovie(movieToDelete._id)
-  //       .then(() => {
-  //         const updatedLikedMovies = likedMovies.filter(
-  //           (movie) => movie._id !== movieToDelete._id
-  //         );
-  //         setLikedMovies(updatedLikedMovies);
-
-  //         localStorage.setItem(
-  //           "likedMovies",
-  //           JSON.stringify(updatedLikedMovies)
-  //         );
-
-  //         const updatedSavedMovies = savedMovies.filter(
-  //           (movie) => movie.id !== movieId
-  //         );
-  //         setSavedMovies(updatedSavedMovies);
-  //       })
-  //       .catch((error) => {
-  //         onError();
-  //         const errorMessage = handleError(error, likedMoviesErrors);
-  //         setServerMessage(errorMessage);
-  //         setIsEditing(true);
-  //       })
-  //       .finally(() => {
-  //         setIsLoading(false);
-  //       });
-  //   }
-  // };
-
   const signOut = () => {
     api
       .signOut()
@@ -358,7 +325,9 @@ function App() {
                 isLoggedIn={isLoggedIn}
                 getAllMovies={getAllMovies}
                 movies={movies}
-                // handleLike={handleLike}
+                handleLike={handleLike}
+                handleDelete={handleDelete}
+
               />
             }
           />
@@ -369,14 +338,12 @@ function App() {
               <ProtectedRoute
                 Element={SavedMovies}
                 currentUser={currentUser}
-                // savedCards={savedMovies}
-                // setSavedMovies={setSavedMovies}
                 isLoggedIn={isLoggedIn}
                 isLoading={isLoading}
                 getAllMovies={getAllMovies}
                 savedMovies={savedMovies}
 
-                // handleDelete={handleDelete}
+                handleDelete={handleDelete}
               />
             }
           />

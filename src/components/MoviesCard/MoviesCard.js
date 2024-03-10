@@ -1,19 +1,18 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 function MoviesCard({
   card,
   handleLike,
   handleDelete,
   isSaved,
-  updateSavedMovies,
 }) {
   const [isChecked, setIsChecked] = useState(false);
 
-  // useEffect(() => {
-  //   const storedLikedMovies = JSON.parse(localStorage.getItem("likedMovies"));
-  //   const isLiked = storedLikedMovies.some((movie) => movie.id === card.id);
-  //   setIsChecked(isLiked);
-  // }, [card]);
+  useEffect(() => {
+    const storedLikedMovies = JSON.parse(localStorage.getItem("likedMovies"));
+    const isLiked = storedLikedMovies.some((movie) => movie.id === card.id);
+    setIsChecked(isLiked);
+  }, [card]);
 
   const imageUrl =
     typeof card.image === "string"
@@ -38,7 +37,7 @@ function MoviesCard({
     if (!isChecked) {
       const updatedCard = {
         ...card,
-        // image: imageUrl,
+        image: imageUrl,
         director: card.director.slice(0, 30),
         createdAt: card.created_at,
         updatedAt: card.updated_at,
@@ -54,7 +53,6 @@ function MoviesCard({
 
   const movieRemove = () => {
     handleDelete(card.id);
-    updateSavedMovies(); // Обновляем список сохраненных фильмов
   };
 
   return (

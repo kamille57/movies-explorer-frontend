@@ -4,11 +4,10 @@ import MoviesCardList from "../MoviesCardList/MoviesCardList.js";
 import Header from "../Header/Header.js";
 import Footer from "../Footer/Footer.js";
 import Preloader from "../Preloader/Preloader.js";
-import MoviesApi from "../../utils/MoviesApi.js";
 
-function Movies({ isLoading, getAllMovies, movies, handleLike }) {
-  const moviesApi = new MoviesApi();
-const [filteredMovies, setFilteredMovies] = useState(movies);
+function Movies({ isLoading, getAllMovies, movies, handleLike, handleDelete }) {
+
+  const [filteredMovies, setFilteredMovies] = useState(movies);
 
   // эта функция возвращает отфильтрованные фильмы в Movies
   const handleFilteredMovies = (movies) => {
@@ -36,7 +35,7 @@ console.log(movies);
             <MoviesCardList
               cards={filteredMovies}
               handleLike={handleLike}
-              // handleDelete={handleDelete}
+              handleDelete={handleDelete}
             />
           )}
         </section>

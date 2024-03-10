@@ -8,18 +8,20 @@ import MoviesApi from "../../utils/MoviesApi.js";
 
 
 
-function SavedMovies({ isLoading, handleDelete, getAllMovies }) {
+function SavedMovies({ isLoading, handleDelete, getAllMovies, savedMovies }) {
 
   const moviesApi = new MoviesApi();
-  const [savedMovies, setSavedMovies] = useState([]);
-  const [filteredMovies, setFilteredMovies] = useState(savedMovies);
+  // const [savedMovies, setSavedMovies] = useState([]);
+  const [filteredMovies, setFilteredMovies] = useState([]);
+
+
 
   useEffect(() => {   
     moviesApi   
     .getSavedMovies()   
     .then((savedMovies) => {   
       console.log('savedMovies', savedMovies);   
-      setSavedMovies(savedMovies);   
+      setFilteredMovies(savedMovies);   
       localStorage.setItem("likedMovies", JSON.stringify(savedMovies));   
     })   
 }, []); 
@@ -54,7 +56,7 @@ function SavedMovies({ isLoading, handleDelete, getAllMovies }) {
           ) : (
             <MoviesCardList
             cards={filteredMovies.length > 0 ? filteredMovies : savedMovies}
-              // handleDelete={handleDelete}
+              handleDelete={handleDelete}
               isSaved={true}
             />
           )}
