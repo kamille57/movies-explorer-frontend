@@ -6,7 +6,6 @@ function MoviesCardList({
   handleLike,
   handleDelete,
   isSaved,
-  updateSavedMovies,
 }) {
   const [isLoadedMore, setIsLoadedMore] = useState(false);
   const [chunkSize, setChunkSize] = useState(2); // 2 - 2 - 4
@@ -70,7 +69,6 @@ function MoviesCardList({
                     handleLike={handleLike}
                     handleDelete={handleDelete}
                     isSaved={isSaved}
-                    updateSavedMovies={updateSavedMovies}
                   />
                 </li>
               ))}

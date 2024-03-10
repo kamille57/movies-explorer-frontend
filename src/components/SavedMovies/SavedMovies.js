@@ -56,7 +56,6 @@ function SavedMovies({ isLoading, handleDelete, getAllMovies }) {
               cards={savedMovies}
               // handleDelete={handleDelete}
               isSaved={true}
-              // updateSavedMovies={updateSavedMovies}
             />
           )}
         </section>
