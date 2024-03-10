@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import FilterCheckbox from "../FilterCheckbox/FilterCheckbox.js";
 
 function SearchForm({ cards, handleSearch, isSaved, getAllMovies }) {
-  const [searchQuery, setSearchQuery] = useState('');
+  const [searchQuery, setSearchQuery] = useState(localStorage.getItem("moviesSearchQuery") || ''); 
   const [onlyShortMovies, setOnlyShortMovies] = useState(
     localStorage.getItem(
       isSaved ? "savedOnlyShortMovies" : "moviesOnlyShortMovies"
@@ -19,6 +19,7 @@ function SearchForm({ cards, handleSearch, isSaved, getAllMovies }) {
     console.log('handleFilteredResults');
     if(cards.length === 0 && !isSaved) {
       console.warn("Вы передаёте пустые фильмы, вам надо скачать их");
+      localStorage.setItem("moviesSearchQuery", searchQuery);
       await getAllMovies();
       return;
     }
@@ -50,10 +51,10 @@ function SearchForm({ cards, handleSearch, isSaved, getAllMovies }) {
     
   };
 
-  useEffect(function() {
-    const localSQ = localStorage.getItem("moviesSearchQuery");
-    if(localSQ) setSearchQuery(localSQ)
-  }, [])
+  // useEffect(function() {
+  //   const localSQ = localStorage.getItem("moviesSearchQuery");
+  //   if(localSQ) setSearchQuery(localSQ)
+  // }, [])
 
   useEffect(() => {
     console.log('Карточки поменялись');
@@ -73,7 +74,7 @@ function SearchForm({ cards, handleSearch, isSaved, getAllMovies }) {
           type="text"
           placeholder="Фильм"
           className="search-input"
-          value={searchQuery}
+          value={isSaved ? '' : searchQuery}
           onChange={handleChange}
         />
         <button

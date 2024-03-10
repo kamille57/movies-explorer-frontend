@@ -1,20 +1,21 @@
 import { useState, useEffect } from "react";
 import MoviesCard from "../MoviesCard/MoviesCard.js";
 
-function MoviesCardList({
-  cards,
-  handleLike,
-  handleDelete,
-  isSaved,
-}) {
+function MoviesCardList({ cards, handleLike, handleDelete, isSaved }) {
   const [isLoadedMore, setIsLoadedMore] = useState(false);
   const [chunkSize, setChunkSize] = useState(2); // 2 - 2 - 4
   const [cardsLimit, setCardsLimit] = useState(5); // 5 - 8 - 16
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
 
   const searchQuery = localStorage.getItem("moviesSearchQuery");
-  
+
   console.log(cards);
+
+  useEffect(() => {
+    if (!isSaved) {
+      return;
+    }
+  }, []);
 
   useEffect(() => {
     const handleResize = () => {
@@ -55,10 +56,8 @@ function MoviesCardList({
 
   return (
     <>
-      {searchQuery === '' || (searchQuery === null && cards.length !== 0 && !isSaved) ? (
+      {searchQuery === "" && cards.length !== 0 && !isSaved ? (
         <h3 className="movies__empty-request">Ничего не найдено</h3>
-      ) : (searchQuery === null && cards.length === 0) ? (
-        <div className="movies__empty-request">Тут должно быть НИЧЕГО</div>
       ) : (
         <section className="cards">
           <ul className="cards__container">
@@ -85,7 +84,7 @@ function MoviesCardList({
             </button>
           )}
         </section>
-      )}
+      )} 
     </>
   );
 }
