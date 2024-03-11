@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import FilterCheckbox from "../FilterCheckbox/FilterCheckbox.js";
 
-function SearchForm({ cards, handleSearch, isSaved, getAllMovies }) {
+function SearchForm({ cards, handleSearch, isSaved, getAllMovies, serverMessage, setServerMessage }) {
   const [searchQuery, setSearchQuery] = useState(
     localStorage.getItem("moviesSearchQuery") || ""
   );
@@ -10,7 +10,6 @@ function SearchForm({ cards, handleSearch, isSaved, getAllMovies }) {
       isSaved ? "savedOnlyShortMovies" : "moviesOnlyShortMovies"
     ) === "true" || false
   );
-  const [errorMessage, setErrorMessage] = useState("");
 
   const handleChange = (e) => {
     setSearchQuery(e.target.value);
@@ -44,15 +43,15 @@ function SearchForm({ cards, handleSearch, isSaved, getAllMovies }) {
     e.preventDefault();
     if (searchQuery.trim() === "") {
       console.log('я тут');
-      setErrorMessage("Нужно ввести ключевое слово");
+      setServerMessage("Нужно ввести ключевое слово");
       return;
     }
     try {
       handleFilteredResults(searchQuery);
-      setErrorMessage("");
+      setServerMessage("");
     } catch (error) {
       console.error("Error fetching movies from the server", error);
-      setErrorMessage("Ошибка при поиске фильмов");
+      setServerMessage("Ошибка при поиске фильмов");
     }
   };
 
@@ -73,7 +72,7 @@ function SearchForm({ cards, handleSearch, isSaved, getAllMovies }) {
         <input
           type="text"
           placeholder="Фильм"
-          className={`search-input ${errorMessage && "search-input_error"}`}
+          className={`search-input ${serverMessage && "search-input_error"}`}
           value={isSaved ? "" : searchQuery}
           onChange={handleChange}
         />
@@ -83,8 +82,8 @@ function SearchForm({ cards, handleSearch, isSaved, getAllMovies }) {
           aria-label="Кнопка запроса"
         ></button>
       </form>
-      <span className={`search__error-message ${errorMessage && "search__error-message_active"}`} 
->{errorMessage}</span> 
+      <span className={`search__error-message ${serverMessage && "search__error-message_active"}`} 
+>{serverMessage}</span> 
 
       <FilterCheckbox
         setOnlyShortMovies={setOnlyShortMovies}

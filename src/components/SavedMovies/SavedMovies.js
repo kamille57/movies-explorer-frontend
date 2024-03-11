@@ -1,4 +1,4 @@
-import React, { useState, useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import SearchForm from "../SearchForm/SearchForm.js";
 import MoviesCardList from "../MoviesCardList/MoviesCardList.js";
 import Header from "../Header/Header.js";
@@ -6,39 +6,23 @@ import Footer from "../Footer/Footer.js";
 import Preloader from "../Preloader/Preloader.js";
 import MoviesApi from "../../utils/MoviesApi.js";
 
-
-
-function SavedMovies({ isLoading, handleDelete, getAllMovies, savedMovies }) {
-
+function SavedMovies({ isLoading, handleDelete, getAllMovies, savedMovies, serverMessage, setServerMessage }) {
   const moviesApi = new MoviesApi();
-  // const [savedMovies, setSavedMovies] = useState([]);
   const [filteredMovies, setFilteredMovies] = useState([]);
+  const [savedSearchQuery, setSavedSearchQuery] = useState("");
 
-
-
-  useEffect(() => {   
-    moviesApi   
-    .getSavedMovies()   
-    .then((savedMovies) => {   
-      console.log('savedMovies', savedMovies);   
-      setFilteredMovies(savedMovies);   
-      localStorage.setItem("likedMovies", JSON.stringify(savedMovies));   
-    })   
-}, []); 
-
+  useEffect(() => {
+    moviesApi.getSavedMovies().then((savedMovies) => {
+      console.log("Я в savedMovies", savedMovies);
+      setFilteredMovies(savedMovies);
+      localStorage.setItem("likedMovies", JSON.stringify(savedMovies));
+    });
+  }, []);
 
   const handleFilteredMovies = (movies) => {
     console.log(movies);
     setFilteredMovies(movies);
   };
-
-  // const updateSavedMovies = () => {
-  //   setFilteredMovies(savedCards);
-  // };
-
-  // const handleFilteredMovies = (filteredCards) => {
-  //   setFilteredMovies(filteredCards);
-  // };
 
   return (
     <>
@@ -50,14 +34,20 @@ function SavedMovies({ isLoading, handleDelete, getAllMovies, savedMovies }) {
             handleSearch={handleFilteredMovies}
             getAllMovies={getAllMovies}
             isSaved={true}
+            savedSearchQuery={savedSearchQuery}
+            setSavedSearchQuery={setSavedSearchQuery}
+            serverMessage={serverMessage}
+                setServerMessage={setServerMessage}
           />
           {isLoading && console.log(isLoading) ? (
             <Preloader />
           ) : (
             <MoviesCardList
-            cards={filteredMovies.length > 0 ? filteredMovies : savedMovies}
+              cards={filteredMovies.length > 0 ? filteredMovies : savedMovies}
               handleDelete={handleDelete}
               isSaved={true}
+              savedSearchQuery={savedSearchQuery}
+              serverMessage={serverMessage}
             />
           )}
         </section>

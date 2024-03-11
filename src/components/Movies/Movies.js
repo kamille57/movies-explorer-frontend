@@ -1,22 +1,18 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import SearchForm from "../SearchForm/SearchForm.js";
 import MoviesCardList from "../MoviesCardList/MoviesCardList.js";
 import Header from "../Header/Header.js";
 import Footer from "../Footer/Footer.js";
 import Preloader from "../Preloader/Preloader.js";
 
-function Movies({ isLoading, getAllMovies, movies, handleLike, handleDelete }) {
+function Movies({ isLoading, getAllMovies, movies, handleLike, handleDelete, serverMessage, setServerMessage }) {
 
   const [filteredMovies, setFilteredMovies] = useState(movies);
-
-  // эта функция возвращает отфильтрованные фильмы в Movies
+  
+  // эта функция возвращает отфильтрованные фильмы в Movies 
   const handleFilteredMovies = (movies) => {
     setFilteredMovies(movies);
   };
-
-console.log(movies);
-
- 
 
   return (
     <>
@@ -28,6 +24,8 @@ console.log(movies);
             handleSearch={handleFilteredMovies}
             getAllMovies={getAllMovies}
             isSaved={false}
+            serverMessage={serverMessage}
+            setServerMessage={setServerMessage}
           />
           {isLoading ? (
             <Preloader />
@@ -36,6 +34,7 @@ console.log(movies);
               cards={filteredMovies}
               handleLike={handleLike}
               handleDelete={handleDelete}
+              serverMessage={serverMessage}
             />
           )}
         </section>

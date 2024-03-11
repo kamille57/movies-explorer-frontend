@@ -327,6 +327,8 @@ function App() {
                 movies={movies}
                 handleLike={handleLike}
                 handleDelete={handleDelete}
+                serverMessage={serverMessage}
+                setServerMessage={setServerMessage}
 
               />
             }
@@ -342,8 +344,9 @@ function App() {
                 isLoading={isLoading}
                 getAllMovies={getAllMovies}
                 savedMovies={savedMovies}
-
                 handleDelete={handleDelete}
+                serverMessage={serverMessage}
+                setServerMessage={setServerMessage}
               />
             }
           />

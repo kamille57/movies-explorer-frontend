@@ -1,7 +1,14 @@
 import { useState, useEffect } from "react";
 import MoviesCard from "../MoviesCard/MoviesCard.js";
 
-function MoviesCardList({ cards, handleLike, handleDelete, isSaved }) {
+function MoviesCardList({
+  cards,
+  handleLike,
+  handleDelete,
+  isSaved,
+  savedSearchQuery,
+  serverMessage,
+}) {
   const [isLoadedMore, setIsLoadedMore] = useState(false);
   const [chunkSize, setChunkSize] = useState(2); // 2 - 2 - 4
   const [cardsLimit, setCardsLimit] = useState(5); // 5 - 8 - 16
@@ -9,13 +16,22 @@ function MoviesCardList({ cards, handleLike, handleDelete, isSaved }) {
 
   const searchQuery = localStorage.getItem("moviesSearchQuery");
 
-  console.log('cards from MoviesCardList', cards);
+  console.log("cards from MoviesCardList", cards);
+  console.log("savedSearchQuery", savedSearchQuery);
 
-  useEffect(() => {
-    if (!isSaved) {
-      return;
-    }
-  }, []);
+  // useEffect(() => {
+  //   if (!isSaved) {
+  //     return;
+  //   }
+  // }, []);
+
+  // useEffect(() => {
+  //   if (searchQuery) {
+  //     console.log("cards from MoviesCardList useEffect", cards);
+  //     localStorage.setItem("moviesSearchQuery", searchQuery);
+  //     return;
+  //   }
+  // }, []);
 
   useEffect(() => {
     const handleResize = () => {
@@ -56,7 +72,11 @@ function MoviesCardList({ cards, handleLike, handleDelete, isSaved }) {
 
   return (
     <>
-      {(searchQuery === "" && cards.length !== 0 && !isSaved) || (cards.length === 0 && isSaved) ? (
+      {(searchQuery === "" && cards.length !== 0 && !isSaved) ||
+      (serverMessage) ||
+      (cards.length === 0 && isSaved) ||
+      (searchQuery && cards.length === 0) ||
+      (savedSearchQuery === "" && cards.length === 0) ? (
         <h3 className="movies__empty-request">Ничего не найдено</h3>
       ) : (
         <section className="cards">
@@ -84,7 +104,7 @@ function MoviesCardList({ cards, handleLike, handleDelete, isSaved }) {
             </button>
           )}
         </section>
-      )} 
+      )}
     </>
   );
 }
