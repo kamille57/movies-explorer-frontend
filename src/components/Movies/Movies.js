@@ -5,11 +5,26 @@ import Header from "../Header/Header.js";
 import Footer from "../Footer/Footer.js";
 import Preloader from "../Preloader/Preloader.js";
 
-function Movies({ isLoading, getAllMovies, movies, handleLike, handleDelete, serverMessage, setServerMessage }) {
+function Movies({
+  isLoading,
+  getAllMovies,
+  handleLike,
+  handleDelete,
+  serverMessage,
+  setServerMessage,
+}) {
 
-  const [filteredMovies, setFilteredMovies] = useState(movies);
-  
-  // эта функция возвращает отфильтрованные фильмы в Movies 
+  const movies = JSON.parse(localStorage.getItem("initialMovies")); // здесь я получила массив из фильмов Movies
+  console.log(movies);
+  const [filteredMovies, setFilteredMovies] = useState(movies || '');
+
+  useEffect(() => {
+    console.log("Я в savedMovies");
+    
+    return;
+  }, []);
+
+  // эта функция возвращает отфильтрованные фильмы в Movies
   const handleFilteredMovies = (movies) => {
     setFilteredMovies(movies);
   };

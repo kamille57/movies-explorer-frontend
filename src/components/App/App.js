@@ -110,7 +110,9 @@ function App() {
       setSavedMovies(savedMovies);
 
       localStorage.setItem("likedMovies", JSON.stringify(savedMovies));
-      console.log("получили фильмы");
+      localStorage.setItem("initialMovies", JSON.stringify(initialMovies));
+      localStorage.setItem("moviesSearchQuery", "");
+
     } catch (error) {
       console.error("Error fetching movies from the server", error);
     } finally {
@@ -324,7 +326,7 @@ function App() {
                 isLoading={isLoading}
                 isLoggedIn={isLoggedIn}
                 getAllMovies={getAllMovies}
-                movies={movies}
+                // movies={movies}
                 handleLike={handleLike}
                 handleDelete={handleDelete}
                 serverMessage={serverMessage}

@@ -19,11 +19,11 @@ function MoviesCardList({
   console.log("cards from MoviesCardList", cards);
   console.log("savedSearchQuery", savedSearchQuery);
 
-  // useEffect(() => {
-  //   if (!isSaved) {
-  //     return;
-  //   }
-  // }, []);
+  useEffect(() => {
+    if (!isSaved) {
+      return;
+    }
+  }, [cards]);
 
   // useEffect(() => {
   //   if (searchQuery) {

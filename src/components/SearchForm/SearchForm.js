@@ -1,7 +1,14 @@
 import React, { useState, useEffect } from "react";
 import FilterCheckbox from "../FilterCheckbox/FilterCheckbox.js";
 
-function SearchForm({ cards, handleSearch, isSaved, getAllMovies, serverMessage, setServerMessage }) {
+function SearchForm({
+  cards,
+  handleSearch,
+  isSaved,
+  getAllMovies,
+  serverMessage,
+  setServerMessage,
+}) {
   const [searchQuery, setSearchQuery] = useState(
     localStorage.getItem("moviesSearchQuery") || ""
   );
@@ -10,20 +17,17 @@ function SearchForm({ cards, handleSearch, isSaved, getAllMovies, serverMessage,
       isSaved ? "savedOnlyShortMovies" : "moviesOnlyShortMovies"
     ) === "true" || false
   );
-
+  useEffect(() => {
+    console.log("Я в searchForm");
+    
+    return;
+  }, []);
   const handleChange = (e) => {
     setSearchQuery(e.target.value);
   };
 
   const handleFilteredResults = async () => {
-    console.log("handleFilteredResults");
-    if (cards.length === 0 && !isSaved) {
-      console.warn("Вы передаёте пустые фильмы, вам надо скачать их");
-      localStorage.setItem("moviesSearchQuery", searchQuery);
-      await getAllMovies();
-      return;
-    }
-
+    
     console.log(cards);
     const regex = new RegExp(searchQuery, "gi");
     let filtered = cards.filter((card) => card.nameRU.match(regex));
@@ -39,11 +43,19 @@ function SearchForm({ cards, handleSearch, isSaved, getAllMovies, serverMessage,
     }
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  const handleSubmit = async (e) => {  
+    e.preventDefault();  
+    if (!cards) {  
+      console.warn("Вы передаёте пустые фильмы, вам надо скачать их");  
+      await setServerMessage("Нужно ввести ключевое слово");
+      await getAllMovies();  
+      return;  
+    }  
+
     if (searchQuery.trim() === "") {
-      console.log('я тут');
+      console.log("я тут");
       setServerMessage("Нужно ввести ключевое слово");
+      localStorage.setItem("moviesSearchQuery", "");
       return;
     }
     try {
@@ -57,14 +69,13 @@ function SearchForm({ cards, handleSearch, isSaved, getAllMovies, serverMessage,
 
   useEffect(() => {
     console.log("Карточки поменялись");
-    console.log(cards.length);
-    if (cards.length === 0) {
+    if (!cards || cards.length === 0) {
       return;
     }
     if (searchQuery) {
       handleFilteredResults();
     }
-  }, [cards, onlyShortMovies]);
+  }, [onlyShortMovies]);
 
   return (
     <section className="search">
@@ -82,8 +93,13 @@ function SearchForm({ cards, handleSearch, isSaved, getAllMovies, serverMessage,
           aria-label="Кнопка запроса"
         ></button>
       </form>
-      <span className={`search__error-message ${serverMessage && "search__error-message_active"}`} 
->{serverMessage}</span> 
+      <span
+        className={`search__error-message ${
+          serverMessage && "search__error-message_active"
+        }`}
+      >
+        {serverMessage}
+      </span>
 
       <FilterCheckbox
         setOnlyShortMovies={setOnlyShortMovies}
