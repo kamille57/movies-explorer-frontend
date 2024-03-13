@@ -107,9 +107,9 @@ function App() {
       ]);
 
       setMovies(initialMovies);
-      localStorage.setItem("initialMovies", JSON.stringify(initialMovies));
-
       setSavedMovies(savedMovies);
+      
+      localStorage.setItem("initialMovies", JSON.stringify(initialMovies));
       localStorage.setItem("likedMovies", JSON.stringify(savedMovies));
 
     } catch (error) {
@@ -157,9 +157,11 @@ function App() {
   };
 
   const handleDelete = (movieId) => {
+    console.log('удялем на крестик');
+console.log(savedMovies);
     const movieToDelete = savedMovies.find((movie) => movie.id === movieId);
+    console.log(movieToDelete);
     if (movieToDelete) {
-      console.log('удялем на крестик');
       moviesApi
         .deleteMovie(movieToDelete._id)
         .then(() => {
@@ -176,6 +178,7 @@ function App() {
           const updatedSavedMovies = savedMovies.filter(
             (movie) => movie.id !== movieId
           );
+          console.log(updatedSavedMovies);
           setSavedMovies(updatedSavedMovies);
         })
         .catch((error) => {

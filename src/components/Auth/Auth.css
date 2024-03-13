@@ -58,6 +58,10 @@
     color: #EE3465;
 }
 
+.auth__input:-webkit-autofill {
+    background-color: transparent;
+}
+
 .auth__error {
     margin: 0;
     height: 12px;

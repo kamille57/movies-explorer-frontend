@@ -1,11 +1,6 @@
 import React, { useState, useEffect } from "react";
 
-function MoviesCard({
-  card,
-  handleLike,
-  handleDelete,
-  isSaved,
-}) {
+function MoviesCard({ card, handleLike, handleDelete, isSaved }) {
   const [isChecked, setIsChecked] = useState(false);
 
   useEffect(() => {
@@ -52,9 +47,7 @@ function MoviesCard({
   };
 
   const movieRemove = () => {
-    console.log('удаляем на крестик');
-    console.log(card._id);
-    handleDelete(card._id);
+    handleDelete(card.id);
   };
 
   return (

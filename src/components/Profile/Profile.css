@@ -51,6 +51,10 @@
     border-bottom: 1px solid #424242;
 }
 
+.profile__input::placeholder {
+    background-color: transparent;
+}
+
 .profile__label {
     grid-area: label;
 }

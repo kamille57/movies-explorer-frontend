@@ -27,6 +27,13 @@ function Profile({
   const { values, errors, handleChange, validateForm, getInputProps } =
     useForm(initialValues);
 
+    useEffect(
+      function () {
+       setServerMessage('')
+      },
+      []
+    );
+
   useEffect(
     function () {
       if (!currentUser) {
