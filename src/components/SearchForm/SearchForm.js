@@ -10,24 +10,20 @@ function SearchForm({
   setServerMessage,
 }) {
   const [searchQuery, setSearchQuery] = useState(
-    localStorage.getItem("moviesSearchQuery") || ""
+    localStorage.getItem("moviesSearchQuery")
   );
   const [onlyShortMovies, setOnlyShortMovies] = useState(
     localStorage.getItem(
       isSaved ? "savedOnlyShortMovies" : "moviesOnlyShortMovies"
     ) === "true" || false
   );
-  useEffect(() => {
-    console.log("Я в searchForm");
-    
-    return;
-  }, []);
+
   const handleChange = (e) => {
     setSearchQuery(e.target.value);
   };
-
+  
   const handleFilteredResults = async () => {
-    
+
     console.log(cards);
     const regex = new RegExp(searchQuery, "gi");
     let filtered = cards.filter((card) => card.nameRU.match(regex));
@@ -43,27 +39,37 @@ function SearchForm({
     }
   };
 
-  const handleSubmit = async (e) => {  
-    e.preventDefault();  
-    if (!cards) {  
-      console.warn("Вы передаёте пустые фильмы, вам надо скачать их");  
-      await setServerMessage("Нужно ввести ключевое слово");
-      await getAllMovies();  
-      return;  
-    }  
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (!cards && !searchQuery) {
+      // в этом варианте при первом входе отрабатывает правильно
+      console.warn("Вы передаёте пустые фильмы, вам надо скачать их");
+      setServerMessage('Вам нужно ввести ключевое слово');
+      localStorage.setItem("moviesSearchQuery", "");
+
+      return;
+    }
+
+    if (!cards && searchQuery) {
+      setServerMessage('');
+      console.log(' ФИЛЬМЫ ЗАГРУЖЕНЫ');
+      localStorage.setItem("moviesSearchQuery", searchQuery);
+      getAllMovies();
+      return;
+    }
 
     if (searchQuery.trim() === "") {
       console.log("я тут");
-      setServerMessage("Нужно ввести ключевое слово");
+      setServerMessage('Вам нужно ввести ключевое слово');
       localStorage.setItem("moviesSearchQuery", "");
       return;
     }
     try {
       handleFilteredResults(searchQuery);
-      setServerMessage("");
+      setServerMessage('');
     } catch (error) {
       console.error("Error fetching movies from the server", error);
-      setServerMessage("Ошибка при поиске фильмов");
+      setServerMessage('Ошибка при поиске фильмов');
     }
   };
 

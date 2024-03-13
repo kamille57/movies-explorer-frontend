@@ -7,7 +7,6 @@ function MoviesCardList({
   handleDelete,
   isSaved,
   savedSearchQuery,
-  serverMessage,
 }) {
   const [isLoadedMore, setIsLoadedMore] = useState(false);
   const [chunkSize, setChunkSize] = useState(2); // 2 - 2 - 4
@@ -15,23 +14,6 @@ function MoviesCardList({
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
 
   const searchQuery = localStorage.getItem("moviesSearchQuery");
-
-  console.log("cards from MoviesCardList", cards);
-  console.log("savedSearchQuery", savedSearchQuery);
-
-  useEffect(() => {
-    if (!isSaved) {
-      return;
-    }
-  }, [cards]);
-
-  // useEffect(() => {
-  //   if (searchQuery) {
-  //     console.log("cards from MoviesCardList useEffect", cards);
-  //     localStorage.setItem("moviesSearchQuery", searchQuery);
-  //     return;
-  //   }
-  // }, []);
 
   useEffect(() => {
     const handleResize = () => {
@@ -72,12 +54,13 @@ function MoviesCardList({
 
   return (
     <>
-      {(searchQuery === "" && cards.length !== 0 && !isSaved) ||
-      (serverMessage) ||
+      {
       (cards.length === 0 && isSaved) ||
       (searchQuery && cards.length === 0) ||
       (savedSearchQuery === "" && cards.length === 0) ? (
         <h3 className="movies__empty-request">Ничего не найдено</h3>
+      ) : !cards && !searchQuery ? (
+        <div className="movies__empty-request"></div>
       ) : (
         <section className="cards">
           <ul className="cards__container">

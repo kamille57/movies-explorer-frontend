@@ -107,11 +107,10 @@ function App() {
       ]);
 
       setMovies(initialMovies);
-      setSavedMovies(savedMovies);
-
-      localStorage.setItem("likedMovies", JSON.stringify(savedMovies));
       localStorage.setItem("initialMovies", JSON.stringify(initialMovies));
-      localStorage.setItem("moviesSearchQuery", "");
+
+      setSavedMovies(savedMovies);
+      localStorage.setItem("likedMovies", JSON.stringify(savedMovies));
 
     } catch (error) {
       console.error("Error fetching movies from the server", error);

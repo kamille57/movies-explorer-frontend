@@ -14,13 +14,19 @@ function Movies({
   setServerMessage,
 }) {
 
-  const movies = JSON.parse(localStorage.getItem("initialMovies")); // здесь я получила массив из фильмов Movies
-  console.log(movies);
-  const [filteredMovies, setFilteredMovies] = useState(movies || '');
+  let movies = [];
 
+  if (localStorage.getItem("initialMovies")) {
+    movies = JSON.parse(localStorage.getItem("initialMovies"));
+  } else {
+    console.log("Нет сохраненных фильмов в локальном хранилище");
+    movies = localStorage.setItem("initialMovies", '');
+  }
+
+  const [filteredMovies, setFilteredMovies] = useState(movies || '');
   useEffect(() => {
-    console.log("Я в savedMovies");
-    
+    console.log("Я в Movies");
+
     return;
   }, []);
 

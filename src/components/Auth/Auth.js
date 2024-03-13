@@ -26,7 +26,6 @@ function Auth({ name, isRegistration, onRegister, onLogin, serverMessage, setSer
     useEffect(function () {
         const isValuesChanged = values.email !== initialValues.email && values.password !== initialValues.password;
         const isNameChanged = values.name !== initialValues.name;
-
         if (!isRegistration && isValuesChanged) {
             setIsDataChanged(true);
             setServerMessage(null);
