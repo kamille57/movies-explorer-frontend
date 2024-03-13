@@ -1,7 +1,7 @@
 class MainApi {
   constructor() {
-    // this.baseUrl = 'https://api.movie.nomoredomainsmonster.ru';
-    this.baseUrl = 'http://localhost:3001';
+    this.baseUrl = 'https://api.movie.nomoredomainsmonster.ru';
+   //  this.baseUrl = 'http://localhost:3001';
 
     this.credentials = 'include';
   }

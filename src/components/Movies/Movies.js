@@ -19,7 +19,6 @@ function Movies({
   if (localStorage.getItem("initialMovies")) {
     movies = JSON.parse(localStorage.getItem("initialMovies"));
   } else {
-    console.log("Нет сохраненных фильмов в локальном хранилище");
     movies = localStorage.setItem("initialMovies", '');
   }
 
