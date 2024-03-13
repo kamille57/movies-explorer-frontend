@@ -120,8 +120,6 @@ function App() {
   };
 
   const handleLike = (movie) => {
-    console.log('here');
-
     return moviesApi
       .createMovie(movie)
       .then(
@@ -158,10 +156,7 @@ function App() {
   };
 
   const handleDelete = (movieId) => {
-    console.log('удялем на крестик');
-    console.log(savedMovies);
     const movieToDelete = savedMovies.find((movie) => movie.id === movieId);
-    console.log(movieToDelete);
     if (movieToDelete) {
       return moviesApi
         .deleteMovie(movieToDelete._id)
@@ -179,9 +174,7 @@ function App() {
           const updatedSavedMovies = savedMovies.filter(
             (movie) => movie.id !== movieId
           );
-          console.log(updatedSavedMovies);
           setSavedMovies(updatedSavedMovies);
-          console.log('before return');
           return true;
         })
         .catch((error) => {
@@ -229,7 +222,6 @@ function App() {
         return api.getUserInfo(authData.token);
       })
       .then((userData) => {
-        console.log(userData);
         setCurrentUser(userData);
         setIsLoggedIn(true);
         navigate("/movies");

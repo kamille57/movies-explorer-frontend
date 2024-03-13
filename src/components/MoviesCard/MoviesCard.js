@@ -27,7 +27,6 @@ function MoviesCard({ card, handleLike, handleDelete, isSaved }) {
   }
 
   const handleCheckboxChange = () => {
-    // setIsChecked(!isChecked);
 
     if (!isChecked) {
       const updatedCard = {

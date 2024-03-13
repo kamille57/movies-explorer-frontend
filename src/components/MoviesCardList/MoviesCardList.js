@@ -18,8 +18,6 @@ function MoviesCardList({
 
   const searchQuery = localStorage.getItem("moviesSearchQuery");
   const initialMovies = localStorage.getItem("initialMovies");
-  const likedMovies = localStorage.getItem("likedMovies");
-  
   useEffect(() => {
     const handleResize = () => {
       setWindowWidth(window.innerWidth);
@@ -60,7 +58,7 @@ function MoviesCardList({
   return (
     <>
       {(serverMessage && searchQuery === "" && !isSaved) ||
-      (cards.length === 0 && isSaved) 
+      (isSaved && cards.length === 0 && !serverMessage) ||
       (serverMessage && savedSearchQuery === "" && isSaved) ||
       (initialMovies === "" && searchQuery && !isSaved) ? (
         <h3 className="movies__empty-request">Ничего не найдено</h3>

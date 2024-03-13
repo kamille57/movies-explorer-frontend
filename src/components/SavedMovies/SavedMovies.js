@@ -16,24 +16,23 @@ function SavedMovies({
   const moviesApi = new MoviesApi();
   const [filteredMovies, setFilteredMovies] = useState(savedMovies || "");
   const [savedSearchQuery, setSavedSearchQuery] = useState("");
+  const likedMovies = localStorage.getItem("likedMovies");
 
+  
   useEffect(() => {
-    // при первом входе добавили на страницу список сохраненных фильмов
     moviesApi.getSavedMovies().then((savedMovies) => {
-      console.log("Я в savedMovies", savedMovies);
       setSavedMovies(savedMovies);
+      setFilteredMovies(savedMovies);
       setServerMessage("");
       localStorage.setItem("likedMovies", JSON.stringify(savedMovies));
     });
   }, []);
 
-  // useEffect(() => {
-  //   // если в savedMovies приходит аустой массив из отфильтрованных фильмов
-  //   setSavedMovies(filteredMovies);
-  // }, [filteredMovies]);
+  useEffect(() => {
+    setFilteredMovies(savedMovies);
+  }, [likedMovies]);
 
   const handleFilteredMovies = (savedMovies) => {
-    console.log(savedMovies);
     setFilteredMovies(savedMovies);
   };
 
@@ -52,7 +51,6 @@ function SavedMovies({
             serverMessage={serverMessage}
             setServerMessage={setServerMessage}
           />
-          {console.log("savedMovies", savedMovies)}
           <MoviesCardList
             cards={filteredMovies}
             handleDelete={handleDelete}
