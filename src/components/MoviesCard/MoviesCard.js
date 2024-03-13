@@ -52,7 +52,9 @@ function MoviesCard({
   };
 
   const movieRemove = () => {
-    handleDelete(card.id);
+    console.log('удаляем на крестик');
+    console.log(card._id);
+    handleDelete(card._id);
   };
 
   return (

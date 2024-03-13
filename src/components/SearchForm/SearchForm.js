@@ -9,6 +9,7 @@ function SearchForm({
   serverMessage,
   setServerMessage,
 }) {
+  const [savedSearchQuery, setSavedSearchQuery] = useState("");
   const [searchQuery, setSearchQuery] = useState(
     localStorage.getItem("moviesSearchQuery")
   );
@@ -19,23 +20,43 @@ function SearchForm({
   );
 
   const handleChange = (e) => {
-    setSearchQuery(e.target.value);
-  };
-  
-  const handleFilteredResults = async () => {
-
-    console.log(cards);
-    const regex = new RegExp(searchQuery, "gi");
-    let filtered = cards.filter((card) => card.nameRU.match(regex));
-
-    if (onlyShortMovies) {
-      filtered = filtered.filter((card) => card.duration <= 40);
-    }
-
-    handleSearch(filtered);
-
     if (!isSaved) {
-      localStorage.setItem("moviesSearchQuery", searchQuery);
+      setSearchQuery(e.target.value);
+    } else {
+      setSavedSearchQuery(e.target.value);
+    }
+  };
+
+  const handleFilteredResults = () => {
+    setServerMessage("");
+console.log(cards);
+    if (isSaved && savedSearchQuery) {
+      console.log('cards filtered', cards);
+        const regex = new RegExp(savedSearchQuery, "gi");
+        let filtered = cards.filter((card) => card.nameRU.match(regex));
+
+        if (onlyShortMovies) {
+            filtered = filtered.filter((card) => card.duration <= 40);
+        }
+
+        handleSearch(filtered);
+
+    } else if (!isSaved && searchQuery) {
+        const regex = new RegExp(searchQuery, "gi");
+        let filtered = cards.filter((card) => card.nameRU.match(regex));
+
+        if (onlyShortMovies) {
+            filtered = filtered.filter((card) => card.duration <= 40);
+        }
+
+        handleSearch(filtered);
+
+      if (!isSaved) {
+        console.log("сеттим серчквери");
+        localStorage.setItem("moviesSearchQuery", searchQuery);
+      } else {
+        setSavedSearchQuery(savedSearchQuery);
+      }
     }
   };
 
@@ -44,15 +65,15 @@ function SearchForm({
     if (!cards && !searchQuery) {
       // в этом варианте при первом входе отрабатывает правильно
       console.warn("Вы передаёте пустые фильмы, вам надо скачать их");
-      setServerMessage('Вам нужно ввести ключевое слово');
+      setServerMessage("Вам нужно ввести ключевое слово");
       localStorage.setItem("moviesSearchQuery", "");
 
       return;
     }
 
     if (!cards && searchQuery) {
-      setServerMessage('');
-      console.log(' ФИЛЬМЫ ЗАГРУЖЕНЫ');
+      // setServerMessage('');
+      console.log(" ФИЛЬМЫ ЗАГРУЖЕНЫ");
       localStorage.setItem("moviesSearchQuery", searchQuery);
       getAllMovies();
       return;
@@ -60,16 +81,26 @@ function SearchForm({
 
     if (searchQuery.trim() === "") {
       console.log("я тут");
-      setServerMessage('Вам нужно ввести ключевое слово');
+      setServerMessage("Вам нужно ввести ключевое слово");
       localStorage.setItem("moviesSearchQuery", "");
       return;
     }
+
+    if (isSaved && savedSearchQuery.trim() === "") {
+      setServerMessage("Вам нужно ввести ключевое слово");
+      return;
+    }
+
     try {
-      handleFilteredResults(searchQuery);
-      setServerMessage('');
+      setServerMessage("");
+      if (isSaved) {
+        handleFilteredResults(savedSearchQuery);
+      } else {
+        handleFilteredResults(searchQuery);
+      }
     } catch (error) {
       console.error("Error fetching movies from the server", error);
-      setServerMessage('Ошибка при поиске фильмов');
+      setServerMessage("Ошибка при поиске фильмов");
     }
   };
 
@@ -78,8 +109,9 @@ function SearchForm({
     if (!cards || cards.length === 0) {
       return;
     }
-    if (searchQuery) {
+    if (searchQuery || savedSearchQuery) {
       handleFilteredResults();
+      console.log('проходим');
     }
   }, [onlyShortMovies]);
 
@@ -90,7 +122,7 @@ function SearchForm({
           type="text"
           placeholder="Фильм"
           className={`search-input ${serverMessage && "search-input_error"}`}
-          value={isSaved ? "" : searchQuery}
+          value={isSaved ? savedSearchQuery : searchQuery}
           onChange={handleChange}
         />
         <button

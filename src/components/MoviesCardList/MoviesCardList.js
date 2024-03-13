@@ -54,12 +54,11 @@ function MoviesCardList({
 
   return (
     <>
-      {
-      (cards.length === 0 && isSaved) ||
-      (searchQuery && cards.length === 0) ||
+      {(searchQuery === '' && !isSaved) ||
+      (!isSaved && cards.length === 0 && searchQuery) ||
       (savedSearchQuery === "" && cards.length === 0) ? (
         <h3 className="movies__empty-request">Ничего не найдено</h3>
-      ) : !cards && !searchQuery ? (
+      ) : (!cards && !searchQuery) || !searchQuery ? (
         <div className="movies__empty-request"></div>
       ) : (
         <section className="cards">

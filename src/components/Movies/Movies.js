@@ -24,11 +24,6 @@ function Movies({
   }
 
   const [filteredMovies, setFilteredMovies] = useState(movies || '');
-  useEffect(() => {
-    console.log("Я в Movies");
-
-    return;
-  }, []);
 
   // эта функция возвращает отфильтрованные фильмы в Movies
   const handleFilteredMovies = (movies) => {

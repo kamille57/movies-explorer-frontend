@@ -159,6 +159,7 @@ function App() {
   const handleDelete = (movieId) => {
     const movieToDelete = savedMovies.find((movie) => movie.id === movieId);
     if (movieToDelete) {
+      console.log('удялем на крестик');
       moviesApi
         .deleteMovie(movieToDelete._id)
         .then(() => {
