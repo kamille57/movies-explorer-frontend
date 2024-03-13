@@ -31,7 +31,7 @@ function SearchForm({
   const handleFilteredResults = () => {
     setServerMessage("");
     console.log(cards);
-    if (savedSearchQuery) {
+    if (isSaved) {
       console.log('cards filtered', cards);
         const regex = new RegExp(savedSearchQuery, "gi");
         let filtered = cards.filter((card) => card.nameRU.match(regex));
@@ -42,16 +42,21 @@ function SearchForm({
 
         }
 
-        handleSearch(filtered);
-
+      handleSearch(filtered);
     } else if (!isSaved && searchQuery) {
-        const regex = new RegExp(searchQuery, "gi");
-        let filtered = cards.filter((card) => card.nameRU.match(regex));
-        if (onlyShortMovies) {
-            filtered = filtered.filter((card) => card.duration <= SHORT_MOVIES_DURATION);
-        }
+      console.log("cards filtered", cards);
 
-        handleSearch(filtered);
+      const regex = new RegExp(searchQuery, "gi");
+      let filtered = cards.filter((card) => card.nameRU.match(regex));
+      if (onlyShortMovies) {
+        console.log("короткометражки");
+
+        filtered = filtered.filter(
+          (card) => card.duration <= SHORT_MOVIES_DURATION
+        );
+      }
+
+      handleSearch(filtered);
 
       if (!isSaved) {
         console.log("сеттим серчквери");
@@ -75,14 +80,17 @@ function SearchForm({
     }
 
     if (!cards && searchQuery) {
-      // setServerMessage('');
       console.log(" ФИЛЬМЫ ЗАГРУЖЕНЫ");
       localStorage.setItem("moviesSearchQuery", searchQuery);
       getAllMovies();
       return;
     }
-
-    if (searchQuery === null || searchQuery.trim() === "") {
+    if (searchQuery === null && !isSaved) {
+      console.log("я тут");
+      setServerMessage("Вам нужно ввести ключевое слово");
+      return;
+    }
+    if (searchQuery.trim() === "" && !isSaved) {
       console.log("я тут");
       setServerMessage("Вам нужно ввести ключевое слово");
       localStorage.setItem("moviesSearchQuery", "");
@@ -112,10 +120,10 @@ function SearchForm({
     if (!cards || cards.length === 0) {
       return;
     }
-    if (searchQuery || savedSearchQuery) {
+    
       handleFilteredResults();
-      console.log('проходим');
-    }
+      console.log("проходим");
+    
   }, [onlyShortMovies]);
 
   return (

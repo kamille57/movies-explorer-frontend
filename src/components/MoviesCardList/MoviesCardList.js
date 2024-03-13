@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { v4 as uuidv4 } from 'uuid';
+import { v4 as uuidv4 } from "uuid";
 import MoviesCard from "../MoviesCard/MoviesCard.js";
 import { VISIBLE_MOVIES } from "../../constants/constants.js";
 
@@ -9,6 +9,7 @@ function MoviesCardList({
   handleDelete,
   isSaved,
   savedSearchQuery,
+  serverMessage,
 }) {
   const [isLoadedMore, setIsLoadedMore] = useState(false);
   const [chunkSize, setChunkSize] = useState(2); // 2 - 2 - 4
@@ -16,7 +17,9 @@ function MoviesCardList({
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
 
   const searchQuery = localStorage.getItem("moviesSearchQuery");
-
+  const initialMovies = localStorage.getItem("initialMovies");
+  const likedMovies = localStorage.getItem("likedMovies");
+  
   useEffect(() => {
     const handleResize = () => {
       setWindowWidth(window.innerWidth);
@@ -56,12 +59,15 @@ function MoviesCardList({
 
   return (
     <>
-      {console.log(cards)}
-      {(searchQuery === '' && !isSaved) ||
-      (!isSaved && cards.length === 0 && searchQuery) ||
-      (savedSearchQuery === "" && cards.length === 0) ? (
+      {(serverMessage && searchQuery === "" && !isSaved) ||
+      (cards.length === 0 && isSaved) 
+      (serverMessage && savedSearchQuery === "" && isSaved) ||
+      (initialMovies === "" && searchQuery && !isSaved) ? (
         <h3 className="movies__empty-request">Ничего не найдено</h3>
-      ) : (!cards && !searchQuery && !isSaved) || (!isSaved && !searchQuery) ? (
+      ) : (cards && !searchQuery && !isSaved) ||
+        (!isSaved && !searchQuery) ||
+        (initialMovies === "" && searchQuery === "" && !isSaved) ||
+        (initialMovies === "" && !isSaved) ? (
         <div className="movies__empty-request"></div>
       ) : (
         <section className="cards">

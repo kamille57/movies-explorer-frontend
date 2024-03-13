@@ -354,10 +354,10 @@ function App() {
                 isLoading={isLoading}
                 getAllMovies={getAllMovies}
                 savedMovies={savedMovies}
+                setSavedMovies={setSavedMovies}
                 handleDelete={handleDelete}
                 serverMessage={serverMessage}
                 setServerMessage={setServerMessage}
-                setSavedMovies={setSavedMovies}
               />
             }
           />

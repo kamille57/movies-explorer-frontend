@@ -11,29 +11,30 @@ function SavedMovies({
   savedMovies,
   serverMessage,
   setServerMessage,
-  setSavedMovies
+  setSavedMovies,
 }) {
   const moviesApi = new MoviesApi();
-  const [filteredMovies, setFilteredMovies] = useState([]);
+  const [filteredMovies, setFilteredMovies] = useState(savedMovies || "");
   const [savedSearchQuery, setSavedSearchQuery] = useState("");
 
   useEffect(() => {
+    // при первом входе добавили на страницу список сохраненных фильмов
     moviesApi.getSavedMovies().then((savedMovies) => {
       console.log("Я в savedMovies", savedMovies);
-      setSavedMovies(savedMovies)
-      setFilteredMovies(savedMovies);
+      setSavedMovies(savedMovies);
+      setServerMessage("");
       localStorage.setItem("likedMovies", JSON.stringify(savedMovies));
     });
   }, []);
 
-  useEffect(() => {
-    setFilteredMovies(savedMovies);
-    
-  }, [savedMovies]);
+  // useEffect(() => {
+  //   // если в savedMovies приходит аустой массив из отфильтрованных фильмов
+  //   setSavedMovies(filteredMovies);
+  // }, [filteredMovies]);
 
-  const handleFilteredMovies = (movies) => {
-    console.log(movies);
-    setFilteredMovies(movies);
+  const handleFilteredMovies = (savedMovies) => {
+    console.log(savedMovies);
+    setFilteredMovies(savedMovies);
   };
 
   return (
@@ -42,7 +43,7 @@ function SavedMovies({
       <main className="saved-movies">
         <section className="saved-movies-page">
           <SearchForm
-            cards={filteredMovies}
+            cards={savedMovies}
             handleSearch={handleFilteredMovies}
             getAllMovies={getAllMovies}
             isSaved={true}
@@ -51,8 +52,7 @@ function SavedMovies({
             serverMessage={serverMessage}
             setServerMessage={setServerMessage}
           />
-          {console.log(filteredMovies)}
-          {console.log(savedMovies)}
+          {console.log("savedMovies", savedMovies)}
           <MoviesCardList
             cards={filteredMovies}
             handleDelete={handleDelete}
