@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { SHORT_MOVIES_DURATION } from "../../constants/constants.js";
 import FilterCheckbox from "../FilterCheckbox/FilterCheckbox.js";
 
 function SearchForm({
@@ -29,14 +30,16 @@ function SearchForm({
 
   const handleFilteredResults = () => {
     setServerMessage("");
-console.log(cards);
-    if (isSaved && savedSearchQuery) {
+    console.log(cards);
+    if (savedSearchQuery) {
       console.log('cards filtered', cards);
         const regex = new RegExp(savedSearchQuery, "gi");
         let filtered = cards.filter((card) => card.nameRU.match(regex));
 
         if (onlyShortMovies) {
-            filtered = filtered.filter((card) => card.duration <= 40);
+            filtered = filtered.filter((card) => card.duration <= SHORT_MOVIES_DURATION);
+            console.log(filtered);
+
         }
 
         handleSearch(filtered);
@@ -44,9 +47,8 @@ console.log(cards);
     } else if (!isSaved && searchQuery) {
         const regex = new RegExp(searchQuery, "gi");
         let filtered = cards.filter((card) => card.nameRU.match(regex));
-
         if (onlyShortMovies) {
-            filtered = filtered.filter((card) => card.duration <= 40);
+            filtered = filtered.filter((card) => card.duration <= SHORT_MOVIES_DURATION);
         }
 
         handleSearch(filtered);
@@ -62,6 +64,7 @@ console.log(cards);
 
   const handleSubmit = (e) => {
     e.preventDefault();
+
     if (!cards && !searchQuery) {
       // в этом варианте при первом входе отрабатывает правильно
       console.warn("Вы передаёте пустые фильмы, вам надо скачать их");
@@ -79,7 +82,7 @@ console.log(cards);
       return;
     }
 
-    if (searchQuery.trim() === "") {
+    if (searchQuery === null || searchQuery.trim() === "") {
       console.log("я тут");
       setServerMessage("Вам нужно ввести ключевое слово");
       localStorage.setItem("moviesSearchQuery", "");

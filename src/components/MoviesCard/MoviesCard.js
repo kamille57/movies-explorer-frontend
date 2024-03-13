@@ -27,7 +27,7 @@ function MoviesCard({ card, handleLike, handleDelete, isSaved }) {
   }
 
   const handleCheckboxChange = () => {
-    setIsChecked(!isChecked);
+    // setIsChecked(!isChecked);
 
     if (!isChecked) {
       const updatedCard = {
@@ -40,14 +40,20 @@ function MoviesCard({ card, handleLike, handleDelete, isSaved }) {
       delete updatedCard.created_at;
       delete updatedCard.updated_at;
 
-      handleLike(updatedCard);
+      handleLike(updatedCard).then(res => {
+        console.log('Ответ: ' + res);
+        if (res === true) setIsChecked(true);
+      });
     } else {
-      handleDelete(card.id);
+      movieRemove();
     }
   };
 
   const movieRemove = () => {
-    handleDelete(card.id);
+    handleDelete(card.id).then(res => {
+      console.log('Ответ: ' + res);
+      if (res === true) setIsChecked(false);
+    });
   };
 
   return (

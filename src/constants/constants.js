@@ -66,3 +66,6 @@ export const WINDOW_WIDTH_THRESHOLD = {
   SMALL: 767,
   EXTRA_SMALL: 850,
 };
+
+
+export const SHORT_MOVIES_DURATION = 40;

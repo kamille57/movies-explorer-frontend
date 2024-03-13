@@ -4,6 +4,9 @@ function FilterCheckbox({ setOnlyShortMovies, onlyShortMovies, isSaved }) {
   const handleCheckboxChange = () => {
     if (!isSaved) {
       localStorage.setItem("moviesOnlyShortMovies", !onlyShortMovies);
+    } else {
+      localStorage.setItem("savedOnlyShortMovies", !onlyShortMovies);
+
     }
     setOnlyShortMovies(!onlyShortMovies);
   };

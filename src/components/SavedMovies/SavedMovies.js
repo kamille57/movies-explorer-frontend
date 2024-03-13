@@ -11,6 +11,7 @@ function SavedMovies({
   savedMovies,
   serverMessage,
   setServerMessage,
+  setSavedMovies
 }) {
   const moviesApi = new MoviesApi();
   const [filteredMovies, setFilteredMovies] = useState([]);
@@ -19,10 +20,16 @@ function SavedMovies({
   useEffect(() => {
     moviesApi.getSavedMovies().then((savedMovies) => {
       console.log("Я в savedMovies", savedMovies);
+      setSavedMovies(savedMovies)
       setFilteredMovies(savedMovies);
       localStorage.setItem("likedMovies", JSON.stringify(savedMovies));
     });
   }, []);
+
+  useEffect(() => {
+    setFilteredMovies(savedMovies);
+    
+  }, [savedMovies]);
 
   const handleFilteredMovies = (movies) => {
     console.log(movies);
@@ -44,9 +51,10 @@ function SavedMovies({
             serverMessage={serverMessage}
             setServerMessage={setServerMessage}
           />
-
+          {console.log(filteredMovies)}
+          {console.log(savedMovies)}
           <MoviesCardList
-            cards={filteredMovies.length > 0 ? filteredMovies : savedMovies}
+            cards={filteredMovies}
             handleDelete={handleDelete}
             isSaved={true}
             savedSearchQuery={savedSearchQuery}

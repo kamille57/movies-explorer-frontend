@@ -1,5 +1,7 @@
 import { useState, useEffect } from "react";
+import { v4 as uuidv4 } from 'uuid';
 import MoviesCard from "../MoviesCard/MoviesCard.js";
+import { VISIBLE_MOVIES } from "../../constants/constants.js";
 
 function MoviesCardList({
   cards,
@@ -29,11 +31,11 @@ function MoviesCardList({
 
   useEffect(() => {
     if (windowWidth >= 1280) {
-      changeMovieListOptions(16, 4);
+      changeMovieListOptions(VISIBLE_MOVIES.LARGE, 4);
     } else if (windowWidth >= 768) {
-      changeMovieListOptions(8, 2);
+      changeMovieListOptions(VISIBLE_MOVIES.SMALL, 2);
     } else {
-      changeMovieListOptions(5, 2);
+      changeMovieListOptions(VISIBLE_MOVIES.EXTRA_SMALL, 2);
     }
   }, [windowWidth]);
 
@@ -54,6 +56,7 @@ function MoviesCardList({
 
   return (
     <>
+      {console.log(cards)}
       {(searchQuery === '' && !isSaved) ||
       (!isSaved && cards.length === 0 && searchQuery) ||
       (savedSearchQuery === "" && cards.length === 0) ? (
@@ -64,8 +67,8 @@ function MoviesCardList({
         <section className="cards">
           <ul className="cards__container">
             {cards &&
-              cards.slice(0, cardsLimit).map((newCard, index) => (
-                <li key={index}>
+              cards.slice(0, cardsLimit).map((newCard) => (
+                <li key={uuidv4()}>
                   <MoviesCard
                     card={newCard}
                     handleLike={handleLike}

@@ -108,7 +108,7 @@ function App() {
 
       setMovies(initialMovies);
       setSavedMovies(savedMovies);
-      
+
       localStorage.setItem("initialMovies", JSON.stringify(initialMovies));
       localStorage.setItem("likedMovies", JSON.stringify(savedMovies));
 
@@ -122,7 +122,7 @@ function App() {
   const handleLike = (movie) => {
     console.log('here');
 
-    moviesApi
+    return moviesApi
       .createMovie(movie)
       .then(
         (newMovie) => {
@@ -143,6 +143,7 @@ function App() {
             JSON.stringify(updatedLikedMovies)
           );
         }
+        return true
       })
 
       .catch((error) => {
@@ -158,11 +159,11 @@ function App() {
 
   const handleDelete = (movieId) => {
     console.log('удялем на крестик');
-console.log(savedMovies);
+    console.log(savedMovies);
     const movieToDelete = savedMovies.find((movie) => movie.id === movieId);
     console.log(movieToDelete);
     if (movieToDelete) {
-      moviesApi
+      return moviesApi
         .deleteMovie(movieToDelete._id)
         .then(() => {
           const updatedLikedMovies = likedMovies.filter(
@@ -180,6 +181,8 @@ console.log(savedMovies);
           );
           console.log(updatedSavedMovies);
           setSavedMovies(updatedSavedMovies);
+          console.log('before return');
+          return true;
         })
         .catch((error) => {
           onError();
@@ -190,6 +193,8 @@ console.log(savedMovies);
         .finally(() => {
           setIsLoading(false);
         });
+    } else {
+      return Promise.reject(false);
     }
   };
 
@@ -352,6 +357,7 @@ console.log(savedMovies);
                 handleDelete={handleDelete}
                 serverMessage={serverMessage}
                 setServerMessage={setServerMessage}
+                setSavedMovies={setSavedMovies}
               />
             }
           />
