@@ -107,6 +107,7 @@ function App() {
       ]);
 
       setMovies(initialMovies);
+      console.log(initialMovies);
       setSavedMovies(savedMovies);
 
       localStorage.setItem("initialMovies", JSON.stringify(initialMovies));

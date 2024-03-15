@@ -32,6 +32,7 @@ function MoviesCard({ card, handleLike, handleDelete, isSaved }) {
       const updatedCard = {
         ...card,
         image: imageUrl,
+        country: card.country.slice(0, 30),
         director: card.director.slice(0, 30),
         createdAt: card.created_at,
         updatedAt: card.updated_at,
