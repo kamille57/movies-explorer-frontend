@@ -10,15 +10,13 @@ function SearchForm({
   serverMessage,
   setServerMessage,
 }) {
-
   const [savedSearchQuery, setSavedSearchQuery] = useState("");
+  const [savedOnlyShortMovies, setSavedOnlyShortMovies] = useState(false);
   const [searchQuery, setSearchQuery] = useState(
     localStorage.getItem("moviesSearchQuery")
   );
   const [onlyShortMovies, setOnlyShortMovies] = useState(
-    localStorage.getItem(
-      isSaved ? "savedOnlyShortMovies" : "moviesOnlyShortMovies"
-    ) === "true" || false
+    localStorage.getItem("moviesOnlyShortMovies") === "true" || false
   );
 
   const handleChange = (e) => {
@@ -32,11 +30,13 @@ function SearchForm({
   const handleFilteredResults = () => {
     setServerMessage("");
     if (isSaved) {
-        const regex = new RegExp(savedSearchQuery, "gi");
-        let filtered = cards.filter((card) => card.nameRU.match(regex));
-        if (onlyShortMovies) {
-            filtered = filtered.filter((card) => card.duration <= SHORT_MOVIES_DURATION);
-        }
+      const regex = new RegExp(savedSearchQuery, "gi");
+      let filtered = cards.filter((card) => card.nameRU.match(regex));
+      if (savedOnlyShortMovies) {
+        filtered = filtered.filter(
+          (card) => card.duration <= SHORT_MOVIES_DURATION
+        );
+      }
       handleSearch(filtered);
     } else if (!isSaved && searchQuery) {
       const regex = new RegExp(searchQuery, "gi");
@@ -108,11 +108,10 @@ function SearchForm({
 
   useEffect(() => {
     if (!cards || cards.length === 0) {
-
       return;
     }
-    
-      handleFilteredResults();    
+
+    handleFilteredResults();
   }, [onlyShortMovies]);
 
   return (
@@ -122,7 +121,7 @@ function SearchForm({
           type="text"
           placeholder="Фильм"
           className={`search-input ${serverMessage && "search-input_error"}`}
-          value={isSaved ? (savedSearchQuery || '') : (searchQuery || '')}
+          value={isSaved ? savedSearchQuery || "" : searchQuery || ""}
           onChange={handleChange}
         />
         <button
@@ -142,6 +141,8 @@ function SearchForm({
       <FilterCheckbox
         setOnlyShortMovies={setOnlyShortMovies}
         onlyShortMovies={onlyShortMovies}
+        setSavedOnlyShortMovies={setSavedOnlyShortMovies}
+        savedOnlyShortMovies={savedOnlyShortMovies}
         isSaved={isSaved}
       />
     </section>

@@ -1,12 +1,11 @@
 import React from "react";
 
-function FilterCheckbox({ setOnlyShortMovies, onlyShortMovies, isSaved }) {
+function FilterCheckbox({ setOnlyShortMovies, onlyShortMovies, isSaved, setSavedOnlyShortMovies, savedOnlyShortMovies }) {
   const handleCheckboxChange = () => {
     if (!isSaved) {
       localStorage.setItem("moviesOnlyShortMovies", !onlyShortMovies);
     } else {
-      localStorage.setItem("savedOnlyShortMovies", !onlyShortMovies);
-
+      setSavedOnlyShortMovies(!savedOnlyShortMovies);
     }
     setOnlyShortMovies(!onlyShortMovies);
   };
@@ -19,7 +18,7 @@ function FilterCheckbox({ setOnlyShortMovies, onlyShortMovies, isSaved }) {
             className="filter-checkbox__input"
             type="checkbox"
             id="checkbox"
-            checked={onlyShortMovies}
+            checked={!isSaved ? onlyShortMovies : savedOnlyShortMovies}
             onChange={handleCheckboxChange}
           />
           <span className="filter-checkbox__inner"></span> Короткометражки
