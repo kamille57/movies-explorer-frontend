@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import ProtectedRoute from "../ProtectedRoute/ProtectedRoute.js";
 
@@ -30,6 +30,7 @@ import {
 function App() {
   const [currentUser, setCurrentUser] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [isMoviesLoading, setIsMoviesLoading] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isToolTipSuccessOpen, setIsToolTipSuccessOpen] = useState(false);
   const [isToolTipFailOpen, setIsToolTipFailOpen] = useState(false);
@@ -47,14 +48,10 @@ function App() {
   const moviesApi = new MoviesApi();
 
   useEffect(() => {
-    if (isLoading) return;
-
     const checkToken = async () => {
-      setIsLoading(true);
       const token = localStorage.getItem("jwt");
       if (!token) {
         setIsLoggedIn(false);
-        setIsLoading(false);
         setIsCheckingAuth(false);
         return;
       }
@@ -63,7 +60,6 @@ function App() {
         setCurrentUser(userData);
 
         setIsLoggedIn(true);
-        setIsLoading(false);
       } catch (err) {
         onError();
         const errorMessage = handleError(err, serverErrors);
@@ -78,7 +74,7 @@ function App() {
     };
 
     checkToken();
-  }, [isLoggedIn]);
+  }, []);
 
   if (isCheckingAuth) {
     return <Preloader />;
@@ -98,7 +94,7 @@ function App() {
   }
 
   const getAllMovies = async () => {
-    setIsLoading(true);
+    setIsMoviesLoading(true);
 
     try {
       const [initialMovies, savedMovies] = await Promise.all([
@@ -107,24 +103,21 @@ function App() {
       ]);
 
       setMovies(initialMovies);
-      console.log(initialMovies);
       setSavedMovies(savedMovies);
 
       localStorage.setItem("initialMovies", JSON.stringify(initialMovies));
       localStorage.setItem("likedMovies", JSON.stringify(savedMovies));
-
     } catch (error) {
       console.error("Error fetching movies from the server", error);
     } finally {
-      setIsLoading(false);
+      setIsMoviesLoading(false);
     }
   };
 
   const handleLike = (movie) => {
     return moviesApi
       .createMovie(movie)
-      .then(
-        (newMovie) => {
+      .then((newMovie) => {
         const updatedSavedMovies = [...savedMovies, newMovie];
         setSavedMovies(updatedSavedMovies);
 
@@ -142,7 +135,7 @@ function App() {
             JSON.stringify(updatedLikedMovies)
           );
         }
-        return true
+        return true;
       })
 
       .catch((error) => {
@@ -215,15 +208,19 @@ function App() {
   }
 
   const handleLogin = ({ email, password }) => {
-    setIsLoading(true);
     api
       .authorize(email, password)
       .then((authData) => {
         localStorage.setItem("jwt", authData.token);
+        setIsLoading(true);
+
         return api.getUserInfo(authData.token);
       })
       .then((userData) => {
         setCurrentUser(userData);
+        setIsLoading(true);
+        console.log(isLoading);
+
         setIsLoggedIn(true);
         navigate("/movies");
         onSuccess();
@@ -295,27 +292,39 @@ function App() {
           <Route
             path="/signup"
             element={
-              <Auth
-                onRegister={handleRegister}
-                isLoading={isLoading}
-                isRegistration={true}
-                serverMessage={serverMessage}
-                setServerMessage={setServerMessage}
-              />
+              isLoggedIn ? (
+                <Navigate to="/" />
+              ) : isLoading ? (
+                <Preloader />
+              ) : (
+                <Auth
+                  onRegister={handleRegister}
+                  isLoading={isLoading}
+                  isRegistration={true}
+                  serverMessage={serverMessage}
+                  setServerMessage={setServerMessage}
+                />
+              )
             }
           />
 
           <Route
             path="/signin"
             element={
-              <Auth
-                onLogin={handleLogin}
-                setCurrentUser={setCurrentUser}
-                isLoading={isLoading}
-                isRegistration={false}
-                serverMessage={serverMessage}
-                setServerMessage={setServerMessage}
-              />
+              isLoggedIn ? (
+                <Navigate to="/" />
+              ) : isLoading ? (
+                <Preloader />
+              ) : (
+                <Auth
+                  onLogin={handleLogin}
+                  setCurrentUser={setCurrentUser}
+                  isLoading={isLoading}
+                  isRegistration={false}
+                  serverMessage={serverMessage}
+                  setServerMessage={setServerMessage}
+                />
+              )
             }
           />
 
@@ -324,15 +333,13 @@ function App() {
             element={
               <ProtectedRoute
                 Element={Movies}
-                isLoading={isLoading}
+                isMoviesLoading={isMoviesLoading}
                 isLoggedIn={isLoggedIn}
                 getAllMovies={getAllMovies}
-                // movies={movies}
                 handleLike={handleLike}
                 handleDelete={handleDelete}
                 serverMessage={serverMessage}
                 setServerMessage={setServerMessage}
-
               />
             }
           />

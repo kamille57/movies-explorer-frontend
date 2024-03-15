@@ -9,7 +9,9 @@ function SearchForm({
   getAllMovies,
   serverMessage,
   setServerMessage,
+  isMoviesLoading,
 }) {
+  const initialMovies = localStorage.getItem("initialMovies");
   const [savedSearchQuery, setSavedSearchQuery] = useState("");
   const [savedOnlyShortMovies, setSavedOnlyShortMovies] = useState(false);
   const [searchQuery, setSearchQuery] = useState(
@@ -57,7 +59,7 @@ function SearchForm({
     }
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (!cards && !searchQuery) {
@@ -70,7 +72,7 @@ function SearchForm({
 
     if (!cards && searchQuery) {
       localStorage.setItem("moviesSearchQuery", searchQuery);
-      getAllMovies();
+      await getAllMovies();
 
       return;
     }
@@ -107,12 +109,11 @@ function SearchForm({
   };
 
   useEffect(() => {
-    if (!cards || cards.length === 0) {
+    if (!cards || cards.length === 0 || isMoviesLoading) {
       return;
     }
-
-    handleFilteredResults();
-  }, [onlyShortMovies]);
+      handleFilteredResults();
+  }, [onlyShortMovies, initialMovies]);
 
   return (
     <section className="search">

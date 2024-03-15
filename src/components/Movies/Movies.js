@@ -6,7 +6,7 @@ import Footer from "../Footer/Footer.js";
 import Preloader from "../Preloader/Preloader.js";
 
 function Movies({
-  isLoading,
+  isMoviesLoading,
   getAllMovies,
   handleLike,
   handleDelete,
@@ -15,7 +15,7 @@ function Movies({
 }) {
 
   let movies = [];
-
+  
   if (localStorage.getItem("initialMovies")) {
     movies = JSON.parse(localStorage.getItem("initialMovies"));
   } else {
@@ -41,8 +41,9 @@ function Movies({
             isSaved={false}
             serverMessage={serverMessage}
             setServerMessage={setServerMessage}
+            isMoviesLoading={isMoviesLoading}
           />
-          {isLoading ? (
+          {isMoviesLoading ? (
             <Preloader />
           ) : (
             <MoviesCardList
