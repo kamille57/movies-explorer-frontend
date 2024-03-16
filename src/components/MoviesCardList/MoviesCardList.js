@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import { v4 as uuidv4 } from "uuid";
 import MoviesCard from "../MoviesCard/MoviesCard.js";
 import { VISIBLE_MOVIES } from "../../constants/constants.js";
 
@@ -69,31 +68,30 @@ function MoviesCardList({
       ) : ((likedMovies.length === 0 || !likedMovies) && isSaved) ? (
         <div className="movies__empty-request"> Сохраненных фильмов нет.</div>
       ) : (
-        <section className="cards">
-          <ul className="cards__container">
-            {cards &&
-              cards.slice(0, cardsLimit).map((newCard) => (
-                <li key={uuidv4()}>
-                  <MoviesCard
-                    card={newCard}
-                    handleLike={handleLike}
-                    handleDelete={handleDelete}
-                    isSaved={isSaved}
-                  />
-                </li>
-              ))}
-          </ul>
-          {cards.length > cardsLimit && (
-            <button
-              type="button"
-              aria-label="кнопка для показа большего количества фильмов"
-              className="cards__btn"
-              onClick={addMoreItems}
-            >
-              Ещё
-            </button>
-          )}
-        </section>
+        <section className="cards"> 
+        <ul className="cards__container"> 
+          {cards && cards.slice(0, cardsLimit).map((newCard) => ( 
+            <li key={newCard.id}> 
+              <MoviesCard 
+                card={newCard} 
+                handleLike={handleLike} 
+                handleDelete={handleDelete} 
+                isSaved={isSaved} 
+              /> 
+            </li> 
+          ))} 
+        </ul> 
+        {cards.length > cardsLimit && ( 
+          <button 
+            type="button" 
+            aria-label="кнопка для показа большего количества фильмов" 
+            className="cards__btn" 
+            onClick={addMoreItems} 
+          > 
+            Ещё 
+          </button> 
+        )} 
+      </section>
       )}
     </>
   );
