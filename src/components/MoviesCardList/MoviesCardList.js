@@ -8,10 +8,9 @@ import {
 
 function MoviesCardList({
   cards,
-  handleLike,
-  handleDelete,
   isSaved,
   serverMessage,
+  setIsOnCrossDeleted,
 }) {
   const [isLoadedMore, setIsLoadedMore] = useState(false);
   const [chunkSize, setChunkSize] = useState(FILMS_TO_LOAD_MORE.SMALL_SCREEN); // 2 - 2 - 4
@@ -86,9 +85,8 @@ function MoviesCardList({
                   <li key={newCard.id}>
                     <MoviesCard
                       card={newCard}
-                      handleLike={handleLike}
-                      handleDelete={handleDelete}
                       isSaved={isSaved}
+                      setIsOnCrossDeleted={setIsOnCrossDeleted}
                     />
                   </li>
                 ))
@@ -97,9 +95,8 @@ function MoviesCardList({
                   <li key={newCard.id}>
                     <MoviesCard
                       card={newCard}
-                      handleLike={handleLike}
-                      handleDelete={handleDelete}
                       isSaved={isSaved}
+                      setIsOnCrossDeleted={setIsOnCrossDeleted}
                     />
                   </li>
                 ))}

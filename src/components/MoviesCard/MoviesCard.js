@@ -1,7 +1,10 @@
 import React, { useState, useEffect } from "react";
+import MoviesApi from "../../utils/MoviesApi.js";
 
-function MoviesCard({ card, handleLike, handleDelete, isSaved }) {
+function MoviesCard({ card, isSaved, setIsOnCrossDeleted }) {
   const [isChecked, setIsChecked] = useState(false);
+  const moviesApi = new MoviesApi();
+  const storedLikedMovies = JSON.parse(localStorage.getItem("likedMovies"));
 
   useEffect(() => {
     const storedLikedMovies = JSON.parse(localStorage.getItem("likedMovies"));
@@ -26,8 +29,47 @@ function MoviesCard({ card, handleLike, handleDelete, isSaved }) {
     }
   }
 
-  const handleCheckboxChange = () => {
+  const handleLike = (movie) => {
+    return moviesApi
+      .createMovie(movie)
+      .then((data) => {
+        const storedLikedMovies = JSON.parse(
+          localStorage.getItem("likedMovies")
+        );
+        const updatedLikedMovies = [...storedLikedMovies, data];
+        localStorage.setItem("likedMovies", JSON.stringify(updatedLikedMovies));
+        return true;
+      })
+      .catch((err) => {
+        console.error(err);
+        return false;
+      });
+  };
 
+  const handleDelete = (movieId) => {
+    const movieToDelete = storedLikedMovies.find(
+      (movie) => movie.id === movieId
+    );
+
+    return moviesApi
+      .deleteMovie(movieToDelete._id)
+      .then(() => {
+        const storedLikedMovies = JSON.parse(
+          localStorage.getItem("likedMovies")
+        );
+        const updatedSavedMovies = storedLikedMovies.filter(
+          (movie) => movie.id !== movieId
+        );
+        localStorage.setItem("likedMovies", JSON.stringify(updatedSavedMovies));
+        return true;
+      })
+      .catch((err) => {
+        console.error(err);
+        return false;
+      });
+  };
+
+  const handleCheckboxChange = () => {
     if (!isChecked) {
       const updatedCard = {
         ...card,
@@ -40,18 +82,22 @@ function MoviesCard({ card, handleLike, handleDelete, isSaved }) {
       delete updatedCard.created_at;
       delete updatedCard.updated_at;
 
-      handleLike(updatedCard).then(res => {
-        console.log('Ответ: ' + res);
+      handleLike(updatedCard).then((res) => {
+        console.log("Ответ: " + res);
         if (res === true) setIsChecked(true);
       });
     } else {
-      movieRemove();
+      handleDelete(card.id).then((res) => {
+        console.log("Ответ: " + res);
+        if (res === true) setIsChecked(false);
+      });
     }
   };
 
   const movieRemove = () => {
-    handleDelete(card.id).then(res => {
-      console.log('Ответ: ' + res);
+    handleDelete(card.id).then((res) => {
+      setIsOnCrossDeleted(true);
+      console.log("Ответ: " + res);
       if (res === true) setIsChecked(false);
     });
   };

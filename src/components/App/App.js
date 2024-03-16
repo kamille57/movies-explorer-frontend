@@ -115,77 +115,6 @@ function App() {
     }
   };
 
-  const handleLike = (movie) => {
-    return moviesApi
-      .createMovie(movie)
-      .then((newMovie) => {
-        const updatedSavedMovies = [...savedMovies, newMovie];
-        setSavedMovies(updatedSavedMovies);
-
-        const updatedMovies = movies.map((m) =>
-          m.id === newMovie.id ? newMovie : m
-        );
-        setMovies(updatedMovies);
-
-        if (!likedMovies.find((m) => m._id === newMovie._id)) {
-          const updatedLikedMovies = [...likedMovies, newMovie];
-          setLikedMovies(updatedLikedMovies);
-
-          localStorage.setItem(
-            "likedMovies",
-            JSON.stringify(updatedLikedMovies)
-          );
-        }
-        return true;
-      })
-
-      .catch((error) => {
-        onError();
-        const errorMessage = handleError(error, likedMoviesErrors);
-        setServerMessage(errorMessage);
-        setIsEditing(true);
-      })
-      .finally(() => {
-        setIsLoading(false);
-      });
-  };
-
-  const handleDelete = (movieId) => {
-    const movieToDelete = savedMovies.find((movie) => movie.id === movieId);
-    if (movieToDelete) {
-      return moviesApi
-        .deleteMovie(movieToDelete._id)
-        .then(() => {
-          const updatedLikedMovies = likedMovies.filter(
-            (movie) => movie._id !== movieToDelete._id
-          );
-          setLikedMovies(updatedLikedMovies);
-
-          localStorage.setItem(
-            "likedMovies",
-            JSON.stringify(updatedLikedMovies)
-          );
-
-          const updatedSavedMovies = savedMovies.filter(
-            (movie) => movie.id !== movieId
-          );
-          setSavedMovies(updatedSavedMovies);
-          return true;
-        })
-        .catch((error) => {
-          onError();
-          const errorMessage = handleError(error, likedMoviesErrors);
-          setServerMessage(errorMessage);
-          setIsEditing(true);
-        })
-        .finally(() => {
-          setIsLoading(false);
-        });
-    } else {
-      return Promise.reject(false);
-    }
-  };
-
   function handleUpdateProfile({ email, name }) {
     setIsLoading(true);
     const updatedUser = { email, name };
@@ -337,8 +266,6 @@ function App() {
                 isMoviesLoading={isMoviesLoading}
                 isLoggedIn={isLoggedIn}
                 getAllMovies={getAllMovies}
-                handleLike={handleLike}
-                handleDelete={handleDelete}
                 serverMessage={serverMessage}
                 setServerMessage={setServerMessage}
               />
@@ -356,7 +283,6 @@ function App() {
                 getAllMovies={getAllMovies}
                 savedMovies={savedMovies}
                 setSavedMovies={setSavedMovies}
-                handleDelete={handleDelete}
                 serverMessage={serverMessage}
                 setServerMessage={setServerMessage}
               />

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import SearchForm from "../SearchForm/SearchForm.js";
 import MoviesCardList from "../MoviesCardList/MoviesCardList.js";
 import Header from "../Header/Header.js";
@@ -8,8 +8,6 @@ import Preloader from "../Preloader/Preloader.js";
 function Movies({
   isMoviesLoading,
   getAllMovies,
-  handleLike,
-  handleDelete,
   serverMessage,
   setServerMessage,
 }) {
@@ -48,8 +46,6 @@ function Movies({
           ) : (
             <MoviesCardList
               cards={filteredMovies}
-              handleLike={handleLike}
-              handleDelete={handleDelete}
               serverMessage={serverMessage}
             />
           )}

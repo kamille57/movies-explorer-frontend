@@ -6,7 +6,6 @@ import Footer from "../Footer/Footer.js";
 import MoviesApi from "../../utils/MoviesApi.js";
 
 function SavedMovies({
-  handleDelete,
   getAllMovies,
   savedMovies,
   serverMessage,
@@ -16,7 +15,8 @@ function SavedMovies({
   const moviesApi = new MoviesApi();
   const [filteredMovies, setFilteredMovies] = useState(savedMovies || "");
   const [savedSearchQuery, setSavedSearchQuery] = useState("");
-  const likedMovies = localStorage.getItem("likedMovies");
+  const [isOnCrossDeleted, setIsOnCrossDeleted] = useState(false);
+  const likedMovies = JSON.parse(localStorage.getItem("likedMovies"));
 
   
   useEffect(() => {
@@ -29,8 +29,9 @@ function SavedMovies({
   }, []);
 
   useEffect(() => {
-    setFilteredMovies(savedMovies);
-  }, [likedMovies]);
+    setFilteredMovies(likedMovies)
+    setIsOnCrossDeleted(false)
+  }, [isOnCrossDeleted])
 
   const handleFilteredMovies = (savedMovies) => {
     setFilteredMovies(savedMovies);
@@ -53,9 +54,9 @@ function SavedMovies({
           />
           <MoviesCardList
             cards={filteredMovies}
-            handleDelete={handleDelete}
             isSaved={true}
             serverMessage={serverMessage}
+            setIsOnCrossDeleted={setIsOnCrossDeleted}
           />
         </section>
       </main>
