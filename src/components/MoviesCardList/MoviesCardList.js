@@ -75,7 +75,7 @@ function MoviesCardList({
         <div className="movies__empty-request"> Сохраненных фильмов нет.</div>
       ) : !isSaved && initialMovies.length === 0 && !serverMessage ? (
         <div className="movies__empty-request"></div>
-      ) : serverMessage || cards.length === 0 ? (
+      ) : serverMessage || cards.length === 0 || (!isSaved && (!searchQuery || searchQuery.length === 0)) ? (
         <h3 className="movies__empty-request">Ничего не найдено</h3>
       ) : (
         <section className="cards">

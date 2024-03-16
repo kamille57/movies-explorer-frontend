@@ -32,7 +32,7 @@ function SearchForm({
 
   const handleFilteredResults = () => { 
     setServerMessage(""); 
-    if (isSaved && savedSearchQuery) { 
+    if (isSaved) { 
       const regex = new RegExp(savedSearchQuery, "gi"); 
       let filtered = cards.filter((card) => card.nameRU.match(regex)); 
       if (savedOnlyShortMovies) { 
@@ -40,7 +40,9 @@ function SearchForm({
           (card) => card.duration <= SHORT_MOVIES_DURATION 
         ); 
       } 
+
       handleSearch(filtered); 
+
     } else if (!isSaved && searchQuery) { 
       const regex = new RegExp(searchQuery, "gi"); 
       let filtered = cards.filter((card) => card.nameRU.match(regex)); 

@@ -32,9 +32,11 @@ function SavedMovies({
   //   setFilteredMovies(likedMovies)
   //   setIsOnCrossDeleted(false)
   // }, [isOnCrossDeleted])
+  console.log(filteredMovies);
 
   const handleFilteredMovies = (savedMovies) => {
     setFilteredMovies(savedMovies);
+    console.log(filteredMovies);
   };
 
   return (
