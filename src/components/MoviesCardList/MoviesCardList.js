@@ -22,7 +22,7 @@ function MoviesCardList({
   const searchQuery = localStorage.getItem("moviesSearchQuery");
   const initialMovies = localStorage.getItem("initialMovies");
   const likedMovies = JSON.parse(localStorage.getItem("likedMovies"));
-
+  console.log(cardsLimit);
   useEffect(() => {
     const handleResize = () => {
       setWindowWidth(window.innerWidth);
@@ -41,18 +41,21 @@ function MoviesCardList({
         VISIBLE_MOVIES.LARGE,
         FILMS_TO_LOAD_MORE.FULL_SCREEN
       );
+      setCardsLimit(VISIBLE_MOVIES.LARGE);
     } else if (windowWidth >= WINDOW_WIDTH_THRESHOLD.SMALL) {
       changeMovieListOptions(
         VISIBLE_MOVIES.SMALL,
         FILMS_TO_LOAD_MORE.SMALL_SCREEN
       );
+      setCardsLimit(VISIBLE_MOVIES.SMALL);
     } else {
       changeMovieListOptions(
         VISIBLE_MOVIES.EXTRA_SMALL,
         FILMS_TO_LOAD_MORE.SMALL_SCREEN
       );
+      setCardsLimit(VISIBLE_MOVIES.EXTRA_SMALL);
     }
-  }, [windowWidth]);
+  }, [windowWidth, searchQuery]);
 
   function changeMovieListOptions(limit, chunkSize) {
     if (!isLoadedMore) {
@@ -97,7 +100,8 @@ function MoviesCardList({
                     />
                   </li>
                 ))
-              : cards && cards.slice(0, cardsLimit).map((newCard) => (
+              : cards &&
+                cards.slice(0, cardsLimit).map((newCard) => (
                   <li key={newCard.id}>
                     <MoviesCard
                       card={newCard}
