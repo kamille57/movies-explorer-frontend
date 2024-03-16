@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import MoviesCard from "../MoviesCard/MoviesCard.js";
-import { VISIBLE_MOVIES } from "../../constants/constants.js";
+import { VISIBLE_MOVIES, WINDOW_WIDTH_THRESHOLD, FILMS_TO_LOAD_MORE } from "../../constants/constants.js";
 
 function MoviesCardList({
   cards,
@@ -11,8 +11,8 @@ function MoviesCardList({
   serverMessage,
 }) {
   const [isLoadedMore, setIsLoadedMore] = useState(false);
-  const [chunkSize, setChunkSize] = useState(2); // 2 - 2 - 4
-  const [cardsLimit, setCardsLimit] = useState(5); // 5 - 8 - 16
+  const [chunkSize, setChunkSize] = useState(FILMS_TO_LOAD_MORE.SMALL_SCREEN); // 2 - 2 - 4
+  const [cardsLimit, setCardsLimit] = useState(VISIBLE_MOVIES.EXTRA_SMALL); // 5 - 8 - 16
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
 
   const searchQuery = localStorage.getItem("moviesSearchQuery");
@@ -32,12 +32,12 @@ function MoviesCardList({
   }, []);
 
   useEffect(() => {
-    if (windowWidth >= 1280) {
-      changeMovieListOptions(VISIBLE_MOVIES.LARGE, 4);
-    } else if (windowWidth >= 768) {
-      changeMovieListOptions(VISIBLE_MOVIES.SMALL, 2);
+    if (windowWidth >= WINDOW_WIDTH_THRESHOLD.LARGE) {
+      changeMovieListOptions(VISIBLE_MOVIES.LARGE, FILMS_TO_LOAD_MORE.FULL_SCREEN);
+    } else if (windowWidth >= WINDOW_WIDTH_THRESHOLD.SMALL) {
+      changeMovieListOptions(VISIBLE_MOVIES.SMALL, FILMS_TO_LOAD_MORE.SMALL_SCREEN);
     } else {
-      changeMovieListOptions(VISIBLE_MOVIES.EXTRA_SMALL, 2);
+      changeMovieListOptions(VISIBLE_MOVIES.EXTRA_SMALL, FILMS_TO_LOAD_MORE.SMALL_SCREEN);
     }
   }, [windowWidth]);
 

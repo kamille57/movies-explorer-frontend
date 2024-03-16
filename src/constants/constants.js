@@ -61,11 +61,16 @@ export const VISIBLE_MOVIES = {
 };
 
 export const WINDOW_WIDTH_THRESHOLD = {
-  LARGE: 1279,
+  LARGE: 1280,
   MEDIUM: 989,
-  SMALL: 767,
+  SMALL: 768,
   EXTRA_SMALL: 350,
 };
 
 
 export const SHORT_MOVIES_DURATION = 40;
+
+export const FILMS_TO_LOAD_MORE = {
+  FULL_SCREEN: 4,
+  SMALL_SCREEN: 2,
+};
