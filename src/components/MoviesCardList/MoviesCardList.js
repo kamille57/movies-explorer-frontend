@@ -11,7 +11,6 @@ function MoviesCardList({
   handleLike,
   handleDelete,
   isSaved,
-  savedSearchQuery,
   serverMessage,
 }) {
   const [isLoadedMore, setIsLoadedMore] = useState(false);
@@ -22,7 +21,6 @@ function MoviesCardList({
   const searchQuery = localStorage.getItem("moviesSearchQuery");
   const initialMovies = localStorage.getItem("initialMovies");
   const likedMovies = JSON.parse(localStorage.getItem("likedMovies"));
-  console.log(cardsLimit);
   useEffect(() => {
     const handleResize = () => {
       setWindowWidth(window.innerWidth);
@@ -74,18 +72,12 @@ function MoviesCardList({
 
   return (
     <>
-      {serverMessage &&
-      (searchQuery === "" || savedSearchQuery === "") &&
-      ((cards.length === 0 &&
-        (!likedMovies || likedMovies.length !== 0) &&
-        isSaved) ||
-        (cards.length === 0 && !isSaved && initialMovies)) ? (
-        <h3 className="movies__empty-request">Ничего не найдено</h3>
-      ) : (!initialMovies && searchQuery === "" && !isSaved) ||
-        (!initialMovies && !isSaved) ? (
-        <div className="movies__empty-request"></div>
-      ) : (!likedMovies || likedMovies.length === 0) && isSaved ? (
+      {(!likedMovies || likedMovies.length === 0) && isSaved ? (
         <div className="movies__empty-request"> Сохраненных фильмов нет.</div>
+      ) : !isSaved && initialMovies.length === 0 && !serverMessage ? (
+        <div className="movies__empty-request"></div>
+      ) : serverMessage || cards.length === 0 ? (
+        <h3 className="movies__empty-request">Ничего не найдено</h3>
       ) : (
         <section className="cards">
           <ul className="cards__container">

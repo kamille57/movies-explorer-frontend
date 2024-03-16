@@ -10,9 +10,10 @@ function SearchForm({
   serverMessage,
   setServerMessage,
   isMoviesLoading,
+  savedSearchQuery,
+  setSavedSearchQuery
 }) {
   const initialMovies = localStorage.getItem("initialMovies");
-  const [savedSearchQuery, setSavedSearchQuery] = useState("");
   const [savedOnlyShortMovies, setSavedOnlyShortMovies] = useState(false);
   const [searchQuery, setSearchQuery] = useState(
     localStorage.getItem("moviesSearchQuery")
@@ -77,12 +78,7 @@ function SearchForm({
       return;
     }
 
-    if (searchQuery === null && !isSaved) {
-      setServerMessage("Вам нужно ввести ключевое слово");
-      return;
-    }
-
-    if (searchQuery.trim() === "" && !isSaved) {
+    if ((searchQuery === null || searchQuery === "") && !isSaved) {
       setServerMessage("Вам нужно ввести ключевое слово");
       localStorage.setItem("moviesSearchQuery", "");
 

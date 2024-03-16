@@ -55,7 +55,6 @@ function SavedMovies({
             cards={filteredMovies}
             handleDelete={handleDelete}
             isSaved={true}
-            savedSearchQuery={savedSearchQuery}
             serverMessage={serverMessage}
           />
         </section>
