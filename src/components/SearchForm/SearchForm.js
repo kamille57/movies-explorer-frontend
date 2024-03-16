@@ -109,11 +109,16 @@ function SearchForm({
   };
 
   useEffect(() => {
+    handleFilteredResults();
+  }, [onlyShortMovies]);
+
+  useEffect(() => {
     if (!cards || cards.length === 0 || isMoviesLoading) {
       return;
     }
-      handleFilteredResults();
-  }, [onlyShortMovies, initialMovies]);
+    handleFilteredResults();
+
+  }, [initialMovies]);
 
   return (
     <section className="search">

@@ -18,6 +18,8 @@ function MoviesCardList({
 
   const searchQuery = localStorage.getItem("moviesSearchQuery");
   const initialMovies = localStorage.getItem("initialMovies");
+  const likedMovies = JSON.parse(localStorage.getItem("likedMovies"));
+
   useEffect(() => {
     const handleResize = () => {
       setWindowWidth(window.innerWidth);
@@ -57,16 +59,15 @@ function MoviesCardList({
 
   return (
     <>
-      {(serverMessage && searchQuery === "" && !isSaved) ||
-      (isSaved && cards.length === 0 && !serverMessage) ||
-      (serverMessage && savedSearchQuery === "" && isSaved) ||
-      (initialMovies === "" && searchQuery && !isSaved) ? (
+      {(serverMessage && (searchQuery === "" || savedSearchQuery === "")) ||
+      (cards.length === 0 && (!likedMovies || likedMovies.length !== 0) && isSaved) ||
+      (cards.length === 0 && !isSaved && initialMovies.length !== 0) ? (
         <h3 className="movies__empty-request">Ничего не найдено</h3>
-      ) : (cards && !searchQuery && !isSaved) ||
-        (!isSaved && !searchQuery) ||
-        (initialMovies === "" && searchQuery === "" && !isSaved) ||
+      ) : (initialMovies === "" && searchQuery === "" && !isSaved) ||
         (initialMovies === "" && !isSaved) ? (
         <div className="movies__empty-request"></div>
+      ) : ((likedMovies.length === 0 || !likedMovies) && isSaved) ? (
+        <div className="movies__empty-request"> Сохраненных фильмов нет.</div>
       ) : (
         <section className="cards">
           <ul className="cards__container">

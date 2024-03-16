@@ -97,6 +97,7 @@ function App() {
     setIsMoviesLoading(true);
 
     try {
+      console.log('из функции');
       const [initialMovies, savedMovies] = await Promise.all([
         moviesApi.getInitialMovies(),
         moviesApi.getSavedMovies(),
