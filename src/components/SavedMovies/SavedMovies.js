@@ -15,8 +15,8 @@ function SavedMovies({
   const moviesApi = new MoviesApi();
   const [filteredMovies, setFilteredMovies] = useState(savedMovies || "");
   const [savedSearchQuery, setSavedSearchQuery] = useState("");
-  const [isOnCrossDeleted, setIsOnCrossDeleted] = useState(false);
-  const likedMovies = JSON.parse(localStorage.getItem("likedMovies"));
+  // const [isOnCrossDeleted, setIsOnCrossDeleted] = useState(false);
+  // const likedMovies = JSON.parse(localStorage.getItem("likedMovies"));
 
   
   useEffect(() => {
@@ -28,10 +28,10 @@ function SavedMovies({
     });
   }, []);
 
-  useEffect(() => {
-    setFilteredMovies(likedMovies)
-    setIsOnCrossDeleted(false)
-  }, [isOnCrossDeleted])
+  // useEffect(() => {
+  //   setFilteredMovies(likedMovies)
+  //   setIsOnCrossDeleted(false)
+  // }, [isOnCrossDeleted])
 
   const handleFilteredMovies = (savedMovies) => {
     setFilteredMovies(savedMovies);
@@ -56,7 +56,7 @@ function SavedMovies({
             cards={filteredMovies}
             isSaved={true}
             serverMessage={serverMessage}
-            setIsOnCrossDeleted={setIsOnCrossDeleted}
+            // setIsOnCrossDeleted={setIsOnCrossDeleted}
           />
         </section>
       </main>

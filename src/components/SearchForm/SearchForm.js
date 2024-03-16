@@ -30,35 +30,35 @@ function SearchForm({
     }
   };
 
-  const handleFilteredResults = () => {
-    setServerMessage("");
-    if (isSaved) {
-      const regex = new RegExp(savedSearchQuery, "gi");
-      let filtered = cards.filter((card) => card.nameRU.match(regex));
-      if (savedOnlyShortMovies) {
-        filtered = filtered.filter(
-          (card) => card.duration <= SHORT_MOVIES_DURATION
-        );
-      }
-      handleSearch(filtered);
-    } else if (!isSaved && searchQuery) {
-      const regex = new RegExp(searchQuery, "gi");
-      let filtered = cards.filter((card) => card.nameRU.match(regex));
-      if (onlyShortMovies) {
-        filtered = filtered.filter(
-          (card) => card.duration <= SHORT_MOVIES_DURATION
-        );
-      }
-
-      handleSearch(filtered);
-
-      if (!isSaved) {
-        localStorage.setItem("moviesSearchQuery", searchQuery);
-      } else {
-        setSavedSearchQuery(savedSearchQuery);
-      }
-    }
-  };
+  const handleFilteredResults = () => { 
+    setServerMessage(""); 
+    if (isSaved && savedSearchQuery) { 
+      const regex = new RegExp(savedSearchQuery, "gi"); 
+      let filtered = cards.filter((card) => card.nameRU.match(regex)); 
+      if (savedOnlyShortMovies) { 
+        filtered = filtered.filter( 
+          (card) => card.duration <= SHORT_MOVIES_DURATION 
+        ); 
+      } 
+      handleSearch(filtered); 
+    } else if (!isSaved && searchQuery) { 
+      const regex = new RegExp(searchQuery, "gi"); 
+      let filtered = cards.filter((card) => card.nameRU.match(regex)); 
+      if (onlyShortMovies) { 
+        filtered = filtered.filter( 
+          (card) => card.duration <= SHORT_MOVIES_DURATION 
+        ); 
+      } 
+ 
+      handleSearch(filtered); 
+ 
+      if (!isSaved) { 
+        localStorage.setItem("moviesSearchQuery", searchQuery); 
+      } else { 
+        setSavedSearchQuery(savedSearchQuery); 
+      } 
+    } 
+  }; 
 
   const handleSubmit = async (e) => {
     e.preventDefault();
