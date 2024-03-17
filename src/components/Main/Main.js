@@ -6,14 +6,15 @@ import Techs from "../Techs/Techs.js"
 import AboutMe from "../AboutMe/AboutMe.js"
 import Portfolio from "../Portfolio/Portfolio.js"
 import Footer from "../Footer/Footer.js"
-import profile from "../../images/profile.svg"
 
-function Main() {
+function Main({isLoggedIn}) {
     return (
         <>
             <Header
                 backgroundColor="#073042"
-                profileSrc={profile} />
+                iconColor="#0F4157" 
+                isLoggedIn={ isLoggedIn }
+            />
             <main className="main">
                 <section className="main-page">
                     <Promo />

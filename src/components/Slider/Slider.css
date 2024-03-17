@@ -1,11 +1,11 @@
 .slider-overlay {
-    position: absolute;
+    position: fixed;
     top: 0;
     left: 0;
     right: 0;
     bottom: 0;
-    opacity: 0.3;
-    background: #000;
+    background: rgb(0 0 0 / 30%);
+    z-index: 2;
 }
 
 .slider {
@@ -30,8 +30,8 @@
     margin: 0;
     padding: 0;
     border: 0;
-    top: 13.44px;
-    right: 13.44px;
+    top: 20px;
+    right: 20px;
     width: 32px;
     height: 32px;
     cursor: pointer;
@@ -43,7 +43,8 @@
     padding: 0;
     border: none;
     outline: none;
-  }
+    cursor: pointer;
+}
 
 .slider__links {
     padding: 159px 90px 0;
@@ -83,5 +84,15 @@
         margin: 0 auto 31px;
         width: 128px;
         height: 60px;
+    }
+
+    .slider__links {
+        padding: 149px 0 0;
+        gap: 25px;
+    }
+
+    .slider__btn {
+        top: 14px;
+        right: 14px;
     }
 }

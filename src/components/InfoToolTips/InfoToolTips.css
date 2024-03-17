@@ -1,0 +1,123 @@
+.popup {
+    position: fixed;
+    display: flex;
+    top: 0;
+    left: 0;
+    z-index: 3;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 50%);
+    box-shadow: 0 4px rgba(0, 0, 0, 0.25) inset;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
+  }
+
+  .popup_opened {
+    visibility: visible;
+    opacity: 1;
+  }
+
+  .popup__container {
+    margin: auto;
+    position: relative;
+    box-sizing: border-box;
+  }
+  
+  .popup__closed {
+    background-image: url(../../images/CloseIcon.svg);
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-color: transparent;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    border-radius: 0;
+    position: absolute;
+    top: -32px;
+    right: -32px;
+    width: 32px;
+    height: 32px;
+    cursor: pointer;
+    z-index: 5;
+  }
+  
+  .popup__closed:hover {
+    opacity: 60%;
+    transition: 2s;
+  }
+  
+  .popup-form__set {
+    margin: 0 auto;
+    padding: 0;
+    outline: none;
+    border: none;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
+    width: 358px;
+  }
+  
+  .popup-form__heading {
+    font-family: 'Inter', 'Helvetica Neue', 'Arial', sans-serif;
+    margin: 0 0 54px;
+    line-height: 29px;
+    font-size: 24px;
+    font-weight: 900;
+    text-align: center;
+  }
+  
+  .tooltips {
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border-radius: 10px;
+    background-color: #FFF;
+    padding: 60px 36px 6px;
+    box-sizing: border-box;
+}
+
+.tooltips__img {
+    margin: 0 auto 32px;
+    width: 120px;
+    height: 120px;
+    justify-self: center;
+    align-self: center;
+}
+
+@media screen and (max-width: 620px) {
+    .tooltips {
+        width: 100%;
+        padding: 25px 22px;
+    }
+}
+
+  @media screen and (max-width: 620px) {
+    .popup-form__heading {
+      line-height: 22px;
+      font-size: 18px;
+      margin: 0 0 44px;
+    }
+  }
+
+  @media screen and (max-width: 620px) {
+    .popup-form__set {
+      max-width: 238px;
+    }
+  }
+
+  @media screen and (max-width: 620px) {
+    .popup__closed {
+      width: 20px;
+      height: 20px;
+      right: 0;
+    }
+  }
+
+  @media screen and (max-width: 620px) {
+    .popup__container {
+      max-width: 282px;
+    }
+  }

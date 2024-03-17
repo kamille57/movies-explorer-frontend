@@ -5,7 +5,6 @@
     height: 74px;
     padding: 18px 70px;
     display: flex;
-    flex-direction: row;
     justify-content: space-between;
     align-items: center;
     font-family: 'Inter', 'Helvetica Neue', 'Arial', sans-serif;
@@ -14,43 +13,71 @@
 }
 
 .header__logo {
+    margin-right: 62px;
     width: 38px;
     height: 38px;
     object-fit: cover;
+    cursor: pointer;
 }
 
 .header__btn {
-    padding: 0;
-    width: 100px;
     display: flex;
-    column-gap: 7px;
-    justify-content: center;
     align-items: center;
+    justify-content: space-between;
+    color: #FFF;
+    padding: 3px 3px 3px 11px;
+    width: 100px;
     border: none;
     outline: none;
     border-radius: 40px;
-    font-size: 12px;
+    font-size: 13px;
     font-weight: 500;
     cursor: pointer;
     background-color: transparent;
 }
 
-.header__img {
-    fill: none;
+.header__icon {
+    background-color: transparent;
 }
 
-.header__img_burger {
-    display: none;
+.header__btn-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
 }
 
-.header__img_full {
+.header-nav {
     display: flex;
+    gap: 30px;
+}
+
+.header-nav__signup {
+    border: none;
+    padding: 0;
+    background-color: transparent;
+    color: #FFF;
+    text-align: right;
+    font-size: 12px;
+    font-weight: 500;
+    cursor: pointer;
+}
+
+.header-nav__signin {
+    border: none;
+    padding: 0;
+    border-radius: 3px;
+    background: #3DDC84;
+    width: 76px;
+    height: 32px;
+    font-size: 12px;
+    font-weight: 500;
+    cursor: pointer;
 }
 
 @media screen and (max-width: 920px) {
-    .header__img_full {
-        display: none;
-    }
 
     .header__img_burger {
         display: flex;
@@ -65,6 +92,23 @@
     .header {
         padding: 18px 14px;
     }
+
+    .header-nav {
+        gap: 14px;
+    }
+
+    .header-nav__signin {
+        width: 54px;
+        height: 26px;
+        font-size: 10px;
+        line-height: 16px;
+    }
+
+    .header-nav__signup {
+        font-size: 10px;
+        line-height: 16px;
+    }
+
 }
 
 @media screen and (min-width: 621px) and (max-width: 920px) {
