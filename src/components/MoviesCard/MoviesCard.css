@@ -66,6 +66,7 @@
     grid-area: box;
     background-repeat: no-repeat;
     width: 16px;
+    cursor: pointer;
 }
 
 .card-checkbox__input {
