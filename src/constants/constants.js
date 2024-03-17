@@ -63,7 +63,7 @@ export const VISIBLE_MOVIES = {
 export const WINDOW_WIDTH_THRESHOLD = {
   LARGE: 1280,
   MEDIUM: 989,
-  SMALL: 768,
+  SMALL: 767,
   EXTRA_SMALL: 350,
 };
 

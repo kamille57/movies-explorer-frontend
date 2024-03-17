@@ -20,7 +20,7 @@
     list-style: none;
     width: 100%;
     display: grid;
-    grid-template-columns: repeat(4, 270px);
+    grid-template-columns: repeat(auto-fill, 270px);
     column-gap: 20px;
     row-gap: 30px;
     justify-content: space-between;
@@ -54,8 +54,8 @@
     }
 
     .cards__container {
-        grid-template-columns: repeat(auto-fill, 300px);
-        grid-template-rows: repeat(5, 235px);
+        grid-template-columns: 300px;
+        grid-template-rows: repeat(auto-fill, 235px);
         gap: 20px;
         justify-content: center;
     }
