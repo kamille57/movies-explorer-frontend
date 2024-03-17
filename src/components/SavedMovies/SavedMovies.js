@@ -23,23 +23,18 @@ function SavedMovies({
       setFilteredMovies(savedMovies);
       setServerMessage("");
       localStorage.setItem("likedMovies", JSON.stringify(savedMovies));
-      console.log("likedMovies", likedMovies);
-      console.log("savedMovies", savedMovies);
-      console.log("filteredMovies", filteredMovies);
     });
   }, []);
 
  
 
   const handleDelete = (movieId) => {
-    console.log('DELETE');
 
     const movieToDelete = likedMovies.find((movie) => movie.id === movieId);
 
     return moviesApi
       .deleteMovie(movieToDelete._id)
       .then(() => {
-        console.log('DELETE');
         const storedLikedMovies = JSON.parse(
           localStorage.getItem("likedMovies")
         );
@@ -51,9 +46,7 @@ function SavedMovies({
           (movie) => movie.id !== movieId
         );
         setSavedMovies(updatedSavedMovies);
-        console.log("savedMovies", savedMovies);
         setFilteredMovies(updatedFilteredMovies);
-         console.log("filteredMovies", filteredMovies);
         return true;
       })
       .catch((err) => {

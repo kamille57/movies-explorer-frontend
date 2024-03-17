@@ -93,7 +93,6 @@ function App() {
     setIsMoviesLoading(true);
 
     try {
-      console.log('из функции');
       const [initialMovies, savedMovies] = await Promise.all([
         moviesApi.getInitialMovies(),
         moviesApi.getSavedMovies(),
@@ -144,7 +143,6 @@ function App() {
       .then((userData) => {
         setCurrentUser(userData);
         setIsLoading(true);
-        console.log(isLoading);
 
         setIsLoggedIn(true);
         navigate("/movies");

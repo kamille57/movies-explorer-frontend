@@ -21,8 +21,6 @@ function MoviesCardList({
   const initialMovies = localStorage.getItem("initialMovies");
   const likedMovies = JSON.parse(localStorage.getItem("likedMovies"));
   
-console.log("isSaved", isSaved);
-
   useEffect(() => {
     const handleResize = () => {
       setWindowWidth(window.innerWidth);

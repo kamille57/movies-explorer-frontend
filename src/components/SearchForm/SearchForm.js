@@ -15,7 +15,6 @@ function SearchForm({
   likedMovies,
 }) {
 
-  console.log("cards from serach form", cards);
   const initialMovies = localStorage.getItem("initialMovies");
   const [savedOnlyShortMovies, setSavedOnlyShortMovies] = useState(false);
   const [searchQuery, setSearchQuery] = useState(
@@ -24,7 +23,6 @@ function SearchForm({
   const [onlyShortMovies, setOnlyShortMovies] = useState(
     localStorage.getItem("moviesOnlyShortMovies") === "true" || false
   );
-
 
   const handleChange = (e) => {
     if (!isSaved) {
@@ -112,8 +110,6 @@ function SearchForm({
 
   useEffect(() => {
     handleFilteredResults();
-    console.log("likedMovies", likedMovies);
-
   }, [onlyShortMovies, savedOnlyShortMovies]);
 
   useEffect(() => {

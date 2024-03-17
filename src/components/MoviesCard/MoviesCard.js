@@ -32,14 +32,11 @@ function MoviesCard({ card, isSaved, handleDelete }) {
     return moviesApi
       .createMovie(movie)
       .then((data) => {
-        console.log(data);
         const storedLikedMovies = JSON.parse(
           localStorage.getItem("likedMovies")
         );
         const updatedLikedMovies = [...storedLikedMovies, data];
         localStorage.setItem("likedMovies", JSON.stringify(updatedLikedMovies));
-        console.log(updatedLikedMovies);
-        console.log('фильм добавлен');
         return true;
       })
       .catch((err) => {
