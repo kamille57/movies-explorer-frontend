@@ -10,7 +10,7 @@ function MoviesCardList({
   cards,
   isSaved,
   serverMessage,
-  setIsOnCrossDeleted,
+  handleDelete,
 }) {
   const [isLoadedMore, setIsLoadedMore] = useState(false);
   const [chunkSize, setChunkSize] = useState(FILMS_TO_LOAD_MORE.SMALL_SCREEN); // 2 - 2 - 4
@@ -20,6 +20,9 @@ function MoviesCardList({
   const searchQuery = localStorage.getItem("moviesSearchQuery");
   const initialMovies = localStorage.getItem("initialMovies");
   const likedMovies = JSON.parse(localStorage.getItem("likedMovies"));
+  
+console.log("cards from cards list", cards);
+
   useEffect(() => {
     const handleResize = () => {
       setWindowWidth(window.innerWidth);
@@ -71,12 +74,14 @@ function MoviesCardList({
 
   return (
     <>
-      {(!likedMovies || likedMovies.length === 0) && isSaved ? (
-        <div className="movies__empty-request"> Сохраненных фильмов нет.</div>
+      {!likedMovies && isSaved ? (
+        <h3 className="movies__empty-request"> Сохраненных фильмов нет.</h3>
       ) : !isSaved && initialMovies.length === 0 && !serverMessage ? (
-        <div className="movies__empty-request"></div>
-      ) : serverMessage || cards.length === 0 || (!isSaved && (!searchQuery || searchQuery.length === 0)) ? (
-        <h3 className="movies__empty-request">Ничего не найдено</h3>
+        <div className="movies__empty-request"></div> // пустой экран только на странице MOVIES при первом входе
+      ) : (serverMessage && cards.length === 0) || (!isSaved && cards.length === 0) || (!isSaved && (!searchQuery || searchQuery.length === 0)) ? (
+        <h3 className="movies__empty-request">Ничего не найдено</h3> // ничего не найдено в случаях, когда пустая строка и ошибка валидации, когда cards.length === 0
+      ) : cards.length === 0 && isSaved ? (
+        <h3 className="movies__empty-request"> Нет сохраненных фильмов, отвечающих условию поиска.</h3>
       ) : (
         <section className="cards">
           <ul className="cards__container">
@@ -86,7 +91,7 @@ function MoviesCardList({
                     <MoviesCard
                       card={newCard}
                       isSaved={isSaved}
-                      setIsOnCrossDeleted={setIsOnCrossDeleted}
+                      handleDelete={handleDelete}
                     />
                   </li>
                 ))
@@ -96,7 +101,7 @@ function MoviesCardList({
                     <MoviesCard
                       card={newCard}
                       isSaved={isSaved}
-                      setIsOnCrossDeleted={setIsOnCrossDeleted}
+                      handleDelete={handleDelete}
                     />
                   </li>
                 ))}

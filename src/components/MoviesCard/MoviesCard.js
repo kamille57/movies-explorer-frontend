@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from "react";
 import MoviesApi from "../../utils/MoviesApi.js";
 
-function MoviesCard({ card, isSaved, setIsOnCrossDeleted }) {
+function MoviesCard({ card, isSaved, handleDelete }) {
   const [isChecked, setIsChecked] = useState(false);
   const moviesApi = new MoviesApi();
-  const storedLikedMovies = JSON.parse(localStorage.getItem("likedMovies"));
-
+  
   useEffect(() => {
     const storedLikedMovies = JSON.parse(localStorage.getItem("likedMovies"));
     const isLiked = storedLikedMovies.some((movie) => movie.id === card.id);
@@ -33,11 +32,14 @@ function MoviesCard({ card, isSaved, setIsOnCrossDeleted }) {
     return moviesApi
       .createMovie(movie)
       .then((data) => {
+        console.log(data);
         const storedLikedMovies = JSON.parse(
           localStorage.getItem("likedMovies")
         );
         const updatedLikedMovies = [...storedLikedMovies, data];
         localStorage.setItem("likedMovies", JSON.stringify(updatedLikedMovies));
+        console.log(updatedLikedMovies);
+        console.log('фильм добавлен');
         return true;
       })
       .catch((err) => {
@@ -46,7 +48,10 @@ function MoviesCard({ card, isSaved, setIsOnCrossDeleted }) {
       });
   };
 
-  const handleDelete = (movieId) => {
+  const handleLikeDelete = (movieId) => {
+     const storedLikedMovies = JSON.parse(
+          localStorage.getItem("likedMovies")
+        );
     const movieToDelete = storedLikedMovies.find(
       (movie) => movie.id === movieId
     );
@@ -87,7 +92,7 @@ function MoviesCard({ card, isSaved, setIsOnCrossDeleted }) {
         if (res === true) setIsChecked(true);
       });
     } else {
-      handleDelete(card.id).then((res) => {
+      handleLikeDelete(card.id).then((res) => {
         console.log("Ответ: " + res);
         if (res === true) setIsChecked(false);
       });
@@ -96,7 +101,6 @@ function MoviesCard({ card, isSaved, setIsOnCrossDeleted }) {
 
   const movieRemove = () => {
     handleDelete(card.id).then((res) => {
-      setIsOnCrossDeleted(true);
       console.log("Ответ: " + res);
       if (res === true) setIsChecked(false);
     });

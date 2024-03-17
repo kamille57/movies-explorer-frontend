@@ -24,7 +24,6 @@ import {
   loginErrors,
   serverErrors,
   signOutErrors,
-  likedMoviesErrors,
 } from "../../constants/constants.js";
 
 function App() {
@@ -39,9 +38,6 @@ function App() {
   const [serverMessageSuccess, setServerMessageSuccess] = useState("");
   const [isEditing, setIsEditing] = useState(false);
   const [savedMovies, setSavedMovies] = useState([]);
-  const [movies, setMovies] = useState([]);
-
-  const [likedMovies, setLikedMovies] = useState([]);
 
   const navigate = useNavigate();
   const api = new MainApi();
@@ -103,7 +99,6 @@ function App() {
         moviesApi.getSavedMovies(),
       ]);
 
-      setMovies(initialMovies);
       setSavedMovies(savedMovies);
 
       localStorage.setItem("initialMovies", JSON.stringify(initialMovies));

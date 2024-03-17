@@ -11,8 +11,11 @@ function SearchForm({
   setServerMessage,
   isMoviesLoading,
   savedSearchQuery,
-  setSavedSearchQuery
+  setSavedSearchQuery,
+  likedMovies,
 }) {
+
+  console.log("cards from serach form", cards);
   const initialMovies = localStorage.getItem("initialMovies");
   const [savedOnlyShortMovies, setSavedOnlyShortMovies] = useState(false);
   const [searchQuery, setSearchQuery] = useState(
@@ -21,6 +24,7 @@ function SearchForm({
   const [onlyShortMovies, setOnlyShortMovies] = useState(
     localStorage.getItem("moviesOnlyShortMovies") === "true" || false
   );
+
 
   const handleChange = (e) => {
     if (!isSaved) {
@@ -40,7 +44,7 @@ function SearchForm({
           (card) => card.duration <= SHORT_MOVIES_DURATION 
         ); 
       } 
-
+     
       handleSearch(filtered); 
 
     } else if (!isSaved && searchQuery) { 
@@ -108,7 +112,9 @@ function SearchForm({
 
   useEffect(() => {
     handleFilteredResults();
-  }, [onlyShortMovies]);
+    console.log("likedMovies", likedMovies);
+
+  }, [onlyShortMovies, savedOnlyShortMovies]);
 
   useEffect(() => {
     if (!cards || cards.length === 0 || isMoviesLoading) {

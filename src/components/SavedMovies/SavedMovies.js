@@ -15,28 +15,55 @@ function SavedMovies({
   const moviesApi = new MoviesApi();
   const [filteredMovies, setFilteredMovies] = useState(savedMovies || "");
   const [savedSearchQuery, setSavedSearchQuery] = useState("");
-  // const [isOnCrossDeleted, setIsOnCrossDeleted] = useState(false);
-  // const likedMovies = JSON.parse(localStorage.getItem("likedMovies"));
+  const likedMovies = JSON.parse(localStorage.getItem("likedMovies"));
 
-  
   useEffect(() => {
     moviesApi.getSavedMovies().then((savedMovies) => {
       setSavedMovies(savedMovies);
       setFilteredMovies(savedMovies);
       setServerMessage("");
       localStorage.setItem("likedMovies", JSON.stringify(savedMovies));
+      console.log("likedMovies", likedMovies);
+      console.log("savedMovies", savedMovies);
+      console.log("filteredMovies", filteredMovies);
     });
   }, []);
 
-  // useEffect(() => {
-  //   setFilteredMovies(likedMovies)
-  //   setIsOnCrossDeleted(false)
-  // }, [isOnCrossDeleted])
-  console.log(filteredMovies);
+ 
+
+  const handleDelete = (movieId) => {
+    console.log('DELETE');
+
+    const movieToDelete = likedMovies.find((movie) => movie.id === movieId);
+
+    return moviesApi
+      .deleteMovie(movieToDelete._id)
+      .then(() => {
+        console.log('DELETE');
+        const storedLikedMovies = JSON.parse(
+          localStorage.getItem("likedMovies")
+        );
+        const updatedSavedMovies = storedLikedMovies.filter(
+          (movie) => movie.id !== movieId
+        );
+        localStorage.setItem("likedMovies", JSON.stringify(updatedSavedMovies));
+        const updatedFilteredMovies = filteredMovies.filter(
+          (movie) => movie.id !== movieId
+        );
+        setSavedMovies(updatedSavedMovies);
+        console.log("savedMovies", savedMovies);
+        setFilteredMovies(updatedFilteredMovies);
+         console.log("filteredMovies", filteredMovies);
+        return true;
+      })
+      .catch((err) => {
+        console.error(err);
+        return false;
+      });
+  };
 
   const handleFilteredMovies = (savedMovies) => {
     setFilteredMovies(savedMovies);
-    console.log(filteredMovies);
   };
 
   return (
@@ -46,6 +73,7 @@ function SavedMovies({
         <section className="saved-movies-page">
           <SearchForm
             cards={savedMovies}
+            likedMovies={likedMovies}
             handleSearch={handleFilteredMovies}
             getAllMovies={getAllMovies}
             isSaved={true}
@@ -58,7 +86,7 @@ function SavedMovies({
             cards={filteredMovies}
             isSaved={true}
             serverMessage={serverMessage}
-            // setIsOnCrossDeleted={setIsOnCrossDeleted}
+            handleDelete={handleDelete}
           />
         </section>
       </main>

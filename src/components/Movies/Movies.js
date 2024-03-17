@@ -22,7 +22,6 @@ function Movies({
 
   const [filteredMovies, setFilteredMovies] = useState(movies || '');
 
-  // эта функция возвращает отфильтрованные фильмы в Movies
   const handleFilteredMovies = (movies) => {
     setFilteredMovies(movies);
   };
