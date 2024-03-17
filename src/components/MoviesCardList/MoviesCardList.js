@@ -21,7 +21,7 @@ function MoviesCardList({
   const initialMovies = localStorage.getItem("initialMovies");
   const likedMovies = JSON.parse(localStorage.getItem("likedMovies"));
   
-console.log("cards from cards list", cards);
+console.log("isSaved", isSaved);
 
   useEffect(() => {
     const handleResize = () => {
@@ -74,13 +74,14 @@ console.log("cards from cards list", cards);
 
   return (
     <>
-      {!likedMovies && isSaved ? (
-        <h3 className="movies__empty-request"> Сохраненных фильмов нет.</h3>
-      ) : !isSaved && initialMovies.length === 0 && !serverMessage ? (
+      {(isSaved && (!likedMovies || likedMovies.length === 0) && initialMovies.length === 0)
+      || (isSaved && likedMovies.length === 0 && initialMovies.length !== 0) ? (
+        <h3 className="movies__empty-request"> Сохраненных фильмов нет.</h3> // При первом входе в сохраненные фильмы или когда сохраненных фильмов нет
+      ) : (!isSaved && initialMovies.length === 0 && !serverMessage) ? (
         <div className="movies__empty-request"></div> // пустой экран только на странице MOVIES при первом входе
       ) : (serverMessage && cards.length === 0) || (!isSaved && cards.length === 0) || (!isSaved && (!searchQuery || searchQuery.length === 0)) ? (
         <h3 className="movies__empty-request">Ничего не найдено</h3> // ничего не найдено в случаях, когда пустая строка и ошибка валидации, когда cards.length === 0
-      ) : cards.length === 0 && isSaved ? (
+      ) : cards.length === 0 && isSaved && initialMovies.length !== 0 ? (
         <h3 className="movies__empty-request"> Нет сохраненных фильмов, отвечающих условию поиска.</h3>
       ) : (
         <section className="cards">
