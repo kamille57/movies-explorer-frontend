@@ -15,11 +15,11 @@ function AboutProject() {
                 </div>
             </div>
             <div className="about-columns-duration">
-                <div className="about-columns-duration__scale about-columns-duration__scale_small">1 неделя</div>
-                <div className="about-columns-duration__scale">4 недели</div>
+                <span className="about-columns-duration__scale about-columns-duration__scale_small">1 неделя</span>
+                <span className="about-columns-duration__scale">4 недели</span>
 
-                <div className="about-columns-duration__realm ">Back-end</div>
-                <div className="about-columns-duration__realm">Front-end</div>
+                <span className="about-columns-duration__realm ">Back-end</span>
+                <span className="about-columns-duration__realm">Front-end</span>
             </div>
 
         </section>
